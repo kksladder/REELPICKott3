@@ -9,12 +9,11 @@ import Membership from './components/membership/Membership';
 import DramaPage from './pages/drama';
 import IdFind from './components/IdFind';
 import PWFind from './components/PWFind';
-
 import Basket from './pages/basket';
 import Landing from './pages/landing';
 import SearchPage from './pages/search';
 import Reelpick from './pages/reelpick';
-
+import MoviePage from './pages/movie';
 import MyPageLayout from './common/mypageLayout/mypageLayout';
 import AccountNull from './components/account/AccountNull';
 import Profile from './components/account/Profile';
@@ -47,6 +46,7 @@ function App() {
                         <Route path="/reelpick" element={<Reelpick />} />
                         <Route path="/basket" element={<Basket />} />
                         <Route path="/drama" element={<DramaPage />} />
+                          <Route path='/movie' element={<MoviePage />} />
                         <Route path="/idfind" element={<IdFind />} />
                         <Route path="/pwfind" element={<PWFind />} />
                         <Route path="/mypage" element={<MyPageLayout />}>
