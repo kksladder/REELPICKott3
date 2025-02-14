@@ -21,6 +21,7 @@ import Profile from './components/account/Profile';
 import ViewingHistory from './components/account/ViewingHistory';
 import ProfileEdit from './components/account/ProfileEdit';
 import ProfileModal from './components/account/ProfileModal';
+import MoviePage from './pages/movie';
 
 function App() {
     return (
@@ -47,6 +48,7 @@ function App() {
                         <Route path='/drama' element={<DramaPage />} />
                         <Route path='/idfind' element={<IdFind />} />
                         <Route path='/pwfind' element={<PWFind />} />
+                        <Route path='/movie' element={<MoviePage />} />
                         <Route path='/mypage' element={<MyPageLayout />}>
                             <Route path='accountnull' element={<AccountNull />} />
                             <Route path='profile' element={<Profile />} />/
