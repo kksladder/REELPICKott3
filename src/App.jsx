@@ -12,6 +12,7 @@ import PWFind from './components/PWFind';
 import Basket from './pages/basket';
 import Landing from './pages/landing';
 import SearchPage from './pages/search';
+import Landing from './pages/landing';
 import Reelpick from './pages/reelpick';
 import MoviePage from './pages/movie';
 import MyPageLayout from './common/mypageLayout/mypageLayout';
@@ -48,6 +49,7 @@ function App() {
                         <Route path="/drama" element={<DramaPage />} />
                           <Route path='/movie' element={<MoviePage />} />
                         <Route path="/idfind" element={<IdFind />} />
+                          <Route path='/landing' element={<Landing />} />
                         <Route path="/pwfind" element={<PWFind />} />
                         <Route path="/mypage" element={<MyPageLayout />}>
                             <Route index element={<Mypage />} />
