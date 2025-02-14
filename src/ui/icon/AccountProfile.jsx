@@ -1,6 +1,6 @@
 const AccountProfile = () => {
     return (
-        <svg width="30" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="30" height="19" viewBox="0 0 27 19" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle
                 cx="4"
                 cy="4"

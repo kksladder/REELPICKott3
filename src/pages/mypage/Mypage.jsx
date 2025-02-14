@@ -1,9 +1,8 @@
-import Account from '../../components/account/Account';
+import Account from "../../components/account/Account";
 
-import './style';
 const Mypage = () => {
     // 1. localStorage에서 'selectedMembership' 값을 가져옵니다.
-    const selectedMembershipString = localStorage.getItem('selectedMembership');
+    const selectedMembershipString = localStorage.getItem("selectedMembership");
 
     // 2. JSON으로 파싱하여 객체로 변환합니다.
     const selectedMembership = selectedMembershipString ? JSON.parse(selectedMembershipString) : null;
@@ -21,7 +20,7 @@ const Mypage = () => {
     return (
         <Wrap>
             <Account />
-            <LeftAccount></LeftAccount>
+            <LeftAccount />
         </Wrap>
     );
 };

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 // 초기 상태 정의
 const initialState = {
@@ -6,13 +6,13 @@ const initialState = {
     authed: false,
     user: null,
     isSignUpComplete: false,
-    selectedMembership: '',
+    selectedMemberships: "",
 };
 
 let no = initialState.joinData.length;
 
 export const authSlice = createSlice({
-    name: 'auth',
+    name: "auth",
     initialState,
     reducers: {
         // 로그인 로직
@@ -23,36 +23,36 @@ export const authSlice = createSlice({
             const cleanedEmail = id_email.toLowerCase().trim(); // 대소문자 구분 없이 비교
 
             // localStorage에서 해당 id_email로 저장된 사용자 정보 가져오기
-            const storedUser = localStorage.getItem('user_' + cleanedEmail); // 'user_'를 기준으로 가져옵니다.
+            const storedUser = localStorage.getItem("user_" + cleanedEmail); // 'user_'를 기준으로 가져옵니다.
 
             if (storedUser) {
                 const user = JSON.parse(storedUser);
 
                 // 비밀번호가 맞는지 체크
                 if (user.password === password) {
-                    console.log('로그인 성공', user);
+                    console.log("로그인 성공", user);
                     state.authed = true;
                     state.user = user;
 
                     // 로그인 성공 시, localStorage에 상태 저장
-                    localStorage.setItem('authed', 'true');
-                    localStorage.setItem('user__로그인정보', JSON.stringify(user)); // 로그인 성공한 사용자 정보 저장
+                    localStorage.setItem("authed", "true");
+                    localStorage.setItem("user__로그인정보", JSON.stringify(user)); // 로그인 성공한 사용자 정보 저장
                 } else {
-                    console.log('비밀번호가 틀립니다');
+                    console.log("비밀번호가 틀립니다");
                     state.authed = false;
-                    localStorage.setItem('authed', 'false');
+                    localStorage.setItem("authed", "false");
                 }
             } else {
-                console.log('사용자를 찾을 수 없습니다');
+                console.log("사용자를 찾을 수 없습니다");
                 state.authed = false;
-                localStorage.setItem('authed', 'false');
+                localStorage.setItem("authed", "false");
             }
         },
         // 로그아웃 로직
         logout: (state) => {
             state.authed = false;
             state.user = null;
-            localStorage.removeItem('authed');
+            localStorage.removeItem("authed");
 
             /* localStorage.removeItem('authed');
             localStorage.removeItem('user'); // 로컬스토리지에서 'user' 삭제
@@ -68,7 +68,7 @@ export const authSlice = createSlice({
             state.joinData.push({ id: no++, ...user });
 
             // 증가된 ID를 localStorage에 저장
-            localStorage.setItem('userIdCounter', no); // 새로 증가된 ID 저장
+            localStorage.setItem("userIdCounter", no); // 새로 증가된 ID 저장
 
             // 회원 정보 객체를 생성하여 localStorage에 저장
             const member = {
@@ -78,7 +78,7 @@ export const authSlice = createSlice({
                 username: user.username,
                 tel: user.telFirst + user.telSecond + user.telThird,
             };
-            localStorage.setItem('user_' + user.id_email, JSON.stringify(member)); // 'user_'를 키로 사용하여 저장
+            localStorage.setItem("user_" + user.id_email, JSON.stringify(member)); // 'user_'를 키로 사용하여 저장
         },
 
         // 회원가입 완료 처리
@@ -99,15 +99,31 @@ export const authSlice = createSlice({
 
         // 로그인 상태 복원 액션
         restoreAuthState: (state) => {
-            const savedAuthed = localStorage.getItem('authed') === 'true';
+            const savedAuthed = localStorage.getItem("authed") === "true";
             if (savedAuthed) {
-                const savedUser = JSON.parse(localStorage.getItem('user'));
+                const savedUser = JSON.parse(localStorage.getItem("user"));
                 state.authed = true;
                 state.user = savedUser;
             }
         },
         setSelectedMembership: (state, action) => {
-            state.selectedMembership = action.payload; // 선택된 멤버십을 상태로 설정
+            state.selectedMemberships = action.payload; // 선택된 멤버십을 상태로 설정
+            const membershipInfo = {
+                type: selectedMembership,
+                price:
+                    selectedMembership === "AD_standard"
+                        ? "5,500"
+                        : selectedMembership === "standard"
+                        ? "9,500"
+                        : "13,900",
+                quality: selectedMembership === "premium" ? "4K + HDR" : "1080p",
+                devices: selectedMembership === "premium" ? "4" : "2",
+                profiles: selectedMembership === "AD_standard" ? "2" : selectedMembership === "standard" ? "4" : "6",
+                downloads: selectedMembership === "premium" ? "400" : "200",
+                hasAds: selectedMembership === "AD_standard",
+                date: new Date().toISOString(),
+            };
+            localStorage.setItem("selectedMembership", JSON.stringify(membershipInfo));
         },
     },
 });

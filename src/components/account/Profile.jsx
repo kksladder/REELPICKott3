@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import ProfileImage from '../../ui/icon/ProfileImage';
-import { useSelector } from 'react-redux';
-import { MdKeyboardArrowDown } from 'react-icons/md';
-import { h1 } from 'framer-motion/client';
-import ProfileModal from './ProfileModal';
-import ProfileEdit from './ProfileEdit';
-import { useNavigate } from 'react-router';
+import React, { useState } from "react";
+import styled from "styled-components";
+import ProfileImage from "../../ui/icon/ProfileImage";
+import { useSelector } from "react-redux";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { h1 } from "framer-motion/client";
+import ProfileModal from "./ProfileModal";
+import ProfileEdit from "./ProfileEdit";
+import { useNavigate } from "react-router";
 
 const Container = styled.div`
     position: relative;
@@ -14,7 +14,7 @@ const Container = styled.div`
 
     color: white;
     .edit {
-        padding: 1.5rem;
+        padding: 3rem;
         background: var(--black-black-b-500-notice-hover-bg, #3b3b3b);
         /* 프로필 수정 inner */
         box-shadow: 0px 7px 10.7px 0px rgba(0, 0, 0, 0.38) inset;
@@ -38,8 +38,8 @@ const ProfileInfo = styled.div`
 `;
 
 const ProfileImageInner = styled.div`
-    width: ${(props) => props.size || '2rem'};
-    height: ${(props) => props.size || '2rem'};
+    width: ${(props) => props.size || "2rem"};
+    height: ${(props) => props.size || "2rem"};
     border-radius: 50%;
     overflow: hidden;
     background-color: #3b82f6;
@@ -93,11 +93,11 @@ const Title = styled.h2`
 
 const EditSection = styled.div`
     display: flex;
-    gap: 2rem;
-    margin: 0 auto;
-    max-width: 1000px;
+    gap: 3rem;
+    align-items: center;
+
     padding: 0 20px;
-    margin-bottom: 18px;
+    margin-bottom: 101px;
 `;
 
 const InputWrapper = styled.div`
@@ -123,14 +123,12 @@ const InputWrapper = styled.div`
 `;
 
 const Input = styled.input`
-    width: 100%;
-
+    width: 98%;
     border: 1px solid #3f3f46;
     border-radius: 0.25rem;
     padding: 16px;
     color: white;
     font-size: 0.875rem;
-    margin-top: 7px;
     &::placeholder {
         color: #949494;
     }
@@ -150,30 +148,37 @@ const ButtonGroup = styled.div`
 
 const Button = styled.button`
     width: 100%/2;
-    padding: 17px 0px 18px 0px;
-    font-size: 24px;
+    height: 64px;
+    /*  padding: 17px 0px 18px 0px; */
+    font-size: 15px;
     border-radius: 5px;
     border-radius: 0.25rem;
     transition: background-color 0.2s;
-    color: ${(props) => (props.secondary ? '#9CA3AF' : 'white')};
-    background: ${(props) => (props.secondary ? '#3B3B3B' : '#757575')};
+    color: ${(props) => (props.secondary ? "#9CA3AF" : "white")};
+    background: ${(props) => (props.secondary ? "#3B3B3B" : "#757575")};
     border: 1px solid var(--black-black-b-100-disabled, #757575);
 `;
 const Button2 = styled.button`
     width: 100%;
-    padding: 17px 0px 18px 0px;
-    font-size: 24px;
+    height: 64px;
+    font-size: 15px;
     border-radius: 5px;
     border-radius: 0.25rem;
     transition: background-color 0.2s;
     color: var(--main-orange-normal-default, #f59c04);
-    background: ${(props) => (props.secondary ? '#3B3B3B' : '#757575')};
+    background: ${(props) => (props.secondary ? "#3B3B3B" : "#757575")};
     border: 1px solid var(--black-black-b-100-disabled, #757575);
+
+    &:hover {
+        background: var(--primary-40);
+        color: var(--white);
+        font-weight: bold;
+    }
 `;
 const Button3 = styled.button`
     width: 100%;
-    padding: 17px 0px 18px 0px;
-    font-size: 24px;
+    height: 64px;
+    font-size: 15px;
     border-radius: 5px;
     border-radius: 0.25rem;
     margin-top: 35px;
@@ -181,14 +186,19 @@ const Button3 = styled.button`
     color: var(--main-orange-normal-default, #f59c04);
     background: #141414;
     border: 1px solid var(--black-black-b-100-disabled, #757575);
+    &:hover {
+        background: var(--primary-40);
+        color: var(--white);
+        font-weight: bold;
+    }
 `;
 
 const ActionButton = styled.div`
     background-color: #27272a;
     padding: 0.75rem;
     border-radius: 0.25rem;
-    margin-bottom: ${(props) => (props.mb ? '1rem' : '0')};
-    color: ${(props) => (props.secondary ? '#9CA3AF' : 'white')};
+    margin-bottom: ${(props) => (props.mb ? "1rem" : "0")};
+    color: ${(props) => (props.secondary ? "#9CA3AF" : "white")};
 `;
 
 export const H1 = styled.h1`
@@ -207,16 +217,16 @@ export const Stroke = styled.div`
     margin: 33px 0;
 `;
 const EditContainer = styled.div`
-    height: ${(props) => (props.isOpen ? 'auto' : '0')};
+    height: ${(props) => (props.isOpen ? "auto" : "0")};
     overflow: hidden;
     transition: height 0.3s ease-in-out;
-    opacity: ${(props) => (props.isOpen ? '1' : '0')};
-    visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
     transition: all 0.3s ease-in-out;
 `;
 
 const RotateIcon = styled(MdKeyboardArrowDown)`
-    transform: ${(props) => (props.isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+    transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
     transition: transform 0.3s ease-in-out;
 `;
 
@@ -227,14 +237,30 @@ const ProfileSection = styled.div`
     span {
         display: block;
         margin-top: 10px;
-        color: #949494;
-        font-size: 1rem;
+        color: var(--white);
+        font-size: 19px;
+        font-weight: 400;
     }
 `;
 
 const InputSection = styled.div`
     flex: 1;
+    display: flex;
+    gap: 22px;
+
     padding-top: 20px;
+    width: 100%;
+    align-items: center;
+    label {
+        font-weight: 400;
+        margin-bottom: 24px;
+        font-size: 19px;
+    }
+    .inputWrap {
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+    }
 `;
 const Profile = () => {
     const { user } = useSelector((state) => state.authR);
@@ -252,7 +278,7 @@ const Profile = () => {
     const navigate = useNavigate();
 
     const handleProfileAddClick = () => {
-        navigate('/mypage/profileadd');
+        navigate("/mypage/profileadd");
     };
 
     return (
@@ -268,7 +294,7 @@ const Profile = () => {
                         <HeaderText>{user && user.username}</HeaderText>
                     </ProfileInfo>
                     <HeaderRight>
-                        <span onClick={toggleProfile} style={{ cursor: 'pointer' }}>
+                        <span onClick={toggleProfile} style={{ cursor: "pointer" }}>
                             내 프로필
                             <RotateIcon isOpen={isOpen} />
                         </span>
@@ -283,17 +309,17 @@ const Profile = () => {
                                 <ProfileImageInner2>
                                     <img src="/images/default_profile.png" alt="이미지" />
                                 </ProfileImageInner2>
-                                <span onClick={handleProfileImageClick} style={{ cursor: 'pointer' }}>
+                                <span onClick={handleProfileImageClick} style={{ cursor: "pointer" }}>
                                     프로필 수정
                                 </span>
                             </ProfileSection>
 
                             <InputSection>
-                                <label htmlFor="">
-                                    닉네임
+                                <label>닉네임</label>
+                                <div className="inputWrap">
                                     <Input placeholder={user && user.username} />
-                                </label>
-                                <HelpText>2자 이상 10자 이내의 한글, 영문, 숫자 입력 가능합니다.</HelpText>
+                                    <HelpText>2자 이상 10자 이내의 한글, 영문, 숫자 입력 가능합니다.</HelpText>
+                                </div>
                             </InputSection>
                         </EditSection>
 
@@ -302,7 +328,7 @@ const Profile = () => {
                             <Button secondary>취소</Button>
                         </ButtonGroup>
                         <Stroke />
-                        <div style={{ marginTop: '1.5rem' }}>
+                        <div style={{ marginTop: "1.5rem" }}>
                             <Button2 secondary>프로필 삭제</Button2>
                         </div>
                     </div>
