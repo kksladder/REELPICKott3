@@ -45,6 +45,7 @@ function App() {
                         <Route path="/membership" element={<Membership />} />
                         <Route path="/reelpick" element={<Reelpick />} />
                         <Route path="/basket" element={<Basket />} />
+                        <Route path="/landing" element={<Landing />} />
                         <Route path="/drama" element={<DramaPage />} />
                           <Route path='/movie' element={<MoviePage />} />
                         <Route path="/idfind" element={<IdFind />} />
