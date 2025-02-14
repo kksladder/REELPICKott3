@@ -1,7 +1,6 @@
-import React from 'react';
-import { IoIosArrowBack } from 'react-icons/io';
-import { useSelector } from 'react-redux';
-import styled from 'styled-components';
+import { IoIosArrowBack } from "react-icons/io";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
 
 export const H1 = styled.h1`
     font-size: 40px;

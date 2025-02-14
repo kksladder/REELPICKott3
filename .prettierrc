@@ -1,0 +1,31 @@
+{
+    "scripts": {
+        "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,scss,json,md}\""
+    },
+
+    "singleQuote": false,
+    "semi": true,
+    "useTabs": false,
+    "tabWidth": 4,
+    "trailingComma": "es5",
+    "printWidth": 120,
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "endOfLine": "lf",
+    "jsxSingleQuote": false,
+    "jsxBracketSameLine": false,
+    "overrides": [
+        {
+            "files": ["*.html", "*.css"],
+            "options": {
+                "parser": "html"
+            }
+        },
+        {
+            "files": "*.css",
+            "options": {
+                "parser": "css"
+            }
+        }
+    ]
+}

@@ -1,5 +1,3 @@
-import React from 'react';
-
 const AccountMembership = () => {
     return (
         <svg width="30" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
