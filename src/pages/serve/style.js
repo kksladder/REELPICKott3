@@ -31,6 +31,7 @@ export const MovieVideo = styled.section`
     }
 
     .video-item {
+        display: flex;
         position: absolute;
         bottom: 0%;
         left: 50%;
@@ -40,6 +41,68 @@ export const MovieVideo = styled.section`
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
+       .desc {
+        flex: 1;
+        margin-left: 35px;
+        max-width: 1282px;
+        font-size: var(--font-content-Small);
+        font-weight: var(--font-weight-Regular);
+        line-height: 34px;
+
+        p {
+            overflow: hidden;
+            max-height: ${({ expanded }) => (expanded ? "1000px" : "68px")}; /* 기본 2줄 높이, 확장 시 충분히 큰 값 */
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        .desc_add {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            user-select: none;
+        }
+    }
+
+    .playGroup {
+        display: flex;
+        gap: 16px;
+    }
+
+    .playItem {
+        display: flex;
+        gap: 22px;
+        margin-left: 45px;
+    }
+
+    .tag {
+        display: flex;
+        gap: 9px;
+        margin-top: 10px;
+
+        .tag_age {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 3px;
+            font-weight: var(--font-weight-ExtraBold);
+            width: 28px;
+            height: 28px;
+            background-color: #D92B35;
+        }
+
+        .tag_year,
+        .tag_genre,
+        .tag_time {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 3px;
+            padding: 4.5px 6.5px;
+            border: 1px solid var(--secondary-60);
+            color: var(--secondary-60);
+        }
+    }
     }
 
     .playGroup {
@@ -62,6 +125,11 @@ export const MovieVideo = styled.section`
             font-size: var(--font-content-Small);
             font-weight: var(--font-weight-Regular);
             line-height: 34px;
+        }
+        .desc_add{
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
     }
 `;
