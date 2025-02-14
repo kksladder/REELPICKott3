@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { h1 } from 'framer-motion/client';
 import ProfileModal from './ProfileModal';
+import ProfileEdit from './ProfileEdit';
+import { useNavigate } from 'react-router';
 
 const Container = styled.div`
     position: relative;
@@ -16,6 +18,7 @@ const Container = styled.div`
         background: var(--black-black-b-500-notice-hover-bg, #3b3b3b);
         /* 프로필 수정 inner */
         box-shadow: 0px 7px 10.7px 0px rgba(0, 0, 0, 0.38) inset;
+        border-radius: 0px 0px 5px 5px;
     }
 `;
 
@@ -246,6 +249,11 @@ const Profile = () => {
     const handleProfileImageClick = () => {
         setIsImageModalOpen(true);
     };
+    const navigate = useNavigate();
+
+    const handleProfileAddClick = () => {
+        navigate('/mypage/profileadd');
+    };
 
     return (
         <>
@@ -270,7 +278,7 @@ const Profile = () => {
                 <EditContainer isOpen={isOpen}>
                     <div className="edit">
                         <Title>프로필 수정</Title>
-                        <EditSection> 
+                        <EditSection>
                             <ProfileSection>
                                 <ProfileImageInner2>
                                     <img src="/images/default_profile.png" alt="이미지" />
@@ -295,12 +303,16 @@ const Profile = () => {
                         </ButtonGroup>
                         <Stroke />
                         <div style={{ marginTop: '1.5rem' }}>
-                            <Button2 secondary>프로필삭제</Button2>
+                            <Button2 secondary>프로필 삭제</Button2>
                         </div>
                     </div>
                 </EditContainer>
-                <Button3 secondary>계정추가하기</Button3>
+                <Button3 secondary onClick={handleProfileAddClick}>
+                    프로필 추가
+                </Button3>
             </Container>
+
+            <ProfileEdit />
             <ProfileModal isOpen={isImageModalOpen} onClose={() => setIsImageModalOpen(false)} />
         </>
     );

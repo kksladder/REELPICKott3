@@ -12,13 +12,17 @@ import PWFind from './components/PWFind';
 import Basket from './pages/basket';
 import Landing from './pages/landing';
 import SearchPage from './pages/search';
+import Landing from './pages/landing';
 import Reelpick from './pages/reelpick';
+import MoviePage from './pages/movie';
 import MyPageLayout from './common/mypageLayout/mypageLayout';
 import AccountNull from './components/account/AccountNull';
 import Profile from './components/account/Profile';
 import ViewingHistory from './components/account/ViewingHistory';
 import ProfileEdit from './components/account/ProfileEdit';
 import ProfileModal from './components/account/ProfileModal';
+import Mypage from './pages/mypage/Mypage';
+import ProfileAdd from './components/account/ProfileAdd';
 
 function App() {
     return (
@@ -26,32 +30,35 @@ function App() {
             <BrowserRouter>
                 <GlobalStyle />
                 <Routes>
-                    <Route path='/' element={<Layout />}>
+                    <Route path="/" element={<Layout />}>
                         <Route index element={<Main />} />
-                        <Route path='/login' element={<Login />} />
-                        <Route path='/signUp' element={<SignUpPage />} />
-                        <Route path='/serve' element={<ServePage />} />
-                        <Route path='/membership' element={<Membership />} />
-                        <Route path='/drama' element={<DramaPage />} />
-                        <Route path='/idfind' element={<IdFind />} />
-                        <Route path='/pwfind' element={<PWFind />} />
-                        <Route path='/search' element={<SearchPage />} />
-                        <Route path='/login' element={<Login />} />
-                        <Route path='/signUp' element={<SignUpPage />} />
-                        <Route path='/serve' element={<ServePage />} />
-                        <Route path='/membership' element={<Membership />} />
-                        <Route path='/reelpick' element={<Reelpick />} />
-                        <Route path='/basket' element={<Basket />} />
-                        <Route path='/drama' element={<DramaPage />} />
-                        <Route path='/idfind' element={<IdFind />} />
-                        <Route path='/pwfind' element={<PWFind />} />
-                        <Route path='/landing' element={<Landing />} />
-                        <Route path='/mypage' element={<MyPageLayout />}>
-                            <Route path='accountnull' element={<AccountNull />} />
-                            <Route path='profile' element={<Profile />} />/
-                            <Route path='profileedit' element={<ProfileEdit />} />
-                            <Route path='viewing' element={<ViewingHistory />} />
-                            <Route path='profilemodal' element={<ProfileModal />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signUp" element={<SignUpPage />} />
+                        <Route path="/serve" element={<ServePage />} />
+                        <Route path="/membership" element={<Membership />} />
+                        <Route path="/drama" element={<DramaPage />} />
+                        <Route path="/idfind" element={<IdFind />} />
+                        <Route path="/pwfind" element={<PWFind />} />
+                        <Route path="/search" element={<SearchPage />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signUp" element={<SignUpPage />} />
+                        <Route path="/serve" element={<ServePage />} />
+                        <Route path="/membership" element={<Membership />} />
+                        <Route path="/reelpick" element={<Reelpick />} />
+                        <Route path="/basket" element={<Basket />} />
+                        <Route path="/drama" element={<DramaPage />} />
+                          <Route path='/movie' element={<MoviePage />} />
+                        <Route path="/idfind" element={<IdFind />} />
+                          <Route path='/landing' element={<Landing />} />
+                        <Route path="/pwfind" element={<PWFind />} />
+                        <Route path="/mypage" element={<MyPageLayout />}>
+                            <Route index element={<Mypage />} />
+                            <Route path="accountnull" element={<AccountNull />} />
+                            <Route path="profile" element={<Profile />} />/
+                            <Route path="profileedit" element={<ProfileEdit />} />
+                            <Route path="viewing" element={<ViewingHistory />} />
+                            <Route path="profilemodal" element={<ProfileModal />} />
+                            <Route path="profileAdd" element={<ProfileAdd />} />
                         </Route>
                     </Route>
                 </Routes>
