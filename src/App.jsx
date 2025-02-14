@@ -1,28 +1,27 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Layout from './common/Layout';
-import Main from './pages/main';
-import GlobalStyle from './styles/GlobalStyle';
-import Login from './pages/login/Login';
-import SignUpPage from './pages/signUp';
-import ServePage from './pages/serve';
-import Membership from './components/membership/Membership';
-import DramaPage from './pages/drama';
-import IdFind from './components/IdFind';
-import PWFind from './components/PWFind';
-import Basket from './pages/basket';
-import Landing from './pages/landing';
-import SearchPage from './pages/search';
-// import Landing from './pages/landing';
-import Reelpick from './pages/reelpick';
-import MoviePage from './pages/movie';
-import MyPageLayout from './common/mypageLayout/mypageLayout';
-import AccountNull from './components/account/AccountNull';
-import Profile from './components/account/Profile';
-import ViewingHistory from './components/account/ViewingHistory';
-import ProfileEdit from './components/account/ProfileEdit';
-import ProfileModal from './components/account/ProfileModal';
-import Mypage from './pages/mypage/Mypage';
-import ProfileAdd from './components/account/ProfileAdd';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Layout from "./common/Layout";
+import Main from "./pages/main";
+import GlobalStyle from "./styles/GlobalStyle";
+import Login from "./pages/login/Login";
+import SignUpPage from "./pages/signUp";
+import ServePage from "./pages/serve";
+import Membership from "./components/membership/Membership";
+import DramaPage from "./pages/drama";
+import IdFind from "./components/IdFind";
+import PWFind from "./components/PWFind";
+import Basket from "./pages/basket";
+import Landing from "./pages/landing";
+import SearchPage from "./pages/search";
+import Reelpick from "./pages/reelpick";
+import MoviePage from "./pages/movie";
+import MyPageLayout from "./common/mypageLayout/mypageLayout";
+import AccountNull from "./components/account/AccountNull";
+import Profile from "./components/account/Profile";
+import ViewingHistory from "./components/account/ViewingHistory";
+import ProfileEdit from "./components/account/ProfileEdit";
+import ProfileModal from "./components/account/ProfileModal";
+import Mypage from "./pages/mypage/Mypage";
+import ProfileAdd from "./components/account/ProfileAdd";
 
 function App() {
     return (
@@ -46,12 +45,12 @@ function App() {
                         <Route path="/membership" element={<Membership />} />
                         <Route path="/reelpick" element={<Reelpick />} />
                         <Route path="/basket" element={<Basket />} />
-                        {/* <Route path="/landing" element={<Landing />} /> */}
                         <Route path="/drama" element={<DramaPage />} />
                         <Route path="/movie" element={<MoviePage />} />
                         <Route path="/idfind" element={<IdFind />} />
                         <Route path="/landing" element={<Landing />} />
                         <Route path="/pwfind" element={<PWFind />} />
+                        {/* 조심 */}
                         <Route path="/mypage" element={<MyPageLayout />}>
                             <Route index element={<Mypage />} />
                             <Route path="accountnull" element={<AccountNull />} />

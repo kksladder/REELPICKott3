@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 // MainTitle 컴포넌트 스타일 정의
 
@@ -36,11 +36,11 @@ export const MainTitle = styled.div`
         text-align: center;
         font-size: 5rem;
         font-weight: 700;
-        line-height: 167px;
+        line-height: 135px;
         display: block;
         white-space: nowrap;
-        margin-bottom: 20px; // 두 strong 태그 사이의 간격 조정
-        position: relative; // 추가적인 위치 조정이 필요한 경우
+        margin-bottom: 20px;
+        position: relative;
     }
 `;
 
@@ -53,7 +53,7 @@ export const CenteredImageWrapper = styled.div`
 
     // 이미지 위에 검은색 반투명 오버레이를 추가
     &::before {
-        content: ''; // 가상 요소의 내용은 빈 문자열
+        content: ""; // 가상 요소의 내용은 빈 문자열
         position: absolute;
         top: 0;
         left: 0;

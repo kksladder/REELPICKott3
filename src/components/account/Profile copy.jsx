@@ -1,6 +1,5 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import styled from 'styled-components';
+import { useSelector } from "react-redux";
+import styled from "styled-components";
 export const H1 = styled.h1`
     font-size: 40px;
     font-weight: 700;
@@ -26,7 +25,6 @@ const Profile = () => {
                             <p>2자 이상 10자 이내의 한글, 영문, 숫자 입력 가능합니다. </p>
                             <button type="submit">저장</button>
                             <button>취소</button>
-                            
                         </form>
                     </div>
                 </li>

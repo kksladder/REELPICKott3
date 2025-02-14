@@ -12,6 +12,7 @@ import {
     WelcomeText,
     Wrap,
 } from './style';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../../store/modules/authSlice';
 import { InputFillDe } from '../../ui/Button/InputButton';

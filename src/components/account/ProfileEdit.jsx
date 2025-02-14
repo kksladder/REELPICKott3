@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import ProfileImage from '../../ui/icon/ProfileImage';
-import { useSelector } from 'react-redux';
-import { MdKeyboardArrowDown } from 'react-icons/md';
-import { h1 } from 'framer-motion/client';
-import ProfileModal from './ProfileModal';
+import { useState } from "react";
+import styled from "styled-components";
+import ProfileImage from "../../ui/icon/ProfileImage";
+import { useSelector } from "react-redux";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { h1 } from "framer-motion/client";
+import ProfileModal from "./ProfileModal";
 
 const Container = styled.div`
     position: relative;
@@ -34,8 +34,8 @@ const ProfileInfo = styled.div`
 `;
 
 const ProfileImageInner = styled.div`
-    width: ${(props) => props.size || '2rem'};
-    height: ${(props) => props.size || '2rem'};
+    width: ${(props) => props.size || "2rem"};
+    height: ${(props) => props.size || "2rem"};
     border-radius: 50%;
     overflow: hidden;
     background-color: #3b82f6;
@@ -125,8 +125,8 @@ const Button = styled.button`
     border-radius: 5px;
     border-radius: 0.25rem;
     transition: background-color 0.2s;
-    color: ${(props) => (props.secondary ? '#9CA3AF' : 'white')};
-    background: ${(props) => (props.secondary ? '#3B3B3B' : '#F59C04')};
+    color: ${(props) => (props.secondary ? "#9CA3AF" : "white")};
+    background: ${(props) => (props.secondary ? "#3B3B3B" : "#F59C04")};
     border: 1px solid var(--black-black-b-100-disabled, #757575);
 `;
 const Button2 = styled.button`
@@ -137,7 +137,7 @@ const Button2 = styled.button`
     border-radius: 0.25rem;
     transition: background-color 0.2s;
     color: var(--main-orange-normal-default, #f59c04);
-    background: ${(props) => (props.secondary ? '#3B3B3B' : '#757575')};
+    background: ${(props) => (props.secondary ? "#3B3B3B" : "#757575")};
     border: 1px solid var(--black-black-b-100-disabled, #757575);
 `;
 
@@ -145,8 +145,8 @@ const ActionButton = styled.div`
     background-color: #27272a;
     padding: 0.75rem;
     border-radius: 0.25rem;
-    margin-bottom: ${(props) => (props.mb ? '1rem' : '0')};
-    color: ${(props) => (props.secondary ? '#9CA3AF' : 'white')};
+    margin-bottom: ${(props) => (props.mb ? "1rem" : "0")};
+    color: ${(props) => (props.secondary ? "#9CA3AF" : "white")};
 `;
 
 export const H1 = styled.h1`
@@ -165,16 +165,16 @@ export const Stroke = styled.div`
     margin: 33px 0;
 `;
 const EditContainer = styled.div`
-    height: ${(props) => (props.isOpen ? 'auto' : '0')};
+    height: ${(props) => (props.isOpen ? "auto" : "0")};
     overflow: hidden;
     transition: height 0.3s ease-in-out;
-    opacity: ${(props) => (props.isOpen ? '1' : '0')};
-    visibility: ${(props) => (props.isOpen ? 'visible' : 'hidden')};
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
     transition: all 0.3s ease-in-out;
 `;
 
 const RotateIcon = styled(MdKeyboardArrowDown)`
-    transform: ${(props) => (props.isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+    transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
     transition: transform 0.3s ease-in-out;
 `;
 
@@ -268,7 +268,7 @@ const ProfileEdit = () => {
                             <Button secondary>취소</Button>
                         </ButtonGroup>
                         <Stroke />
-                        <div style={{ marginTop: '1.5rem' }}>
+                        <div style={{ marginTop: "1.5rem" }}>
                             <Button2 secondary>프로필삭제</Button2>
                         </div>
                     </div>
@@ -318,7 +318,7 @@ const ProfileEdit = () => {
                             <Button secondary>취소</Button>
                         </ButtonGroup>
                         <Stroke />
-                        <div style={{ marginTop: '1.5rem' }}>
+                        <div style={{ marginTop: "1.5rem" }}>
                             <Button2 secondary>프로필삭제</Button2>
                         </div>
                     </div>
@@ -365,7 +365,7 @@ const ProfileEdit = () => {
                             <Button secondary>취소</Button>
                         </ButtonGroup>
                         <Stroke />
-                        <div style={{ marginTop: '1.5rem' }}>
+                        <div style={{ marginTop: "1.5rem" }}>
                             <Button2 secondary>프로필삭제</Button2>
                         </div>
                     </div>
