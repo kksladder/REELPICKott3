@@ -53,6 +53,12 @@ const HeaderText = styled.span`
     svg {
         margin-right: 15px;
     }
+    p {
+        margin-top: 7px;
+        margin-left: 42px;
+        font-size: 14px;
+        color: #949494;
+    }
 `;
 
 const HeaderRight = styled.div`
@@ -107,8 +113,8 @@ const HelpText = styled.p`
 `;
 
 const ButtonGroup = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
 `;
 
@@ -120,7 +126,7 @@ const Button = styled.button`
     border-radius: 0.25rem;
     transition: background-color 0.2s;
     color: ${(props) => (props.secondary ? '#9CA3AF' : 'white')};
-    background: ${(props) => (props.secondary ? '#3B3B3B' : '#757575')};
+    background: ${(props) => (props.secondary ? '#3B3B3B' : '#F59C04')};
     border: 1px solid var(--black-black-b-100-disabled, #757575);
 `;
 const Button2 = styled.button`
@@ -188,6 +194,11 @@ const InputSection = styled.div`
     flex: 1;
     padding-top: 20px;
 `;
+
+const MainTitle = styled.p`
+    margin-top: 60px;
+    margin-bottom: 20px;
+`;
 const ProfileEdit = () => {
     const { user } = useSelector((state) => state.authR);
     /*   const [isOpen, setIsOpen] = useState(false); */
@@ -208,7 +219,7 @@ const ProfileEdit = () => {
 
     return (
         <>
-            <p>회원정보 수정</p>
+            <MainTitle>회원정보 수정</MainTitle>
             <Container>
                 <Header>
                     <ProfileInfo>
@@ -246,7 +257,7 @@ const ProfileEdit = () => {
                         <Title>비밀번호 변경</Title>
                         <EditSection>
                             <InputSection>
-                                <Input placeholder="기존 비밀번호" />
+                                <Input placeholder="기존 비밀번호" /> <span>비밀번호 찾기</span>
                                 <Input placeholder="새 비밀번호" />
                                 <Input placeholder="비밀번호 확인" />
                             </InputSection>
@@ -282,6 +293,7 @@ const ProfileEdit = () => {
                                 />
                             </svg>
                             이메일
+                            <p>{user && user.id_email}</p>
                         </HeaderText>
                     </ProfileInfo>
                     <HeaderRight>
@@ -295,6 +307,7 @@ const ProfileEdit = () => {
                         <EditSection>
                             <InputSection>
                                 <Input placeholder={user && user.password} />
+
                                 <Input placeholder="새 비밀번호" />
                                 <Input placeholder="비밀번호 확인" />
                             </InputSection>
@@ -328,6 +341,7 @@ const ProfileEdit = () => {
                                 />
                             </svg>
                             휴대폰
+                            <p>{user && user.tel}</p>
                         </HeaderText>
                     </ProfileInfo>
                     <HeaderRight>
