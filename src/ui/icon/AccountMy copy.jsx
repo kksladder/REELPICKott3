@@ -1,5 +1,3 @@
-import React from 'react';
-
 const AccountMy = () => {
     return (
         <svg width="30" height="29" viewBox="0 0 30 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -7,10 +5,10 @@ const AccountMy = () => {
                 <div
                     xmlns="http://www.w3.org/1999/xhtml"
                     style={{
-                        backdropFilter: 'blur(1px)',
-                        clipPath: 'url(#bgblur_0_2060_2842_clip_path)',
-                        height: '100%',
-                        width: '100%',
+                        backdropFilter: "blur(1px)",
+                        clipPath: "url(#bgblur_0_2060_2842_clip_path)",
+                        height: "100%",
+                        width: "100%",
                     }}
                 ></div>
             </foreignObject>

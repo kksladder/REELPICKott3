@@ -25,6 +25,8 @@ import ProfileAdd from "./components/account/ProfileAdd";
 import AccountMembership from "./components/account/AccountMembership";
 import AccountCS from "./components/account/AccountCS";
 
+
+
 function App() {
     return (
         <>
@@ -47,12 +49,12 @@ function App() {
                         <Route path="/membership" element={<Membership />} />
                         <Route path="/reelpick" element={<Reelpick />} />
                         <Route path="/basket" element={<Basket />} />
-                        <Route path="/landing" element={<Landing />} />
                         <Route path="/drama" element={<DramaPage />} />
                         <Route path="/movie" element={<MoviePage />} />
                         <Route path="/idfind" element={<IdFind />} />
-
+                        <Route path="/landing" element={<Landing />} />
                         <Route path="/pwfind" element={<PWFind />} />
+                        {/* 조심 */}
                         <Route path="/mypage" element={<MyPageLayout />}>
                             <Route index element={<Mypage />} />
                             <Route path="accountnull" element={<AccountNull />} />
