@@ -1,15 +1,11 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import ProfileImage from '../../ui/icon/ProfileImage';
-import { useDispatch, useSelector } from 'react-redux';
-import { authActions } from '../../store/modules/authSlice';
-import AccountMy from '../../ui/icon/AccountMy';
-import AccountProfile from '../../ui/icon/AccountProfile';
-import AccountMembership from '../../ui/icon/AccountMembership';
-import AccountCs from '../../ui/icon/AccountCs';
-import { SlArrowUp } from 'react-icons/sl';
-import Logout from '../../ui/icon/Logout';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import ProfileImage from "../../ui/icon/ProfileImage";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../store/modules/authSlice";
+import { IoIosArrowUp } from "react-icons/io";
+
 const MenuArea = styled.div`
     margin-top: 87px;
     width: 300px;
@@ -22,6 +18,7 @@ const MainMenu = styled.ul`
     list-style-type: none;
 
     .profile {
+        margin-left: 12px;
         margin-bottom: 47px;
         div {
             margin-bottom: 18px;
@@ -33,8 +30,8 @@ const MainMenu = styled.ul`
 `;
 
 const MenuItem = styled.li`
-    width: 300px;
-    padding: 8px 0;
+    width: 280px;
+    padding: 1px 0;
     &:hover {
         color: var(--primary-40);
         border-radius: 5px;
@@ -62,22 +59,20 @@ const MenuLink = styled(Link)`
     align-items: center;
     height: 47px;
     div {
-        .account-my-svg {
-            // 첫 번째 'type'이 svg인 요소를 선택
-            margin-left: 2.8px;
-        }
-        svg {
-            margin-right: 8px;
-        }
+        display: flex;
+        align-items: center;
+        gap: 15px;
     }
 `;
 
 const SubMenu = styled.ul`
-    display: ${({ show }) => (show ? 'block' : 'none')};
+    display: ${({ show }) => (show ? "block" : "none")};
     list-style-type: none;
     padding: 0;
     margin: 0;
-    height: 150px;
+    height: 137px;
+    border-radius: 0px 0px 5px 5px;
+    background: var(--black-black-b-500-notice-hover-bg, #3b3b3b);
 `;
 
 const SubMenuItem = styled.li`
@@ -86,15 +81,16 @@ const SubMenuItem = styled.li`
     padding: 8px 15px;
     display: flex;
     justify-content: flex-end;
-    background: var(--black-black-b-500-notice-hover-bg, #3b3b3b);
-    &:hover {
+
+    &:last-child {
+        border-bottom: none;
     }
 `;
 
 const SubMenuLink = styled(Link)`
     padding: 8px 0;
     &:hover {
-        font-weight: bold;
+        color: white;
     }
 `;
 
@@ -106,9 +102,9 @@ const Account = () => {
         if (authed) {
             dispatch(authActions.logout()); // 로그아웃 상태로 변경
 
-            navigate('/'); // 로그인 페이지로 이동
+            navigate("/"); // 로그인 페이지로 이동
         } else {
-            navigate('/login'); // 로그인 페이지로 이동
+            navigate("/login"); // 로그인 페이지로 이동
         }
     };
 
@@ -136,12 +132,12 @@ const Account = () => {
                 <ul>
                     <MenuItem onMouseEnter={handleMyMouseEnter} onMouseLeave={handleMyMouseLeave}>
                         <MenuLink to="/">
-                            {' '}
+                            {" "}
                             <div>
-                                <AccountMy />
+                                <img src="/icon/my.png" alt="계정" />
                                 My
                             </div>
-                            <SlArrowUp />
+                            <IoIosArrowUp />
                         </MenuLink>
                         <SubMenu show={isMyMenuVisible}>
                             <SubMenuItem>
@@ -159,12 +155,12 @@ const Account = () => {
                     {/* 계정 메뉴 */}
                     <MenuItem onMouseEnter={handleAccountMouseEnter} onMouseLeave={handleAccountMouseLeave}>
                         <MenuLink to="/mypage/profile">
-                            {' '}
+                            {" "}
                             <div>
-                                <AccountProfile />
+                                <img src="/icon/profile.png" alt="계정" />
                                 계정
                             </div>
-                            <SlArrowUp />
+                            <IoIosArrowUp />
                         </MenuLink>
                         <SubMenu show={isAccountMenuVisible}>
                             <SubMenuItem>
@@ -181,17 +177,17 @@ const Account = () => {
 
                     {/* 다른 메뉴들 */}
                     <MenuItem>
-                        <MenuLink to="/">
+                        <MenuLink to="/mypage/membership">
                             <div>
-                                <AccountMembership />
+                                <img src="/icon/membership.png" alt="계정" />
                                 멤버십 관리
                             </div>
                         </MenuLink>
                     </MenuItem>
                     <MenuItem>
-                        <MenuLink to="/">
+                        <MenuLink to="/mypage/cs">
                             <div>
-                                <AccountCs />
+                                <img src="/icon/cs.png" alt="계정" />
                                 고객센터
                             </div>
                         </MenuLink>
@@ -199,7 +195,7 @@ const Account = () => {
                     <MenuItem>
                         <MenuLink to="/">
                             <div>
-                                <Logout />
+                                <img src="/icon/logout.png" alt="계정" />
                                 <button onClick={handleLoginClick}>로그아웃</button>
                             </div>
                         </MenuLink>

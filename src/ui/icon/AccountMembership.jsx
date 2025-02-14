@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 const AccountMembership = () => {
     return (
-        <svg width="30" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M1.25534 8.75C1.38623 5.69035 3.90813 3.25 7 3.25H17C20.0919 3.25 22.6138 5.69035 22.7447 8.75H1.25534Z"
                 fill="white"

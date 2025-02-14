@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
-import NavBar from './NavBar';
-import { HeaderWrap } from './style';
-import NavBarMain from './NavBarMain';
-import { useSelector } from 'react-redux';
+import { Link } from "react-router-dom";
+import NavBar from "./NavBar";
+import { HeaderWrap } from "./style";
+import NavBarMain from "./NavBarMain";
+import { useSelector } from "react-redux";
 
 const Header = () => {
     const { authed } = useSelector((state) => state.authR);
@@ -11,7 +11,7 @@ const Header = () => {
             <div className="header_inner">
                 <h1>
                     <Link to="/">
-                        <img src="./images/logo.svg" alt="logo" />
+                        <img src="/images/logo.svg" alt="logo" />
                     </Link>
                 </h1>
                 {/*  */}

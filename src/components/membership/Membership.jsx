@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import LogoWrapper from '../logo/LogoWrapper';
-import { FaCheck } from 'react-icons/fa';
-import { FaXmark } from 'react-icons/fa6';
-import { useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux';
-import { authActions } from '../../store/modules/authSlice';
+import { useState } from "react";
+import styled from "styled-components";
+import LogoWrapper from "../logo/LogoWrapper";
+import { FaCheck } from "react-icons/fa";
+import { FaXmark } from "react-icons/fa6";
+import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/modules/authSlice";
 
 export const Wrap = styled.div`
     display: flex;
@@ -93,11 +93,11 @@ export const FormContainer = styled.div`
         }
 
         .bg_gradient2 {
-            background-image: url('./membership_BG/membership_bg_standard_DarkGradient02.png');
+            background-image: url("./membership_BG/membership_bg_standard_DarkGradient02.png");
         }
 
         .bg_gradient3 {
-            background-image: url('./membership_BG/membership_bg_DarkGradient3.png');
+            background-image: url("./membership_BG/membership_bg_DarkGradient3.png");
         }
 
         ul {
@@ -115,8 +115,8 @@ export const FormContainer = styled.div`
 
 const Membership = () => {
     const navigate = useNavigate();
-    const [selectedMembership, setSelectedMembership] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [selectedMembership, setSelectedMembership] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     // 기존의 checked 상태를 한 번에 하나만 선택되게 설정
     const [checkedMemberships, setCheckedMemberships] = useState({
@@ -130,43 +130,43 @@ const Membership = () => {
 
         // 선택된 멤버십만 체크하고, 나머지는 해제
         setCheckedMemberships({
-            AD_standard: value === 'AD_standard' ? checked : false,
-            standard: value === 'standard' ? checked : false,
-            premium: value === 'premium' ? checked : false,
+            AD_standard: value === "AD_standard" ? checked : false,
+            standard: value === "standard" ? checked : false,
+            premium: value === "premium" ? checked : false,
         });
 
         if (checked) {
             setSelectedMembership(value); // 선택된 멤버십 설정
         } else {
-            setSelectedMembership(''); // 선택 해제 시 초기화
+            setSelectedMembership(""); // 선택 해제 시 초기화
         }
 
-        setErrorMessage(''); // 선택 시 에러 메시지 초기화
+        setErrorMessage(""); // 선택 시 에러 메시지 초기화
     };
 
     const handleButtonClick = (e) => {
         e.preventDefault();
         if (!selectedMembership) {
-            setErrorMessage('멤버십을 선택해주세요.');
+            setErrorMessage("멤버십을 선택해주세요.");
         } else {
-            setErrorMessage('');
-            console.log('ReelPick 시작하기!');
+            setErrorMessage("");
+            console.log("ReelPick 시작하기!");
             setTimeout(() => {
-                navigate('/login');
+                navigate("/login");
             }, 1000);
         }
         const membershipInfo = {
             type: selectedMembership,
             price:
-                selectedMembership === 'AD_standard' ? '5,500' : selectedMembership === 'standard' ? '9,500' : '13,900',
-            quality: selectedMembership === 'premium' ? '4K + HDR' : '1080p',
-            devices: selectedMembership === 'premium' ? '4' : '2',
-            profiles: selectedMembership === 'AD_standard' ? '2' : selectedMembership === 'standard' ? '4' : '6',
-            downloads: selectedMembership === 'premium' ? '400' : '200',
-            hasAds: selectedMembership === 'AD_standard',
+                selectedMembership === "AD_standard" ? "5,500" : selectedMembership === "standard" ? "9,500" : "13,900",
+            quality: selectedMembership === "premium" ? "4K + HDR" : "1080p",
+            devices: selectedMembership === "premium" ? "4" : "2",
+            profiles: selectedMembership === "AD_standard" ? "2" : selectedMembership === "standard" ? "4" : "6",
+            downloads: selectedMembership === "premium" ? "400" : "200",
+            hasAds: selectedMembership === "AD_standard",
             date: new Date().toISOString(),
         };
-        localStorage.setItem('selectedMembership', JSON.stringify(membershipInfo));
+        localStorage.setItem("selectedMembership", JSON.stringify(membershipInfo));
     };
 
     return (
@@ -175,15 +175,15 @@ const Membership = () => {
             <FormContainer>
                 <h1>멤버십</h1>
                 <div>
-                    <div className={`inner ${checkedMemberships.AD_standard ? 'aa' : 'bb'}`}>
-                        <div className='bg_gradient1' isChecked={selectedMembership === 'AD_standard'}>
+                    <div className={`inner ${checkedMemberships.AD_standard ? "aa" : "bb"}`}>
+                        <div className="bg_gradient1" isChecked={selectedMembership === "AD_standard"}>
                             <h3>광고형스탠다드</h3>
                             <p>1080p</p>
                             <form>
                                 <input
-                                    type='checkbox'
-                                    name='membership'
-                                    value='AD_standard'
+                                    type="checkbox"
+                                    name="membership"
+                                    value="AD_standard"
                                     checked={checkedMemberships.AD_standard}
                                     onChange={handleMembershipChange}
                                 />
@@ -213,15 +213,15 @@ const Membership = () => {
                             </li>
                         </ul>
                     </div>
-                    <div className={`inner ${checkedMemberships.standard ? 'aa' : 'bb'}`}>
-                        <div className='bg_gradient2' isChecked={selectedMembership === 'standard'}>
+                    <div className={`inner ${checkedMemberships.standard ? "aa" : "bb"}`}>
+                        <div className="bg_gradient2" isChecked={selectedMembership === "standard"}>
                             <h3>스탠다드</h3>
                             <p>1080p</p>
                             <form>
                                 <input
-                                    type='checkbox'
-                                    name='membership'
-                                    value='standard'
+                                    type="checkbox"
+                                    name="membership"
+                                    value="standard"
                                     checked={checkedMemberships.standard}
                                     onChange={handleMembershipChange}
                                 />
@@ -251,15 +251,15 @@ const Membership = () => {
                             </li>
                         </ul>
                     </div>
-                    <div className={`inner ${checkedMemberships.premium ? 'aa' : 'bb'}`}>
-                        <div className='bg_gradient3' isChecked={selectedMembership === 'premium'}>
+                    <div className={`inner ${checkedMemberships.premium ? "aa" : "bb"}`}>
+                        <div className="bg_gradient3" isChecked={selectedMembership === "premium"}>
                             <h3>프리미엄</h3>
                             <p>4K + HDR</p>
                             <form>
                                 <input
-                                    type='checkbox'
-                                    name='membership'
-                                    value='premium'
+                                    type="checkbox"
+                                    name="membership"
+                                    value="premium"
                                     checked={checkedMemberships.premium}
                                     onChange={handleMembershipChange}
                                 />
@@ -292,7 +292,7 @@ const Membership = () => {
                 </div>
 
                 {errorMessage && (
-                    <p className='error-message' style={{ color: 'red' }}>
+                    <p className="error-message" style={{ color: "red" }}>
                         {errorMessage}
                     </p>
                 )}
