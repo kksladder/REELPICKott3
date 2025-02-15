@@ -37,6 +37,7 @@ export const MovieVideo = styled.section`
         left: 50%;
         transform: translate(-50%, -43%);
         width: 100%;
+        height: 100px;
         padding: 0 62px;
         display: flex;
         justify-content: space-between;
@@ -50,10 +51,22 @@ export const MovieVideo = styled.section`
         line-height: 34px;
 
         p {
-            overflow: hidden;
-            max-height: ${({ expanded }) => (expanded ? "1000px" : "68px")}; /* 기본 2줄 높이, 확장 시 충분히 큰 값 */
-            transition: max-height 0.3s ease-in-out;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+
+        &.collapsed {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; /* 두 줄만 보이도록 설정 */
+            max-height: 68px;
+            text-overflow: ellipsis;
         }
+
+        &.full-text {
+            -webkit-line-clamp: unset;
+            max-height: 1000px;
+        }
+    }
 
         .desc_add {
             display: flex;
