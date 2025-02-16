@@ -7,6 +7,7 @@ import { h1 } from "framer-motion/client";
 import ProfileModal from "./ProfileModal";
 import ProfileEdit from "./ProfileEdit";
 import { useNavigate } from "react-router";
+import ViewingHistory from "./ViewingHistory";
 
 const Container = styled.div`
     position: relative;
@@ -339,6 +340,7 @@ const Profile = () => {
             </Container>
 
             <ProfileEdit />
+            <ViewingHistory />
             <ProfileModal isOpen={isImageModalOpen} onClose={() => setIsImageModalOpen(false)} />
         </>
     );
