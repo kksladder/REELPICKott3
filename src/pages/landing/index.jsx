@@ -9,7 +9,6 @@ const Gallery = () => {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                // 3페이지의 데이터 가져오기 (총 60개 중 50개 사용)
                 const pages = [1, 2, 3];
                 const promises = pages.map((page) =>
                     fetch(`https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=${page}`, {
@@ -24,12 +23,10 @@ const Gallery = () => {
                 const responses = await Promise.all(promises);
                 const allMovies = responses.flatMap((data) => data.results);
 
-                // 50개의 영화 선택
                 const processedMovies = allMovies.slice(0, 50).map((movie, index) => ({
                     id: movie.id,
                     title: movie.title,
                     poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-                    // 50개를 위한 area 할당 (aa부터 ax까지)
                     area: `${String.fromCharCode(97 + Math.floor(index / 26))}${String.fromCharCode(
                         97 + (index % 26)
                     )}`,
@@ -72,12 +69,11 @@ const Gallery = () => {
 
     return (
         <OverboardWindow>
-            <Overboard x={mousePosition.x} y={mousePosition.y}>
+            <Overboard>
                 <ImagesPlacer>
                     {movies.map((movie) => (
-                        <MoviePoster key={movie.id} className={movie.area}>
+                        <MoviePoster key={movie.id}>
                             <img src={movie.poster} alt={movie.title} />
-                            <div className="movie-info"></div>
                         </MoviePoster>
                     ))}
                 </ImagesPlacer>
