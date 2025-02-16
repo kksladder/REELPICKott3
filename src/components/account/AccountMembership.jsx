@@ -10,7 +10,7 @@ const Container = styled.div`
 const MainTitle = styled.h1`
     font-size: var(--font-header-Xlarge);
     font-weight: var(--font-weight-Bold);
-    margin-top: 5px;
+    margin-top: 54px;
     margin-bottom: 112px;
 `;
 
