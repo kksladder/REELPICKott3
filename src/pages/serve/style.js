@@ -199,6 +199,7 @@ export const ProductDetail = styled.section`
         display: none;
     }
     .pd {
+        display: block;
         width: fit-content;
         padding-right: 20px;
 
@@ -242,42 +243,6 @@ export const ProductDetail = styled.section`
         transform: translateY(-50%);
     }
 
-    .actor_sec {
-        overflow-x: auto;
-        align-items: flex-start;
-        /* gap: 20px; */
-        padding-left: 40px;
-    }
-    .actor {
-        width: fit-content;
-        margin: 16px 40px 0 0;
-        flex-shrink: 1;
-        height: auto;
-
-        flex-direction: column;
-        font-size: var(--font-content-XXsmall);
-        flex-wrap: wrap;
-        align-content: flex-start;
-        position: relative;
-        a {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .actor_img {
-            width: 137px;
-            height: 130px;
-            border-radius: 50%;
-            background: #d9d9d9;
-        }
-        .actor_name {
-            margin: 10px 0;
-        }
-        .actor_part {
-            color: var(--secondary-300);
-        }
-    }
 `;
 
 /////////////////////
@@ -310,11 +275,11 @@ export const SeasonVideo = styled.section`
         display: none;
     }
 
-    .season-sec {
+    /* .season-sec {
         display: flex;
         overflow-x: auto;
         overflow-y: hidden;
-        gap: 24px; /* Optional: Add gap between items */
+        gap: 24px; 
         scroll-behavior: smooth;
         a {
             display: inline-block;
@@ -347,7 +312,7 @@ export const SeasonVideo = styled.section`
         .season-vid_time {
             margin-left: 7px;
         }
-    }
+    } */
 
     /* Button visibility and positioning */
     .season_slide-button {

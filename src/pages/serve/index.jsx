@@ -1,5 +1,4 @@
-import { div } from "three/tsl";
-import { HeartButton, Inner, MoveDetailWrap, MovieVideo, ProductDetail, SeasonVideo, SimilarCont } from "./style";
+import { Inner, MoveDetailWrap, MovieVideo, ProductDetail, SeasonVideo, SimilarCont } from "./style";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Button, { HeartToggle, PlySquareLg, RestartLg, SpeakerOffLg } from "../../ui/Button/Button";
@@ -7,6 +6,8 @@ import { SquareNextBtn, SquarePreveBtn } from "../../ui/Button/SlideButton";
 import { InputFillDe } from "../../ui/Button/InputButton";
 import { useDispatch } from "react-redux";
 import { getMovie } from "../../store/modules/getThunk";
+import CastList from "../../components/sub/cast/CastList";
+import EpisodeList from "../../components/sub/episode/EpisodeList";
 const ServePage = () => {
     //  const { data } = useSelector((state) => state.movie);
     const [isDragging, setIsDragging] = useState(false);
@@ -43,7 +44,7 @@ const ServePage = () => {
                             </div>
                         </div>
                         <div className="desc">
-                            <p className={ `text ${expanded ? "full-text" : "collapsed"}`}>
+                            <p className={`text ${expanded ? "full-text" : "collapsed"}`}>
                                 유명 뉴욕 공직자의 실수를 무마해 달라는 요청을 받은 두 라이벌 해결사가(조지 클루니,
                                 브래드 피트) 맞닥뜨린다. 일촉즉발의 긴장감이 감도는 하룻밤 동안 두 사람은 각자의 불만과
                                 자존심을 내려놓고 함께 일을 마쳐야 한다. 유명 뉴욕 공직자의 실수를 무마해 달라는 요청을
@@ -95,136 +96,15 @@ const ServePage = () => {
                                 <p className="pd_part">역할</p>
                             </Link>
                         </div>
-
-                        <div className="actor_sec" onMouseMove={handleMouseMove}>
-                            <div className="actor">
-                                <Link>
-                                    <div className="actor_img">{/* <img src={actor.image} alt={actor.name} /> */}</div>
-                                    <p className="actor_name">홍상수</p>
-                                    <p className="actor_part">역할</p>
-                                </Link>
-                            </div>
-                            <div className="actor">
-                                <Link>
-                                    <div className="actor_img">{/* <img src={actor.image} alt={actor.name} /> */}</div>
-                                    <p className="actor_name">홍상수</p>
-                                    <p className="actor_part">역할</p>
-                                </Link>
-                            </div>
-                            <div className="actor">
-                                <Link>
-                                    <div className="actor_img">{/* <img src={actor.image} alt={actor.name} /> */}</div>
-                                    <p className="actor_name">홍상수</p>
-                                    <p className="actor_part">역할</p>
-                                </Link>
-                            </div>
-                            <div className="actor">
-                                <Link>
-                                    <div className="actor_img">{/* <img src={actor.image} alt={actor.name} /> */}</div>
-                                    <p className="actor_name">홍상수</p>
-                                    <p className="actor_part">역할</p>
-                                </Link>
-                            </div>
-                            <div className="actor">
-                                <Link>
-                                    <div className="actor_img">{/* <img src={actor.image} alt={actor.name} /> */}</div>
-                                    <p className="actor_name">홍상수</p>
-                                    <p className="actor_part">역할</p>
-                                </Link>
-                            </div>
-                            <div className="actor">
-                                <Link>
-                                    <div className="actor_img">{/* <img src={actor.image} alt={actor.name} /> */}</div>
-                                    <p className="actor_name">홍상수</p>
-                                    <p className="actor_part">역할</p>
-                                </Link>
-                            </div>
-                            <div className="actor">
-                                <Link>
-                                    <div className="actor_img">{/* <img src={actor.image} alt={actor.name} /> */}</div>
-                                    <p className="actor_name">홍상수</p>
-                                    <p className="actor_part">역할</p>
-                                </Link>
-                            </div>
-                            <div className="actor">
-                                <Link>
-                                    <div className="actor_img">{/* <img src={actor.image} alt={actor.name} /> */}</div>
-                                    <p className="actor_name">홍상수</p>
-                                    <p className="actor_part">역할</p>
-                                </Link>
-                            </div>
-                            <div className="actor">
-                                <Link>
-                                    <div className="actor_img">{/* <img src={actor.image} alt={actor.name} /> */}</div>
-                                    <p className="actor_name">홍상수</p>
-                                    <p className="actor_part">역할</p>
-                                </Link>
-                            </div>
-                            <div className="actor">
-                                <Link>
-                                    <div className="actor_img">{/* <img src={actor.image} alt={actor.name} /> */}</div>
-                                    <p className="actor_name">홍상수</p>
-                                    <p className="actor_part">역할</p>
-                                </Link>
-                            </div>
-                        </div>
+                        <CastList onMouseMove={handleMouseMove} />
                     </div>
                 </ProductDetail>
                 <Inner>
                     <SeasonVideo>
                         <div className="season-title">시즌1</div>
-                        <div className="season-slide">
-                            <div className="season-sec" onMouseMove={handleMouseMove}>
-                                <Link>
-                                    <div className="season_vid"></div>
-                                    <div className="season-vid_tit">1.모두를 놀라게 한 10기 영자의 선택</div>
-                                    <div className="season-vid_info">
-                                        <div className="season-vid_day">2025.01.09</div>
-                                        <div className="season-vid_time">61분</div>
-                                    </div>
-                                </Link>
-                                <Link>
-                                    <div className="season_vid"></div>
-                                    <div className="season-vid_tit">1.모두를 놀라게 한 10기 영자의 선택</div>
-                                    <div className="season-vid_info">
-                                        <div className="season-vid_day">2025.01.09</div>
-                                        <div className="season-vid_time">61분</div>
-                                    </div>
-                                </Link>
-                                <Link>
-                                    <div className="season_vid"></div>
-                                    <div className="season-vid_tit">1.모두를 놀라게 한 10기 영자의 선택</div>
-                                    <div className="season-vid_info">
-                                        <div className="season-vid_day">2025.01.09</div>
-                                        <div className="season-vid_time">61분</div>
-                                    </div>
-                                </Link>
-                                <Link>
-                                    <div className="season_vid"></div>
-                                    <div className="season-vid_tit">1.모두를 놀라게 한 10기 영자의 선택</div>
-                                    <div className="season-vid_info">
-                                        <div className="season-vid_day">2025.01.09</div>
-                                        <div className="season-vid_time">61분</div>
-                                    </div>
-                                </Link>
-                                <Link>
-                                    <div className="season_vid"></div>
-                                    <div className="season-vid_tit">1.모두를 놀라게 한 10기 영자의 선택</div>
-                                    <div className="season-vid_info">
-                                        <div className="season-vid_day">2025.01.09</div>
-                                        <div className="season-vid_time">61분</div>
-                                    </div>
-                                </Link>
-                                <Link>
-                                    <div className="season_vid"></div>
-                                    <div className="season-vid_tit">1.모두를 놀라게 한 10기 영자의 선택</div>
-                                    <div className="season-vid_info">
-                                        <div className="season-vid_day">2025.01.09</div>
-                                        <div className="season-vid_time">61분</div>
-                                    </div>
-                                </Link>
-                                {/* Repeat other <Link> components as needed */}
-                            </div>
+                        <div className="season-slide" onMouseMove={handleMouseMove}>
+                            <EpisodeList />
+
                             <div className="season_slide-button">
                                 <SquarePreveBtn />
                                 <SquareNextBtn />
