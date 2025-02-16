@@ -1,13 +1,54 @@
 import { useEffect, useState, useCallback } from "react";
 import { OverboardWindow, Overboard, ImagesPlacer, MoviePoster } from "./style";
 
-const API_KEY = "723314049643a394bde30b1a80e85db5";
-const BASE_URL = "https://api.themoviedb.org/3";
-const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
-
 const Gallery = () => {
     const [movies, setMovies] = useState([]);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchMovies = async () => {
+            try {
+                // 3페이지의 데이터 가져오기 (총 60개 중 50개 사용)
+                const pages = [1, 2, 3];
+                const promises = pages.map((page) =>
+                    fetch(`https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=${page}`, {
+                        headers: {
+                            Authorization:
+                                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MjMzMTQwNDk2NDNhMzk0YmRlMzBiMWE4MGU4NWRiNSIsIm5iZiI6MTczODYzNzI5Ni4zMTcsInN1YiI6IjY3YTE3ZmYwMzgwYjg2YWNkOTAyZjA3MiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.mvsksNi9M6tlwD5o8UryHB0PG_tgrc-dgOsldcARXNY",
+                            accept: "application/json",
+                        },
+                    }).then((res) => res.json())
+                );
+
+                const responses = await Promise.all(promises);
+                const allMovies = responses.flatMap((data) => data.results);
+
+                // 50개의 영화 선택
+                const processedMovies = allMovies.slice(0, 50).map((movie, index) => ({
+                    id: movie.id,
+                    title: movie.title,
+                    poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+                    // 50개를 위한 area 할당 (aa부터 ax까지)
+                    area: `${String.fromCharCode(97 + Math.floor(index / 26))}${String.fromCharCode(
+                        97 + (index % 26)
+                    )}`,
+                    overview: movie.overview,
+                    release_date: movie.release_date,
+                    vote_average: movie.vote_average,
+                }));
+
+                console.log("가져온 영화 수:", processedMovies.length);
+                setMovies(processedMovies);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching movies:", error);
+                setLoading(false);
+            }
+        };
+
+        fetchMovies();
+    }, []);
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -35,49 +76,19 @@ const Gallery = () => {
         fetchMovies();
     }, []);
 
-    const handleMouseMove = useCallback((e) => {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
-
-        requestAnimationFrame(() => {
-            setMousePosition({
-                x: (width / 2 - mouseX) * 0.1,
-                y: (height / 2 - mouseY) * 0.1,
-            });
-        });
-    }, []);
-
-    useEffect(() => {
-        window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, [handleMouseMove]);
-
-    const StyledMoviePoster = useCallback(
-        ({ movie }) => (
-            <MoviePoster
-                key={movie.id}
-                className={movie.area}
-                style={{
-                    transform: `translate(${movie.offsetX}px, ${movie.offsetY}px)`,
-                }}
-            >
-                <img src={movie.poster} alt={movie.title} loading="lazy" />
-                <div className="movie-info">
-                    <h3>{movie.title}</h3>
-                </div>
-            </MoviePoster>
-        ),
-        []
-    );
+    if (loading) {
+        return <div>기다리거나 나가주세요</div>;
+    }
 
     return (
         <OverboardWindow>
             <Overboard x={mousePosition.x} y={mousePosition.y}>
                 <ImagesPlacer>
                     {movies.map((movie) => (
-                        <StyledMoviePoster key={movie.id} movie={movie} />
+                        <MoviePoster key={movie.id} className={movie.area}>
+                            <img src={movie.poster} alt={movie.title} />
+                            <div className="movie-info"></div>
+                        </MoviePoster>
                     ))}
                 </ImagesPlacer>
             </Overboard>
