@@ -1,8 +1,15 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+<<<<<<< HEAD
 import { SlArrowRight } from "react-icons/sl";
 import { FaChevronDown } from "react-icons/fa";
+=======
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { h1 } from "framer-motion/client";
+import ProfileModal from "./ProfileModal";
+import { SlArrowRight } from "react-icons/sl";
+>>>>>>> 887aca7 (프로필 메뉴 수정중중)
 
 const Container = styled.div`
     position: relative;
@@ -22,7 +29,10 @@ const Container = styled.div`
             justify-content: center;
             align-items: center;
             gap: 10px;
+<<<<<<< HEAD
             padding: 4.5rem;
+=======
+>>>>>>> 887aca7 (프로필 메뉴 수정중중)
             h3 {
                 font-size: 32px;
                 font-weight: bold;
@@ -39,12 +49,16 @@ const Container = styled.div`
                 border-radius: 5px 5px 5px 5px;
                 border: 1px solid #949494;
                 padding: 30px 45px;
+<<<<<<< HEAD
                 margin: 32px 0;
+=======
+>>>>>>> 887aca7 (프로필 메뉴 수정중중)
                 div {
                     width: 270px;
                     div {
                         display: flex;
                         gap: 24px;
+<<<<<<< HEAD
 
                         align-items: center;
                     }
@@ -90,6 +104,9 @@ const Container = styled.div`
                         display: flex;
                         gap: 24px;
 
+=======
+                        justify-content: center;
+>>>>>>> 887aca7 (프로필 메뉴 수정중중)
                         align-items: center;
                     }
                 }
@@ -442,6 +459,7 @@ const ProfileEdit = () => {
                                             {" "}
                                             <div>
                                                 {" "}
+<<<<<<< HEAD
                                                 <svg
                                                     width="24"
                                                     height="24"
@@ -454,6 +472,9 @@ const ProfileEdit = () => {
                                                         fill="white"
                                                     />
                                                 </svg>
+=======
+                                                <img src="/icon/iPhone.png " alt="phone" />
+>>>>>>> 887aca7 (프로필 메뉴 수정중중)
                                                 휴대폰
                                             </div>
                                             {user && user.tel} <SlArrowRight />
@@ -469,6 +490,7 @@ const ProfileEdit = () => {
                 <Header3>
                     <ProfileInfo>
                         <HeaderText>
+<<<<<<< HEAD
                             <svg
                                 width="24"
                                 height="24"
@@ -481,6 +503,9 @@ const ProfileEdit = () => {
                                     fill="white"
                                 />
                             </svg>
+=======
+                            <img src="/icon/iPhone.png " alt="phone" />
+>>>>>>> 887aca7 (프로필 메뉴 수정중중)
                             휴대폰
                             <p>{user && user.tel}</p>
                         </HeaderText>
@@ -491,7 +516,11 @@ const ProfileEdit = () => {
                 </Header3>
 
                 <EditContainer isOpen={isTelOpen}>
+<<<<<<< HEAD
                     <div className="edit3">
+=======
+                    <div className="edit">
+>>>>>>> 887aca7 (프로필 메뉴 수정중중)
                         <div className="pwinner">
                             <img src="/icon/Shield.png" alt="경고" />
                             <h3>본인 확인하기</h3>
