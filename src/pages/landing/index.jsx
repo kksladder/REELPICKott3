@@ -2,26 +2,53 @@ import { useEffect, useState } from "react";
 import { OverboardWindow, Overboard, ImagesPlacer, MoviePoster } from "./style";
 
 const Gallery = () => {
-    const movies = [
-        { id: 1, title: "Movie 1", poster: "/images/22.jpg", area: "a" },
-        { id: 2, title: "Movie 2", poster: "/images/23.jpg", area: "b" },
-        { id: 3, title: "Movie 3", poster: "/images/24.jpg", area: "c" },
-        { id: 4, title: "Movie 4", poster: "/images/AAA.jpg", area: "d" },
-        { id: 5, title: "Movie 5", poster: "/images/pandabear.jpg", area: "e" },
-        { id: 6, title: "Movie 6", poster: "/images/monster.jpg", area: "f" },
-        { id: 7, title: "Movie 7", poster: "/images/parasite.jpg", area: "g" },
-        { id: 8, title: "Movie 8", poster: "/images/mother.jpg", area: "h" },
-        { id: 9, title: "Movie 9", poster: "/images/memorykilling.jpg", area: "i" },
-        { id: 10, title: "Movie 10", poster: "/images/okja.jpg", area: "j" },
-        { id: 11, title: "Movie 11", poster: "/images/janhwa.jpg", area: "k" },
-        { id: 12, title: "Movie 12", poster: "/images/lifeishoney.jpg", area: "l" },
-        { id: 13, title: "Movie 13", poster: "/images/smallLOGO.svg", area: "m" },
-        { id: 14, title: "Movie 14", poster: "/images/ret.jpg", area: "n" },
-        { id: 15, title: "Movie 15", poster: "/images/dog.jpg", area: "o" },
-        { id: 16, title: "Movie 16", poster: "/images/snowpiecer.jpg", area: "p" },
-    ];
-
+    const [movies, setMovies] = useState([]);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchMovies = async () => {
+            try {
+                // 3페이지의 데이터 가져오기 (총 60개 중 50개 사용)
+                const pages = [1, 2, 3];
+                const promises = pages.map((page) =>
+                    fetch(`https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=${page}`, {
+                        headers: {
+                            Authorization:
+                                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MjMzMTQwNDk2NDNhMzk0YmRlMzBiMWE4MGU4NWRiNSIsIm5iZiI6MTczODYzNzI5Ni4zMTcsInN1YiI6IjY3YTE3ZmYwMzgwYjg2YWNkOTAyZjA3MiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.mvsksNi9M6tlwD5o8UryHB0PG_tgrc-dgOsldcARXNY",
+                            accept: "application/json",
+                        },
+                    }).then((res) => res.json())
+                );
+
+                const responses = await Promise.all(promises);
+                const allMovies = responses.flatMap((data) => data.results);
+
+                // 50개의 영화 선택
+                const processedMovies = allMovies.slice(0, 50).map((movie, index) => ({
+                    id: movie.id,
+                    title: movie.title,
+                    poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+                    // 50개를 위한 area 할당 (aa부터 ax까지)
+                    area: `${String.fromCharCode(97 + Math.floor(index / 26))}${String.fromCharCode(
+                        97 + (index % 26)
+                    )}`,
+                    overview: movie.overview,
+                    release_date: movie.release_date,
+                    vote_average: movie.vote_average,
+                }));
+
+                console.log("가져온 영화 수:", processedMovies.length);
+                setMovies(processedMovies);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching movies:", error);
+                setLoading(false);
+            }
+        };
+
+        fetchMovies();
+    }, []);
 
     useEffect(() => {
         const handleMouseMove = (e) => {
@@ -39,20 +66,23 @@ const Gallery = () => {
         return () => window.removeEventListener("mousemove", handleMouseMove);
     }, []);
 
+    if (loading) {
+        return <div>기다리거나 나가주세요</div>;
+    }
+
     return (
-        <>
-            <OverboardWindow>
-                <Overboard x={mousePosition.x} y={mousePosition.y}>
-                    <ImagesPlacer>
-                        {movies.map((movie) => (
-                            <MoviePoster key={movie.id} className={movie.area}>
-                                <img src={movie.poster} alt={movie.title} />
-                            </MoviePoster>
-                        ))}
-                    </ImagesPlacer>
-                </Overboard>
-            </OverboardWindow>
-        </>
+        <OverboardWindow>
+            <Overboard x={mousePosition.x} y={mousePosition.y}>
+                <ImagesPlacer>
+                    {movies.map((movie) => (
+                        <MoviePoster key={movie.id} className={movie.area}>
+                            <img src={movie.poster} alt={movie.title} />
+                            <div className="movie-info"></div>
+                        </MoviePoster>
+                    ))}
+                </ImagesPlacer>
+            </Overboard>
+        </OverboardWindow>
     );
 };
 
