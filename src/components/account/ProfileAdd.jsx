@@ -1,5 +1,6 @@
 import { IoIosArrowBack } from "react-icons/io";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 
 export const H1 = styled.h1`
@@ -9,7 +10,7 @@ export const H1 = styled.h1`
     margin-bottom: 30px;
 `;
 
-export const P = styled.p`
+export const P = styled.div`
     color: #757575;
     font-size: 19px;
     font-weight: 400;
@@ -74,10 +75,15 @@ const SelectButton = styled.button`
 
 const ProfileAdd = () => {
     const { user } = useSelector((state) => state.authR);
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate("/mypage/profile");
+    };
     return (
         <>
             <H1>프로필 추가</H1>
-            <P>
+            <P onClick={handleClick}>
                 <IoIosArrowBack />
                 뒤로가기
             </P>

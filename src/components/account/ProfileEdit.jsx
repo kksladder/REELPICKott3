@@ -1,16 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
-import ProfileImage from "../../ui/icon/ProfileImage";
 import { useSelector } from "react-redux";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import { h1 } from "framer-motion/client";
-import ProfileModal from "./ProfileModal";
 import { SlArrowRight } from "react-icons/sl";
+import { FaChevronDown } from "react-icons/fa";
 
 const Container = styled.div`
     position: relative;
     max-width: 70.1875rem;
-    border-bottom: 1px solid #4a4a4a;
+
     color: white;
     .edit {
         padding: 1.5rem;
@@ -25,6 +22,7 @@ const Container = styled.div`
             justify-content: center;
             align-items: center;
             gap: 10px;
+            padding: 4.5rem;
             h3 {
                 font-size: 32px;
                 font-weight: bold;
@@ -41,12 +39,57 @@ const Container = styled.div`
                 border-radius: 5px 5px 5px 5px;
                 border: 1px solid #949494;
                 padding: 30px 45px;
+                margin: 32px 0;
                 div {
                     width: 270px;
                     div {
                         display: flex;
                         gap: 24px;
-                        justify-content: center;
+
+                        align-items: center;
+                    }
+                }
+            }
+        }
+    }
+    .edit3 {
+        padding: 1.5rem;
+        margin-bottom: 50px;
+        background: var(--black-black-b-500-notice-hover-bg, #3b3b3b);
+        /* 프로필 수정 inner */
+        box-shadow: 0px 7px 10.7px 0px rgba(0, 0, 0, 0.38) inset;
+        .pwinner {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 4.5rem;
+            h3 {
+                font-size: 32px;
+                font-weight: bold;
+            }
+            p {
+                color: #949494;
+                font-size: 19px;
+            }
+
+            .informInner {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                border-radius: 5px 5px 5px 5px;
+                border: 1px solid #949494;
+                padding: 30px 45px;
+                margin: 40px 0;
+                div {
+                    width: 270px;
+                    div {
+                        display: flex;
+                        gap: 24px;
+
                         align-items: center;
                     }
                 }
@@ -55,12 +98,30 @@ const Container = styled.div`
     }
 `;
 
+const Header1 = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    justify-content: space-between;
+    background: var(--black-black-b-600-input-hover-bg, #2e2e2e);
+    border-radius: 5px 5px 0px 0px;
+    border-bottom: 1px solid #4a4a4a;
+`;
 const Header = styled.div`
     display: flex;
     align-items: center;
     padding: 1.5rem;
     justify-content: space-between;
     background: var(--black-black-b-600-input-hover-bg, #2e2e2e);
+    border-bottom: 1px solid #4a4a4a;
+`;
+const Header3 = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    justify-content: space-between;
+    background: var(--black-black-b-600-input-hover-bg, #2e2e2e);
+    border-radius: 0px 0px 5px 5px;
 `;
 
 const ProfileInfo = styled.div`
@@ -209,7 +270,7 @@ const EditContainer = styled.div`
     transition: all 0.3s ease-in-out;
 `;
 
-const RotateIcon = styled(MdKeyboardArrowDown)`
+const FaChevronUp = styled(FaChevronDown)`
     transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
     transition: transform 0.3s ease-in-out;
 `;
@@ -263,9 +324,10 @@ const ProfileEdit = () => {
 
     return (
         <>
+            {/*    <H1>계정</H1> */}
             <MainTitle>회원정보 수정</MainTitle>
             <Container>
-                <Header>
+                <Header1>
                     <ProfileInfo>
                         <HeaderText>
                             <svg
@@ -292,9 +354,9 @@ const ProfileEdit = () => {
                         </HeaderText>
                     </ProfileInfo>
                     <HeaderRight>
-                        <RotateIcon isOpen={isPWOpen} onClick={togglePW} />
+                        <FaChevronUp isOpen={isPWOpen} onClick={togglePW} />
                     </HeaderRight>
-                </Header>
+                </Header1>
 
                 <EditContainer isOpen={isPWOpen}>
                     <div className="edit">
@@ -340,7 +402,7 @@ const ProfileEdit = () => {
                         </HeaderText>
                     </ProfileInfo>
                     <HeaderRight>
-                        <RotateIcon isOpen={isEmailOpen} onClick={toggleEmail} />
+                        <FaChevronUp isOpen={isEmailOpen} onClick={toggleEmail} />
                     </HeaderRight>
                 </Header>
 
@@ -380,7 +442,18 @@ const ProfileEdit = () => {
                                             {" "}
                                             <div>
                                                 {" "}
-                                                <img src="/icon/iPhone.png " alt="phone" />
+                                                <svg
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        d="M13.9933 3.27445C14.5008 3.27445 14.9319 2.96629 15.1289 2.53272C15.2492 2.26777 15.493 2.02599 15.7742 2.1009C17.0558 2.44228 18 3.6109 18 5.00004V19C18 20.6569 16.6569 22 15 22H9C7.34315 22 6 20.6569 6 19V5.00004C6 3.61914 6.93299 2.45615 8.203 2.10706C8.4872 2.02894 8.73465 2.27636 8.85941 2.5434C9.05935 2.97141 9.49552 3.27445 9.99328 3.27445H13.9933Z"
+                                                        fill="white"
+                                                    />
+                                                </svg>
                                                 휴대폰
                                             </div>
                                             {user && user.tel} <SlArrowRight />
@@ -393,21 +466,32 @@ const ProfileEdit = () => {
                 </EditContainer>
             </Container>
             <Container>
-                <Header>
+                <Header3>
                     <ProfileInfo>
                         <HeaderText>
-                            <img src="/icon/iPhone.png " alt="phone" />
+                            <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M13.9933 3.27445C14.5008 3.27445 14.9319 2.96629 15.1289 2.53272C15.2492 2.26777 15.493 2.02599 15.7742 2.1009C17.0558 2.44228 18 3.6109 18 5.00004V19C18 20.6569 16.6569 22 15 22H9C7.34315 22 6 20.6569 6 19V5.00004C6 3.61914 6.93299 2.45615 8.203 2.10706C8.4872 2.02894 8.73465 2.27636 8.85941 2.5434C9.05935 2.97141 9.49552 3.27445 9.99328 3.27445H13.9933Z"
+                                    fill="white"
+                                />
+                            </svg>
                             휴대폰
                             <p>{user && user.tel}</p>
                         </HeaderText>
                     </ProfileInfo>
                     <HeaderRight>
-                        <RotateIcon isOpen={isTelOpen} onClick={toggleTel} />
+                        <FaChevronUp isOpen={isTelOpen} onClick={toggleTel} />
                     </HeaderRight>
-                </Header>
+                </Header3>
 
                 <EditContainer isOpen={isTelOpen}>
-                    <div className="edit">
+                    <div className="edit3">
                         <div className="pwinner">
                             <img src="/icon/Shield.png" alt="경고" />
                             <h3>본인 확인하기</h3>
