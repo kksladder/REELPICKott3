@@ -258,7 +258,7 @@ const InputSection = styled.div`
         font-size: 19px;
     }
     .inputWrap {
-        width: 90%;
+        width: 88%;
         display: flex;
         flex-direction: column;
     }
