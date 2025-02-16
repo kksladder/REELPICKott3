@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { h1 } from "framer-motion/client";
 import ProfileModal from "./ProfileModal";
+import { SlArrowRight } from "react-icons/sl";
 
 const Container = styled.div`
     position: relative;
@@ -16,6 +17,41 @@ const Container = styled.div`
         background: var(--black-black-b-500-notice-hover-bg, #3b3b3b);
         /* 프로필 수정 inner */
         box-shadow: 0px 7px 10.7px 0px rgba(0, 0, 0, 0.38) inset;
+        .pwinner {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            h3 {
+                font-size: 32px;
+                font-weight: bold;
+            }
+            p {
+                color: #949494;
+                font-size: 19px;
+            }
+
+            .informInner {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                border-radius: 5px 5px 5px 5px;
+                border: 1px solid #949494;
+                padding: 30px 45px;
+                div {
+                    width: 270px;
+                    div {
+                        display: flex;
+                        gap: 24px;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
+            }
+        }
     }
 `;
 
@@ -193,6 +229,14 @@ const ProfileSection = styled.div`
 const InputSection = styled.div`
     flex: 1;
     padding-top: 20px;
+    div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        span {
+            margin: 9px 0;
+        }
+    }
 `;
 
 const MainTitle = styled.p`
@@ -257,7 +301,10 @@ const ProfileEdit = () => {
                         <Title>비밀번호 변경</Title>
                         <EditSection>
                             <InputSection>
-                                <Input placeholder="기존 비밀번호" /> <span>비밀번호 찾기</span>
+                                <div>
+                                    <Input placeholder="기존 비밀번호" /> <span>비밀번호 찾기</span>
+                                </div>
+
                                 <Input placeholder="새 비밀번호" />
                                 <Input placeholder="비밀번호 확인" />
                             </InputSection>
@@ -267,10 +314,6 @@ const ProfileEdit = () => {
                             <Button>저장</Button>
                             <Button secondary>취소</Button>
                         </ButtonGroup>
-                        <Stroke />
-                        <div style={{ marginTop: "1.5rem" }}>
-                            <Button2 secondary>프로필삭제</Button2>
-                        </div>
                     </div>
                 </EditContainer>
             </Container>
@@ -303,23 +346,48 @@ const ProfileEdit = () => {
 
                 <EditContainer isOpen={isEmailOpen}>
                     <div className="edit">
-                        <Title>비밀번호 변경</Title>
-                        <EditSection>
-                            <InputSection>
-                                <Input placeholder={user && user.password} />
-
-                                <Input placeholder="새 비밀번호" />
-                                <Input placeholder="비밀번호 확인" />
-                            </InputSection>
-                        </EditSection>
-
-                        <ButtonGroup>
-                            <Button>저장</Button>
-                            <Button secondary>취소</Button>
-                        </ButtonGroup>
-                        <Stroke />
-                        <div style={{ marginTop: "1.5rem" }}>
-                            <Button2 secondary>프로필삭제</Button2>
+                        <div className="pwinner">
+                            <img src="/icon/Shield.png" alt="경고" />
+                            <h3>본인 확인하기</h3>
+                            <p>정보를 변경하기 전에 간단한 확인이 필요합니다.</p>
+                            <div className="informWRAP">
+                                <div className="informInner">
+                                    <div>
+                                        <div>
+                                            {" "}
+                                            <div>
+                                                <svg
+                                                    width="22"
+                                                    height="18"
+                                                    viewBox="0 0 22 18"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        fill-rule="evenodd"
+                                                        clip-rule="evenodd"
+                                                        d="M0.25 6C0.25 2.82436 2.82436 0.25 6 0.25H16C19.1756 0.25 21.75 2.82436 21.75 6V12C21.75 15.1756 19.1756 17.75 16 17.75H6C2.82436 17.75 0.25 15.1756 0.25 12V6ZM5.44682 5.29872C5.11413 5.05195 4.6444 5.1216 4.39763 5.45428C4.15086 5.78696 4.2205 6.2567 4.55318 6.50347L9.36167 10.0702C10.3347 10.7919 11.6653 10.7919 12.6383 10.0702L17.4468 6.50347C17.7795 6.2567 17.8491 5.78696 17.6024 5.45428C17.3556 5.1216 16.8859 5.05195 16.5532 5.29872L11.7447 8.86546C11.3024 9.19352 10.6976 9.19352 10.2553 8.86546L5.44682 5.29872Z"
+                                                        fill="white"
+                                                    />
+                                                </svg>
+                                                이메일
+                                            </div>
+                                            {user && user.id_email} <SlArrowRight />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            {" "}
+                                            <div>
+                                                {" "}
+                                                <img src="/icon/iPhone.png " alt="phone" />
+                                                휴대폰
+                                            </div>
+                                            {user && user.tel} <SlArrowRight />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </EditContainer>
@@ -328,18 +396,7 @@ const ProfileEdit = () => {
                 <Header>
                     <ProfileInfo>
                         <HeaderText>
-                            <svg
-                                width="24"
-                                height="21"
-                                viewBox="0 0 24 22"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M13.9933 3.9014C14.5008 3.9014 14.9319 3.59325 15.1289 3.15968C15.2492 2.89473 15.493 2.65295 15.7742 2.72785C17.0558 3.06923 18 4.23785 18 5.62699V19.627C18 21.2838 16.6569 22.627 15 22.627H9C7.34315 22.627 6 21.2838 6 19.627V5.62699C6 4.24609 6.93299 3.0831 8.203 2.73401C8.4872 2.65589 8.73465 2.90331 8.85941 3.17036C9.05935 3.59837 9.49552 3.9014 9.99328 3.9014H13.9933Z"
-                                    fill="white"
-                                />
-                            </svg>
+                            <img src="/icon/iPhone.png " alt="phone" />
                             휴대폰
                             <p>{user && user.tel}</p>
                         </HeaderText>
@@ -351,22 +408,48 @@ const ProfileEdit = () => {
 
                 <EditContainer isOpen={isTelOpen}>
                     <div className="edit">
-                        <Title>비밀번호 변경</Title>
-                        <EditSection>
-                            <InputSection>
-                                <Input placeholder={user && user.password} />
-                                <Input placeholder="새 비밀번호" />
-                                <Input placeholder="비밀번호 확인" />
-                            </InputSection>
-                        </EditSection>
-
-                        <ButtonGroup>
-                            <Button>저장</Button>
-                            <Button secondary>취소</Button>
-                        </ButtonGroup>
-                        <Stroke />
-                        <div style={{ marginTop: "1.5rem" }}>
-                            <Button2 secondary>프로필삭제</Button2>
+                        <div className="pwinner">
+                            <img src="/icon/Shield.png" alt="경고" />
+                            <h3>본인 확인하기</h3>
+                            <p>정보를 변경하기 전에 간단한 확인이 필요합니다.</p>
+                            <div className="informWRAP">
+                                <div className="informInner">
+                                    <div>
+                                        <div>
+                                            {" "}
+                                            <div>
+                                                <svg
+                                                    width="22"
+                                                    height="18"
+                                                    viewBox="0 0 22 18"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        fill-rule="evenodd"
+                                                        clip-rule="evenodd"
+                                                        d="M0.25 6C0.25 2.82436 2.82436 0.25 6 0.25H16C19.1756 0.25 21.75 2.82436 21.75 6V12C21.75 15.1756 19.1756 17.75 16 17.75H6C2.82436 17.75 0.25 15.1756 0.25 12V6ZM5.44682 5.29872C5.11413 5.05195 4.6444 5.1216 4.39763 5.45428C4.15086 5.78696 4.2205 6.2567 4.55318 6.50347L9.36167 10.0702C10.3347 10.7919 11.6653 10.7919 12.6383 10.0702L17.4468 6.50347C17.7795 6.2567 17.8491 5.78696 17.6024 5.45428C17.3556 5.1216 16.8859 5.05195 16.5532 5.29872L11.7447 8.86546C11.3024 9.19352 10.6976 9.19352 10.2553 8.86546L5.44682 5.29872Z"
+                                                        fill="white"
+                                                    />
+                                                </svg>
+                                                이메일
+                                            </div>
+                                            {user && user.id_email} <SlArrowRight />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            {" "}
+                                            <div>
+                                                {" "}
+                                                <img src="/icon/iPhone.png " alt="phone" />
+                                                휴대폰
+                                            </div>
+                                            {user && user.tel} <SlArrowRight />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </EditContainer>
