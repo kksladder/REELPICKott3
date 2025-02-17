@@ -5,6 +5,8 @@ const options = {
     api_key: '7269aebff8b7461ac95532129bb7d8db',
     language: 'ko-KR',
     genres: 28,
+    
+
 };
 
 export const getMovie = createAsyncThunk('movie/getMovie', async () => {
@@ -18,8 +20,8 @@ export const getMovie = createAsyncThunk('movie/getMovie', async () => {
         console.log(error);
     }
 });
-export const getCredit = createAsyncThunk('credit/getCredit', async () => {
-    const url = `https://api.themoviedb.org/3/movie/movie_id/credits`;
+export const getCredit = createAsyncThunk('credit/getCredit', async (movieId) => {
+    const url = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
     try {
         const res = await axios.get(url, {
             params: options,
