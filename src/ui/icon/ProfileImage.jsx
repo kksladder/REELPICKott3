@@ -1,19 +1,35 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+const ImageItem = styled.div`
+    width: 100px;
+    height: 100px;
+    background: #d8d8d8;
+    border-radius: 50%;
+    img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover; /* 이미지 비율을 유지하며 크기에 맞게 자르기 */
+        border-radius: 50%;
+    }
+`;
 
 const ProfileImage = () => {
+    const { user } = useSelector((state) => state.authR);
+    const dispatch = useDispatch();
+    const [selectedImage, setSelectedImage] = useState("/images/default_profile2.png");
+
+    // 페이지가 로드될 때 로컬스토리지에서 기존 프로필 이미지 확인 (초기값 설정)
+    useEffect(() => {
+        if (user && user.profileImage) {
+            setSelectedImage(user.profileImage); // 이미 등록된 이미지가 있으면 그 이미지를 사용
+        }
+    }, [user]);
+
     return (
-        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_507_4344)">
-                <rect width="60" height="60" rx="30" fill="#DAD7D7" />
-                <rect x="18" y="10" width="24" height="24" rx="12" fill="#858585" />
-                <rect x="-15" y="40" width="90" height="90" rx="45" fill="#858585" />
-            </g>
-            <defs>
-                <clipPath id="clip0_507_4344">
-                    <rect width="60" height="60" rx="30" fill="white" />
-                </clipPath>
-            </defs>
-        </svg>
+        <ImageItem>
+            <img src={selectedImage} alt="프로필 이미지" />
+        </ImageItem>
     );
 };
 

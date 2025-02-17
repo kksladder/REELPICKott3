@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ProfileImage from "../../ui/icon/ProfileImage";
@@ -41,9 +41,6 @@ const MenuItem = styled.li`
         all: unset;
         background: transparent;
         border: none;
-        padding: 0;
-        font: inherit;
-        color: inherit;
         cursor: pointer;
         display: inline-block; /* 추가 */
     }
@@ -93,7 +90,13 @@ const SubMenuLink = styled(Link)`
         color: white;
     }
 `;
-
+const SubMenuLink2 = styled.div`
+    padding: 8px 0;
+    cursor: pointer;
+    &:hover {
+        color: white;
+    }
+`;
 const Account = () => {
     const dispatch = useDispatch(); // dispatch 훅을 사용하여 Redux 액션을 보냅니다.
     const navigate = useNavigate();
@@ -119,6 +122,24 @@ const Account = () => {
     const handleAccountMouseEnter = () => setAccountMenuVisible(true);
     const handleAccountMouseLeave = () => setAccountMenuVisible(false);
 
+    const handleClick2 = () => {
+        navigate("/mypage/accountcontents");
+        // 여기서 'myPage'라는 ID로 설정된 위치로 스크롤 이동
+    };
+
+    const viewingHandleClick = () => {
+        navigate("/mypage/profile");
+    };
+
+    const profileEditHandleClick = () => {
+        navigate("/mypage/profile");
+        // 여기서 'myPage'라는 ID로 설정된 위치로 스크롤 이동
+    };
+
+    const handleClick = () => {
+        navigate("/mypage/accountcontents");
+    };
+
     return (
         <MenuArea>
             <MainMenu>
@@ -131,7 +152,7 @@ const Account = () => {
                 </div>
                 <ul>
                     <MenuItem onMouseEnter={handleMyMouseEnter} onMouseLeave={handleMyMouseLeave}>
-                        <MenuLink to="/">
+                        <MenuLink to="/mypage/accountcontents">
                             {" "}
                             <div>
                                 <img src="/icon/my.png" alt="계정" />
@@ -141,20 +162,20 @@ const Account = () => {
                         </MenuLink>
                         <SubMenu show={isMyMenuVisible}>
                             <SubMenuItem>
-                                <SubMenuLink to="/mypage/accountnull">최근 시청중인 컨텐츠</SubMenuLink>
+                                <SubMenuLink2 onClick={handleClick}>최근 시청중인 컨텐츠</SubMenuLink2>
                             </SubMenuItem>
                             <SubMenuItem>
-                                <SubMenuLink to="/mypage/accountnull">찜한 컨텐츠</SubMenuLink>
+                                <SubMenuLink2 onClick={handleClick}>찜한 컨텐츠</SubMenuLink2>
                             </SubMenuItem>
                             <SubMenuItem>
-                                <SubMenuLink to="/mypage/accountnull">현재 이용중인 멤버십</SubMenuLink>
+                                <SubMenuLink2 onClick={handleClick}>현재 이용중인 멤버십</SubMenuLink2>
                             </SubMenuItem>
                         </SubMenu>
                     </MenuItem>
 
                     {/* 계정 메뉴 */}
                     <MenuItem onMouseEnter={handleAccountMouseEnter} onMouseLeave={handleAccountMouseLeave}>
-                        <MenuLink to="/mypage/profile">
+                        <MenuLink to="mypage/accountcontents">
                             {" "}
                             <div>
                                 <img src="/icon/profile.png" alt="계정" />
@@ -167,10 +188,10 @@ const Account = () => {
                                 <SubMenuLink to="/mypage/profile">프로필 및 설정 관리</SubMenuLink>
                             </SubMenuItem>
                             <SubMenuItem>
-                                <SubMenuLink to="/mypage/profileedit">회원정보수정</SubMenuLink>
+                                <SubMenuLink2 onClick={profileEditHandleClick}>회원정보수정</SubMenuLink2>
                             </SubMenuItem>
                             <SubMenuItem>
-                                <SubMenuLink to="/mypage/viewing">시청 기록 관리</SubMenuLink>
+                                <SubMenuLink2 onClick={viewingHandleClick}>시청 기록 관리</SubMenuLink2>
                             </SubMenuItem>
                         </SubMenu>
                     </MenuItem>

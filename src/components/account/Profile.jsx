@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ProfileImage from "../../ui/icon/ProfileImage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { h1 } from "framer-motion/client";
 import ProfileModal from "./ProfileModal";
 import ProfileEdit from "./ProfileEdit";
 import { useNavigate } from "react-router";
 import ViewingHistory from "./ViewingHistory";
+import { authActions } from "../../store/modules/authSlice";
 
 const Container = styled.div`
     position: relative;
@@ -43,7 +44,7 @@ const ProfileImageInner = styled.div`
     height: ${(props) => props.size || "2rem"};
     border-radius: 50%;
     overflow: hidden;
-    background-color: #3b82f6;
+    background: #d9d9d9;
 
     img {
         width: 100%;
@@ -128,7 +129,7 @@ const Input = styled.input`
     border: 1px solid #3f3f46;
     border-radius: 0.25rem;
     padding: 16px;
-    color: white;
+    color: #000;
     font-size: 0.875rem;
     &::placeholder {
         color: #949494;
@@ -243,7 +244,24 @@ const ProfileSection = styled.div`
         font-weight: 400;
     }
 `;
+const ImageItem = styled.div`
+    aspect-ratio: 1;
+    background: #d9d9d9;
+    border-radius: 5px;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative; // 아이콘을 이미지 위에 올리기 위해
 
+   /*  img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* 이미지 비율을 유지하며 크기에 맞게 자르기 */
+    } */
+
+    &:hover {
+        opacity: 0.8;
+    }
+`;
 const InputSection = styled.div`
     flex: 1;
     display: flex;
@@ -265,6 +283,11 @@ const InputSection = styled.div`
 `;
 const Profile = () => {
     const { user } = useSelector((state) => state.authR);
+
+    const [selectedImage, setSelectedImage] = useState(user?.profileImage || "/images/default_profile2.png");
+    const [newUsername, setNewUsername] = useState(user?.username || "");
+
+    const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleProfile = () => {
@@ -281,6 +304,55 @@ const Profile = () => {
     const handleProfileAddClick = () => {
         navigate("/mypage/profileadd");
     };
+    // 선택된 이미지를 저장할 상태
+
+    // 프로필 이미지를 변경할 때 호출되는 함수
+    const handleProfileSelect = (image) => {
+        setSelectedImage(image);
+    };
+
+    useEffect(() => {
+        // 상태가 업데이트되면 로컬 스토리지에 저장
+        if (user) {
+            localStorage.setItem("user_" + user.id_email, JSON.stringify(user));
+        }
+    }, [user]);
+
+    const handleSaveClick = () => {
+        if (user) {
+            console.log("Saving profile with new image and username...");
+            dispatch(
+                authActions.updateProfileImage({
+                    id_email: user.id_email,
+                    newProfileImage: selectedImage,
+                    newUsername: newUsername,
+                })
+            );
+            alert("성공적으로 변경이 완료되었습니다");
+        } else {
+            console.error("User is not available.");
+        }
+    };
+
+    const handleDeleteProfile = () => {
+        // Confirm with the user before deletion
+        const isConfirmed = window.confirm("정말로 닉네임을 삭제하시겠습니까?");
+        if (isConfirmed) {
+            // Dispatch the action to remove the username
+            dispatch(authActions.removeUsername());
+
+            // Optionally reset the username in the local state
+            setNewUsername(""); // Reset the local username state if needed
+
+            // Optionally, reset the profile image if you want to reset it as well
+            setSelectedImage("/images/default_profile.png"); // or leave as is if not resetting
+
+            // Hide the profile editing section
+            setIsOpen(false);
+
+            alert("닉네임이 삭제되었습니다.");
+        }
+    };
 
     return (
         <>
@@ -290,9 +362,9 @@ const Profile = () => {
                 <Header>
                     <ProfileInfo>
                         <ProfileImageInner>
-                            <img src="/images/default_profile.png" alt="이미지" />
+                            <img src={selectedImage} alt="이미지" />
                         </ProfileImageInner>
-                        <HeaderText>{user && user.username}</HeaderText>
+                        <HeaderText>{newUsername}</HeaderText>
                     </ProfileInfo>
                     <HeaderRight>
                         <span onClick={toggleProfile} style={{ cursor: "pointer" }}>
@@ -308,7 +380,9 @@ const Profile = () => {
                         <EditSection>
                             <ProfileSection>
                                 <ProfileImageInner2>
-                                    <img src="/images/default_profile.png" alt="이미지" />
+                                    <ImageItem>
+                                        <img src={selectedImage} alt="프로필 이미지" />
+                                    </ImageItem>
                                 </ProfileImageInner2>
                                 <span onClick={handleProfileImageClick} style={{ cursor: "pointer" }}>
                                     프로필 수정
@@ -318,30 +392,46 @@ const Profile = () => {
                             <InputSection>
                                 <label>닉네임</label>
                                 <div className="inputWrap">
-                                    <Input placeholder={user && user.username} />
+                                    <Input
+                                        placeholder={user && user.username}
+                                        value={newUsername}
+                                        onChange={(e) => setNewUsername(e.target.value)} // 닉네임 변경
+                                    />
                                     <HelpText>2자 이상 10자 이내의 한글, 영문, 숫자 입력 가능합니다.</HelpText>
                                 </div>
                             </InputSection>
                         </EditSection>
 
                         <ButtonGroup>
-                            <Button>저장</Button>
+                            <Button onClick={handleSaveClick}>저장</Button>
                             <Button secondary>취소</Button>
                         </ButtonGroup>
                         <Stroke />
                         <div style={{ marginTop: "1.5rem" }}>
-                            <Button2 secondary>프로필 삭제</Button2>
+                            <Button2 secondary onClick={handleDeleteProfile}>
+                                프로필 삭제
+                            </Button2>
                         </div>
                     </div>
                 </EditContainer>
                 <Button3 secondary onClick={handleProfileAddClick}>
                     프로필 추가
                 </Button3>
+                <ProfileModal
+                    isOpen={isImageModalOpen}
+                    onClose={() => setIsImageModalOpen(false)}
+                    onProfileSelect={handleProfileSelect}
+                />
             </Container>
 
             <ProfileEdit />
             <ViewingHistory />
-            <ProfileModal isOpen={isImageModalOpen} onClose={() => setIsImageModalOpen(false)} />
+
+            <ProfileModal
+                isOpen={isImageModalOpen}
+                onClose={() => setIsImageModalOpen(false)}
+                onProfileSelect={handleProfileSelect}
+            />
         </>
     );
 };

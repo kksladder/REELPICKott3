@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { forwardRef, useState } from "react";
 import styled from "styled-components";
 import { FaTrashAlt, FaCheck, FaTimes, FaChevronDown } from "react-icons/fa";
 
@@ -276,7 +276,7 @@ const ViewingHistory = () => {
     };
 
     return (
-        <Container>
+        <Container id ="viewing-seciton">
             {/* <H1>계정</H1> */}
             <MainTitle>시청기록관리</MainTitle>
             <Header onClick={toggleOpen}>

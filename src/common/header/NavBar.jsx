@@ -32,10 +32,7 @@ const NavBar = () => {
                             </StyledLink>
                         </li>
                         <li>
-                            <StyledLink
-                                to="/mypage/accountnull
-                        "
-                            >
+                            <StyledLink to="/mypage/accountcontents">
                                 <img src="./images/profile.svg" alt="Profile" />
                             </StyledLink>
                         </li>
