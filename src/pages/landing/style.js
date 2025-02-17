@@ -20,7 +20,9 @@ export const Overboard = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) translate(${(props) => props.x}px, ${(props) => props.y}px);
+    transition: transform 0.1s ease-out;
 `;
+
 export const ImagesPlacer = styled.div`
     position: relative;
     width: 100%;
@@ -74,8 +76,7 @@ export const MoviePoster = styled.div`
         opacity: 1;
     }
 
-    // 무작위 위치 조정을 위한 CSS
     &.${(props) => props.className} {
-        transform: translate(${() => Math.random() * 100 - 50}px, ${() => Math.random() * 100 - 50}px);
+        animation: ${floatingAnimation} 3s ease-in-out infinite;
     }
 `;
