@@ -24,6 +24,7 @@ import Mypage from "./pages/mypage/Mypage";
 import ProfileAdd from "./components/account/ProfileAdd";
 import AccountMembership from "./components/account/AccountMembership";
 import AccountCS from "./components/account/AccountCS";
+import TestPage from "./pages/test";
 
 
 
@@ -37,7 +38,7 @@ function App() {
                         <Route index element={<Main />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signUp" element={<SignUpPage />} />
-                        <Route path="/serve" element={<ServePage />} />
+                        {/* <Route path="/serve" element={<ServePage />} /> */}
                         <Route path="/membership" element={<Membership />} />
                         <Route path="/drama" element={<DramaPage />} />
                         <Route path="/idfind" element={<IdFind />} />
@@ -45,7 +46,7 @@ function App() {
                         <Route path="/search" element={<SearchPage />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signUp" element={<SignUpPage />} />
-                        <Route path="/serve" element={<ServePage />} />
+                        <Route path="/serve/:moviId" element={<ServePage />} />
                         <Route path="/membership" element={<Membership />} />
                         <Route path="/reelpick" element={<Reelpick />} />
                         <Route path="/basket" element={<Basket />} />
@@ -54,6 +55,7 @@ function App() {
                         <Route path="/idfind" element={<IdFind />} />
                         <Route path="/landing" element={<Landing />} />
                         <Route path="/pwfind" element={<PWFind />} />
+                        <Route path="/test" element={< TestPage/>} />
                         {/* 조심 */}
                         <Route path="/mypage" element={<MyPageLayout />}>
                             <Route index element={<Mypage />} />

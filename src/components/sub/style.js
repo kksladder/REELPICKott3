@@ -1,52 +1,53 @@
 import styled from "styled-components";
 
-export const CastListWrap = styled.section`
-overflow-x: auto;
-        align-items: flex-start;
-        padding-left: 40px; 
+export const CastListWrap = styled.div`
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    width: 100%;
+    
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+`;
 
-/* 
-        width: fit-content;
-        margin: 16px 40px 0 0;
-        flex-shrink: 1;
-        height: auto; */
-
-        flex-direction: row;
-        font-size: var(--font-content-XXsmall);
-        flex-wrap: nowrap;
-        align-content: flex-start;
-        position: relative; 
-        display: flex;
-`
-
-export const CastItemWrap = styled.section`
-
-.actor {
-        width: fit-content;
-        margin: 16px 40px 0 0;
-        flex-shrink: 1;
-        height: auto;
-
-        a {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
+export const CastItemWrap = styled.div`
+    .actor {
+        min-width: 120px;
+        text-align: center;
+        
         .actor_img {
-            width: 137px;
-            height: 130px;
-            border-radius: 50%;
-            background: #d9d9d9;
+            width: 120px;
+            height: 180px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            background: #333;
+            
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
         }
+        
         .actor_name {
-            margin: 10px 0;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 4px;
         }
+        
         .actor_part {
-            color: var(--secondary-300);
+            font-size: 12px;
+            color: #999;
         }
     }
-`
+`;
 
 export const EpisodeListWrap = styled.section`
 display: flex;
@@ -63,10 +64,12 @@ display: flex;
 
 export const EpisodeItemWrap = styled.section`
 .season_vid {
+img{
         width: 317px;
         height: 166px;
         flex-shrink: 0;
         background-color: aliceblue;
+}
     }
 
     .season-vid_tit {

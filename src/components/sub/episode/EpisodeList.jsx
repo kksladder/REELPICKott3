@@ -1,18 +1,21 @@
-import { EpisodeListWrap } from "../cast/style";
+import { useSelector } from "react-redux";
+import { EpisodeListWrap } from "../style";
 import EpisodeItem from "./EpisodeItem";
 
 const EpisodeList = () => {
-    return (
-        <EpisodeListWrap>
-            <EpisodeItem />
-            <EpisodeItem />
-            <EpisodeItem />
-            <EpisodeItem />
-            <EpisodeItem />
-            <EpisodeItem />
-            <EpisodeItem />
-        </EpisodeListWrap>
-    );
+    const { movieData } = useSelector((state) => state.movieR);
+
+    if (!movieData) {
+        return <div>loading...</div>;
+    }
+    if (movieData.length > 0)
+        return (
+            <EpisodeListWrap>
+                {movieData.map((item) => (
+                    <EpisodeItem key={item.id} item={item} />
+                ))}
+            </EpisodeListWrap>
+        );
 };
 
 export default EpisodeList;

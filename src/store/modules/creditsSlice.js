@@ -8,8 +8,8 @@ const initialState = {
     error: null
 };
 
-const movieSlice = createSlice({
-    name: 'movieR', // Using your existing slice name
+const creditSlice = createSlice({
+    name: 'creditR', // Using your existing slice name
     initialState,
     reducers: {},
     extraReducers: (builder) => {
@@ -26,7 +26,7 @@ const movieSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
             })
-            
+
             // Handle getMovieDetails thunk
             .addCase(getMovieDetails.pending, (state) => {
                 state.loading = true;
@@ -42,4 +42,4 @@ const movieSlice = createSlice({
     }
 });
 
-export default movieSlice.reducer;
+export default creditSlice.reducer;
