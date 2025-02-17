@@ -15,7 +15,6 @@ import Landing from "./pages/landing";
 import Reelpick from "./pages/reelpick";
 import MoviePage from "./pages/movie";
 import MyPageLayout from "./common/mypageLayout/mypageLayout";
-
 import Profile from "./components/account/Profile";
 import ViewingHistory from "./components/account/ViewingHistory";
 import ProfileEdit from "./components/account/ProfileEdit";
@@ -27,6 +26,7 @@ import AccountCS from "./components/account/AccountCS";
 import TestPage from "./pages/test";
 import AccountContents from "./components/account/AccountContents";
 import WatchingContent from "./components/account/WatchingContent";
+
 
 function App() {
     return (
