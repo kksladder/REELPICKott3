@@ -75,7 +75,7 @@ const Button = styled.button`
 
 const MembershipPage = () => {
     return (
-        <Container>
+        <Container id="membership_section">
             <MainTitle>멤버십 관리</MainTitle>
 
             <div>

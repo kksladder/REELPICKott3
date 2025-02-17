@@ -125,6 +125,24 @@ export const authSlice = createSlice({
             };
             localStorage.setItem("selectedMembership", JSON.stringify(membershipInfo));
         },
+        // Redux Slice에 프로필 수정 액션 추가
+        updateProfileImage: (state, action) => {
+            const { id_email, newProfileImage, newUsername } = action.payload;
+
+            // 상태가 업데이트되는 부분
+            if (state.user && state.user.id_email === id_email) {
+                state.user.profileImage = newProfileImage; // 프로필 이미지 변경
+                state.user.username = newUsername; // 사용자 이름 변경
+
+                // 로컬스토리지에도 저장하여 페이지 리로드 시 유지
+                localStorage.setItem("user_" + id_email, JSON.stringify(state.user));
+            }
+        },
+        removeUsername(state) {
+            if (state.user) {
+                state.user.username = ""; // Clear only the username
+            }
+        },
     },
 });
 

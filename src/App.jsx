@@ -15,7 +15,6 @@ import Landing from "./pages/landing";
 import Reelpick from "./pages/reelpick";
 import MoviePage from "./pages/movie";
 import MyPageLayout from "./common/mypageLayout/mypageLayout";
-import AccountNull from "./components/account/AccountNull";
 import Profile from "./components/account/Profile";
 import ViewingHistory from "./components/account/ViewingHistory";
 import ProfileEdit from "./components/account/ProfileEdit";
@@ -25,6 +24,9 @@ import ProfileAdd from "./components/account/ProfileAdd";
 import AccountMembership from "./components/account/AccountMembership";
 import AccountCS from "./components/account/AccountCS";
 import TestPage from "./pages/test";
+import AccountContents from "./components/account/AccountContents";
+import WatchingContent from "./components/account/WatchingContent";
+
 
 function App() {
     return (
@@ -36,7 +38,7 @@ function App() {
                         <Route index element={<Main />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signUp" element={<SignUpPage />} />
-                        {/* <Route path="/serve" element={<ServePage />} /> */}
+                        <Route path="/serve" element={<ServePage />} />
                         <Route path="/membership" element={<Membership />} />
                         <Route path="/drama" element={<DramaPage />} />
                         <Route path="/idfind" element={<IdFind />} />
@@ -57,7 +59,7 @@ function App() {
                         {/* 조심 */}
                         <Route path="/mypage" element={<MyPageLayout />}>
                             <Route index element={<Mypage />} />
-                            <Route path="accountnull" element={<AccountNull />} />
+                            <Route path="accountcontents" element={<AccountContents />} />
                             <Route path="profile" element={<Profile />} />/
                             <Route path="profileedit" element={<ProfileEdit />} />
                             <Route path="viewing" element={<ViewingHistory />} />
@@ -65,6 +67,7 @@ function App() {
                             <Route path="profileAdd" element={<ProfileAdd />} />
                             <Route path="membership" element={<AccountMembership />} />
                             <Route path="cs" element={<AccountCS />} />
+                            <Route path="watchingcontent" element={<WatchingContent />} />
                         </Route>
                     </Route>
                 </Routes>
