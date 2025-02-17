@@ -1,4 +1,13 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+
+export const LoadingWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    font-size: 1.5rem;
+`;
 
 export const ReelpickWrapper = styled.div`
     padding: 0 68px;
@@ -146,8 +155,8 @@ export const ScrollTopButton = styled.button`
     align-items: center;
     justify-content: center;
     color: var(--primary-40);
-    opacity: ${(props) => (props.visible ? '1' : '0')};
-    visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
+    opacity: ${(props) => (props.visible ? "1" : "0")};
+    visibility: ${(props) => (props.visible ? "visible" : "hidden")};
     transition: all 0.3s ease;
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

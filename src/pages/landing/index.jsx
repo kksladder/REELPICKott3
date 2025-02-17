@@ -73,6 +73,28 @@ const Gallery = () => {
                 throttleTimeout = setTimeout(() => {
                     throttleTimeout = null;
                     handleMouseMove(e);
+                }, 16); // 약 60fps
+            }
+        };
+
+        window.addEventListener("mousemove", throttledMouseMove, { passive: true });
+
+        return () => {
+            window.removeEventListener("mousemove", throttledMouseMove);
+            cancelAnimationFrame(frameId);
+            clearTimeout(throttleTimeout);
+        };
+    }, [handleMouseMove]);
+
+    useEffect(() => {
+        let frameId;
+        let throttleTimeout;
+
+        const throttledMouseMove = (e) => {
+            if (!throttleTimeout) {
+                throttleTimeout = setTimeout(() => {
+                    throttleTimeout = null;
+                    handleMouseMove(e);
                 }, 16);
             }
         };
