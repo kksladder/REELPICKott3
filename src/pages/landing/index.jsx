@@ -1,80 +1,83 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { OverboardWindow, Overboard, ImagesPlacer, MoviePoster } from "./style";
+
+const API_KEY = "723314049643a394bde30b1a80e85db5";
+const BASE_URL = "https://api.themoviedb.org/3";
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
 const Gallery = () => {
     const [movies, setMovies] = useState([]);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const pages = [1, 2, 3];
-                const promises = pages.map((page) =>
-                    fetch(`https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=${page}`, {
-                        headers: {
-                            Authorization:
-                                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MjMzMTQwNDk2NDNhMzk0YmRlMzBiMWE4MGU4NWRiNSIsIm5iZiI6MTczODYzNzI5Ni4zMTcsInN1YiI6IjY3YTE3ZmYwMzgwYjg2YWNkOTAyZjA3MiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.mvsksNi9M6tlwD5o8UryHB0PG_tgrc-dgOsldcARXNY",
-                            accept: "application/json",
-                        },
-                    }).then((res) => res.json())
-                );
+                const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=ko-KR&page=1`);
 
-                const responses = await Promise.all(promises);
-                const allMovies = responses.flatMap((data) => data.results);
+                if (!response.ok) throw new Error("API 호출 실패");
+                const data = await response.json();
 
-                const processedMovies = allMovies.slice(0, 50).map((movie, index) => ({
+                const processedMovies = data.results.map((movie, index) => ({
                     id: movie.id,
                     title: movie.title,
-                    poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-                    area: `${String.fromCharCode(97 + Math.floor(index / 26))}${String.fromCharCode(
-                        97 + (index % 26)
-                    )}`,
-                    overview: movie.overview,
-                    release_date: movie.release_date,
-                    vote_average: movie.vote_average,
+                    poster: `${IMAGE_BASE_URL}${movie.poster_path}`,
+                    offsetX: Math.random() * 100 - 50,
+                    offsetY: Math.random() * 100 - 50,
+                    area: String.fromCharCode(97 + (index % 20)),
                 }));
 
-                console.log("가져온 영화 수:", processedMovies.length);
                 setMovies(processedMovies);
-                setLoading(false);
             } catch (error) {
-                console.error("Error fetching movies:", error);
-                setLoading(false);
+                console.error("영화 데이터 로딩 중 오류 발생:", error);
             }
         };
 
         fetchMovies();
     }, []);
 
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            const offsetX = e.clientX - width / 2;
-            const offsetY = e.clientY - height / 2;
-            const xPercent = ((offsetX / width) * 100).toFixed(2);
-            const yPercent = ((offsetY / height) * 100).toFixed(2);
+    const handleMouseMove = useCallback((e) => {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
 
-            setMousePosition({ x: -xPercent, y: -yPercent });
-        };
-
-        window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
+        requestAnimationFrame(() => {
+            setMousePosition({
+                x: (width / 2 - mouseX) * 0.1,
+                y: (height / 2 - mouseY) * 0.1,
+            });
+        });
     }, []);
 
-    if (loading) {
-        return <div>기다리거나 나가주세요</div>;
-    }
+    useEffect(() => {
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+    }, [handleMouseMove]);
+
+    const StyledMoviePoster = useCallback(
+        ({ movie }) => (
+            <MoviePoster
+                key={movie.id}
+                className={movie.area}
+                style={{
+                    transform: `translate(${movie.offsetX}px, ${movie.offsetY}px)`,
+                }}
+            >
+                <img src={movie.poster} alt={movie.title} loading="lazy" />
+                <div className="movie-info">
+                    <h3>{movie.title}</h3>
+                </div>
+            </MoviePoster>
+        ),
+        []
+    );
 
     return (
         <OverboardWindow>
-            <Overboard>
+            <Overboard x={mousePosition.x} y={mousePosition.y}>
                 <ImagesPlacer>
                     {movies.map((movie) => (
-                        <MoviePoster key={movie.id}>
-                            <img src={movie.poster} alt={movie.title} />
-                        </MoviePoster>
+                        <StyledMoviePoster key={movie.id} movie={movie} />
                     ))}
                 </ImagesPlacer>
             </Overboard>
