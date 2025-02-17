@@ -31,6 +31,8 @@ const Title = styled.h2`
 const Content = styled.div`
     padding: 1rem;
     margin-bottom: 70px;
+    background: var(--black-black-b-500-notice-hover-bg, #3b3b3b);
+    box-shadow: 0px 7px 10.7px 0px rgba(0, 0, 0, 0.38) inset;
 `;
 
 const ControlBar = styled.div`
@@ -88,6 +90,7 @@ const Item = styled.div`
     border-radius: 0.25rem;
     cursor: pointer;
     transition: background-color 0.2s;
+    border-bottom: 1px solid #4a4a4a;
     &:hover {
         background-color: #404040;
     }
