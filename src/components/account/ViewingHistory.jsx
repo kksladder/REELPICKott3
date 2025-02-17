@@ -1,36 +1,21 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-<<<<<<< HEAD
 import { FaTrashAlt, FaCheck, FaTimes, FaChevronDown } from "react-icons/fa";
-=======
-import { FaChevronUp, FaChevronDown, FaTrashAlt, FaCheck, FaTimes } from "react-icons/fa";
->>>>>>> 887aca7 (프로필 메뉴 수정중중)
 
 // Styled Components
 const Container = styled.div`
     max-width: 70.1875rem;
-<<<<<<< HEAD
 
     border-radius: 0.5rem;
     overflow: hidden;
     position: relative;
     margin-bottom: 70px;
-=======
-    background-color: #171717;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    position: relative;
->>>>>>> 887aca7 (프로필 메뉴 수정중중)
 `;
 
 const Header = styled.div`
     display: flex;
     align-items: center;
-<<<<<<< HEAD
     padding: 24px 25px;
-=======
-    padding: 1.5rem;
->>>>>>> 887aca7 (프로필 메뉴 수정중중)
     border-radius: 5px 5px 0px 0px;
     justify-content: space-between;
     background: var(--black-black-b-600-input-hover-bg, #2e2e2e);
@@ -45,10 +30,9 @@ const Title = styled.h2`
 
 const Content = styled.div`
     padding: 1rem;
-<<<<<<< HEAD
     margin-bottom: 70px;
-=======
->>>>>>> 887aca7 (프로필 메뉴 수정중중)
+    background: var(--black-black-b-500-notice-hover-bg, #3b3b3b);
+    box-shadow: 0px 7px 10.7px 0px rgba(0, 0, 0, 0.38) inset;
 `;
 
 const ControlBar = styled.div`
@@ -106,6 +90,7 @@ const Item = styled.div`
     border-radius: 0.25rem;
     cursor: pointer;
     transition: background-color 0.2s;
+    border-bottom: 1px solid #4a4a4a;
     &:hover {
         background-color: #404040;
     }
@@ -154,12 +139,8 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContent = styled.div`
-<<<<<<< HEAD
     width: 1022px;
     padding: 3rem;
-=======
-    width: 400px;
->>>>>>> 887aca7 (프로필 메뉴 수정중중)
     background-color: #1f1f1f;
     border-radius: 8px;
     overflow: hidden;
@@ -193,12 +174,7 @@ const ModalMessage = styled.p`
     padding: 16px;
     margin: 0;
     text-align: center;
-<<<<<<< HEAD
     line-height: 1.2;
-=======
-    border-top: 1px solid #333;
-    border-bottom: 1px solid #333;
->>>>>>> 887aca7 (프로필 메뉴 수정중중)
 `;
 
 const ModalButtons = styled.div`
@@ -233,7 +209,6 @@ const CancelButton = styled.button`
         background-color: #4b5563;
     }
 `;
-<<<<<<< HEAD
 const FaChevronUp = styled(FaChevronDown)`
     transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
     transition: transform 0.3s ease-in-out;
@@ -241,11 +216,6 @@ const FaChevronUp = styled(FaChevronDown)`
 
 const ViewingHistory = () => {
     const [isOpen, setIsOpen] = useState(false);
-=======
-
-const ViewingHistory = () => {
-    const [isOpen, setIsOpen] = useState(true);
->>>>>>> 887aca7 (프로필 메뉴 수정중중)
     const [selectedItems, setSelectedItems] = useState([]);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
@@ -293,16 +263,12 @@ const ViewingHistory = () => {
         setShowDeletePopup(false);
         setItemToDelete(null);
     };
-<<<<<<< HEAD
     const H1 = styled.h1`
         font-size: 40px;
         font-weight: 700;
         margin-top: 50px;
         margin-bottom: 30px;
     `;
-=======
-
->>>>>>> 887aca7 (프로필 메뉴 수정중중)
     const handleDeleteCancel = () => {
         setShowDeletePopup(false);
         setItemToDelete(null);
@@ -311,18 +277,11 @@ const ViewingHistory = () => {
 
     return (
         <Container>
-<<<<<<< HEAD
             {/* <H1>계정</H1> */}
             <MainTitle>시청기록관리</MainTitle>
             <Header onClick={toggleOpen}>
                 <Title>시청 기록</Title>
                 <FaChevronUp isOpen={isOpen} />
-=======
-            <MainTitle>시청기록관리</MainTitle>
-            <Header onClick={toggleOpen}>
-                <Title>시청 기록</Title>
-                {isOpen ? <FaChevronUp color="white" /> : <FaChevronDown color="white" />}
->>>>>>> 887aca7 (프로필 메뉴 수정중중)
             </Header>
 
             {isOpen && (
@@ -376,13 +335,8 @@ const ViewingHistory = () => {
                             </CloseButton>
                         </ModalHeader>
                         <ModalMessage>
-<<<<<<< HEAD
                             시청 기록을 삭제하시는 경우, <br />  다시 시청하지 않는 이상 ReelPick 서비스에서 시청한
                             콘텐츠로 표시되지 않으며, 콘텐츠 추천에도 이용되지 않습니다.
-=======
-                            다시 시청하지 않는 것은 ReelPick 서비스에서 시청한 콘텐츠로 표시되지 않으며, 프로필도
-                            초기화되어 이용하실 수 없습니다.
->>>>>>> 887aca7 (프로필 메뉴 수정중중)
                         </ModalMessage>
                         <ModalButtons>
                             <ConfirmButton onClick={handleDeleteConfirm}>삭제</ConfirmButton>
