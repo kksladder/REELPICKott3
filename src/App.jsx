@@ -26,8 +26,6 @@ import AccountMembership from "./components/account/AccountMembership";
 import AccountCS from "./components/account/AccountCS";
 import TestPage from "./pages/test";
 
-
-
 function App() {
     return (
         <>
@@ -55,7 +53,7 @@ function App() {
                         <Route path="/idfind" element={<IdFind />} />
                         <Route path="/landing" element={<Landing />} />
                         <Route path="/pwfind" element={<PWFind />} />
-                        <Route path="/test" element={< TestPage/>} />
+                        <Route path="/test" element={<TestPage />} />
                         {/* 조심 */}
                         <Route path="/mypage" element={<MyPageLayout />}>
                             <Route index element={<Mypage />} />
