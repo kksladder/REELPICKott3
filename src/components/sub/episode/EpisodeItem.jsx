@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { EpisodeItemWrap } from "../style";
 
 const EpisodeItem = ({ episode }) => {
@@ -7,13 +8,15 @@ const EpisodeItem = ({ episode }) => {
     return (
         <EpisodeItemWrap>
             <div className="season_vid">
-                <img
-                    src={still_path ? `${bgurl}${still_path}` : "/images/episodeNo.png"}
-                    alt={title}
-                    onError={(e) => {
-                        e.target.src = "/images/episodeNo.png";
-                    }}
-                />
+                <Link>
+                    <img
+                        src={still_path ? `${bgurl}${still_path}` : "/images/episodeNo.png"}
+                        alt={title}
+                        onError={(e) => {
+                            e.target.src = "/images/episodeNo.png";
+                        }}
+                    />
+                </Link>
             </div>
             <div className="season-vid_tit">{title}</div>
             <div className="season-vid_info">
