@@ -122,22 +122,13 @@ const Account = () => {
     const handleAccountMouseEnter = () => setAccountMenuVisible(true);
     const handleAccountMouseLeave = () => setAccountMenuVisible(false);
 
-    const handleClick2 = () => {
+    const handleClick = (x) => {
+        dispatch(authActions.gotoTarget(x));
         navigate("/mypage/accountcontents");
-        // 여기서 'myPage'라는 ID로 설정된 위치로 스크롤 이동
     };
-
-    const viewingHandleClick = () => {
+    const handleClick2 = (x) => {
+        dispatch(authActions.gotoTarget(x));
         navigate("/mypage/profile");
-    };
-
-    const profileEditHandleClick = () => {
-        navigate("/mypage/profile");
-        // 여기서 'myPage'라는 ID로 설정된 위치로 스크롤 이동
-    };
-
-    const handleClick = () => {
-        navigate("/mypage/accountcontents");
     };
 
     return (
@@ -162,20 +153,20 @@ const Account = () => {
                         </MenuLink>
                         <SubMenu show={isMyMenuVisible}>
                             <SubMenuItem>
-                                <SubMenuLink2 onClick={handleClick}>최근 시청중인 컨텐츠</SubMenuLink2>
+                                <SubMenuLink2 onClick={() => handleClick("a")}>최근 시청중인 컨텐츠</SubMenuLink2>
                             </SubMenuItem>
                             <SubMenuItem>
-                                <SubMenuLink2 onClick={handleClick}>찜한 컨텐츠</SubMenuLink2>
+                                <SubMenuLink2 onClick={() => handleClick("b")}>찜한 컨텐츠</SubMenuLink2>
                             </SubMenuItem>
                             <SubMenuItem>
-                                <SubMenuLink2 onClick={handleClick}>현재 이용중인 멤버십</SubMenuLink2>
+                                <SubMenuLink2 onClick={() => handleClick("c")}>현재 이용중인 멤버십</SubMenuLink2>
                             </SubMenuItem>
                         </SubMenu>
                     </MenuItem>
 
                     {/* 계정 메뉴 */}
                     <MenuItem onMouseEnter={handleAccountMouseEnter} onMouseLeave={handleAccountMouseLeave}>
-                        <MenuLink to="mypage/accountcontents">
+                        <MenuLink to="/mypage/profile">
                             {" "}
                             <div>
                                 <img src="/icon/profile.png" alt="계정" />
@@ -185,20 +176,20 @@ const Account = () => {
                         </MenuLink>
                         <SubMenu show={isAccountMenuVisible}>
                             <SubMenuItem>
-                                <SubMenuLink to="/mypage/profile">프로필 및 설정 관리</SubMenuLink>
+                                <SubMenuLink2 onClick={() => handleClick2("d")}>프로필 및 설정 관리</SubMenuLink2>
                             </SubMenuItem>
                             <SubMenuItem>
-                                <SubMenuLink2 onClick={profileEditHandleClick}>회원정보수정</SubMenuLink2>
+                                <SubMenuLink2 onClick={() => handleClick2("e")}>회원정보수정</SubMenuLink2>
                             </SubMenuItem>
                             <SubMenuItem>
-                                <SubMenuLink2 onClick={viewingHandleClick}>시청 기록 관리</SubMenuLink2>
+                                <SubMenuLink2 onClick={() => handleClick2("f")}>시청 기록 관리</SubMenuLink2>
                             </SubMenuItem>
                         </SubMenu>
                     </MenuItem>
 
                     {/* 다른 메뉴들 */}
                     <MenuItem>
-                        <MenuLink to="/mypage/membership">
+                        <MenuLink to="/mypage/membershipmanagement">
                             <div>
                                 <img src="/icon/membership.png" alt="계정" />
                                 멤버십 관리

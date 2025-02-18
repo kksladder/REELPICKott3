@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const SearchContainer = styled.div`
     width: 1920px;
-    height: 1977px;
+    height: 1900px;
     background-color: #111;
     color: white;
     display: flex;
@@ -30,13 +30,13 @@ export const SearchInput = styled.input`
     flex: 1;
     background-color: transparent;
     border: none;
-    color: white;
+    color: var(--white);
     font-size: 20px;
     padding: 15px 0;
     outline: none;
 
     &::placeholder {
-        color: var(--white);
+        color: var(--secondary-70);
     }
 `;
 
@@ -132,7 +132,7 @@ export const DropdownContainer = styled.div`
     top: 100%;
     left: 0;
     width: 1780px;
-    height: 719px;
+    height: 549px;
     background-color: #1c1c1c;
     border: 1px solid #333;
     z-index: 1000;
@@ -149,11 +149,33 @@ export const DropdownColumns = styled.div`
     height: 100%;
 `;
 
-export const ColumnTitle = styled.h3`
-    font-size: 26px;
-    color: #fff;
+export const ColumnTitleContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 20px;
-    font-weight: 700;
+`;
+
+export const ColumnTitle = styled.h3`
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: var(--white);
+    font-weight: var(--font-weight-SemiBold);
+`;
+
+export const ClearAllButton = styled.button`
+    background: none;
+    border: none;
+    color: #777;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &:hover {
+        color: #999;
+    }
 `;
 
 export const Column = styled.div`
@@ -175,24 +197,18 @@ export const Divider = styled.div`
 `;
 
 export const SearchItem = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #333;
-
-    &:hover {
-        background-color: #252525;
-    }
+    position: relative;
+    padding: 12px 10px; /* 좌우 패딩 추가 */
 `;
 
 export const SearchItemText = styled.span`
-    color: #bbb;
+    color: var(--secondary-70);
     font-size: var(--font-W-Content-S);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    flex: 1;
+
+    max-width: calc(100% - 30px); /* X 버튼 공간 확보 */
 `;
 
 export const DeleteButton = styled.button`
@@ -200,10 +216,10 @@ export const DeleteButton = styled.button`
     border: none;
     color: #666;
     cursor: pointer;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 4px;
+    padding: 0;
 
     &:hover {
         color: #999;
@@ -228,7 +244,7 @@ export const SearchListItem = styled.li`
 `;
 
 export const RankNumber = styled.span`
-    color: ${({ isTop3 }) => (isTop3 ? "#ff5252" : "#666")};
+    color: ${({ isTop3 }) => (isTop3 ? "#f59c04" : "#666")};
     font-weight: ${({ isTop3 }) => (isTop3 ? "bold" : "normal")};
     margin-right: 15px;
     min-width: 20px;
@@ -240,4 +256,153 @@ export const UpdateTime = styled.div`
     font-size: 12px;
     margin-top: 20px;
     text-align: right;
+`;
+
+// 검색 결과 관련 스타일
+export const SearchResultsContainer = styled.div`
+    width: 1778px;
+    margin: 40px auto;
+    padding: 0 30px;
+`;
+
+export const SearchResultsHeader = styled.h2`
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #333;
+`;
+
+export const SearchResultItem = styled.div`
+    display: flex;
+    padding: 20px 0;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+`;
+
+export const SearchResultImage = styled.img`
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 20px;
+    flex-shrink: 0;
+`;
+
+export const SearchResultInfo = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+`;
+
+export const SearchResultTitle = styled.h3`
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 10px;
+
+    span {
+        color: #aaa;
+        font-weight: normal;
+    }
+`;
+
+export const SearchResultMeta = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+`;
+
+export const SearchResultReleaseDate = styled.span`
+    font-size: 14px;
+    color: #aaa;
+    margin-right: 20px;
+`;
+
+export const SearchResultRating = styled.span`
+    font-size: 14px;
+    color: #ffc107;
+    display: flex;
+    align-items: center;
+
+    &::before {
+        content: "★";
+        margin-right: 4px;
+    }
+`;
+
+export const SearchResultOverview = styled.p`
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.5;
+    max-height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+`;
+
+export const SearchResultContent = styled.p`
+    font-size: 14px;
+    color: #aaa;
+    line-height: 1.5;
+`;
+
+// 로딩 스피너
+export const LoadingSpinner = styled.div`
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: #fff;
+    margin: 50px auto;
+    animation: spin 1s linear infinite;
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+`;
+
+// 페이지네이션
+export const PaginationContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    padding: 20px 0;
+`;
+
+export const PaginationButton = styled.button`
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover:not(:disabled) {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+`;
+
+export const PageInfo = styled.span`
+    color: #aaa;
+    font-size: 14px;
 `;
