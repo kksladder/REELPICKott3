@@ -14,19 +14,20 @@ import SearchPage from "./pages/search";
 import Landing from "./pages/landing";
 import Reelpick from "./pages/reelpick";
 import MoviePage from "./pages/movie";
-import MyPageLayout from "./common/mypageLayout/mypageLayout";
 import Profile from "./components/account/Profile";
 import ViewingHistory from "./components/account/ViewingHistory";
 import ProfileEdit from "./components/account/ProfileEdit";
 import ProfileModal from "./components/account/ProfileModal";
-import Mypage from "./pages/mypage/Mypage";
 import ProfileAdd from "./components/account/ProfileAdd";
 import AccountMembership from "./components/account/AccountMembership";
 import AccountCS from "./components/account/AccountCS";
 import TestPage from "./pages/test";
 import AccountContents from "./components/account/AccountContents";
 import WatchingContent from "./components/account/WatchingContent";
-
+import MembershipManagement from "./components/account/MembershipManagement";
+import Cancelmembership from "./components/account/Cancelmembership";
+import NoticeContents from "./components/account/NoticeContents";
+import MyPageLayout from "./common/myPageLayout/MyPageLayout";
 
 function App() {
     return (
@@ -58,7 +59,7 @@ function App() {
                         <Route path="/test" element={<TestPage />} />
                         {/* 조심 */}
                         <Route path="/mypage" element={<MyPageLayout />}>
-                            <Route index element={<Mypage />} />
+                            <Route index element={<MyPageLayout />} />
                             <Route path="accountcontents" element={<AccountContents />} />
                             <Route path="profile" element={<Profile />} />/
                             <Route path="profileedit" element={<ProfileEdit />} />
@@ -68,6 +69,9 @@ function App() {
                             <Route path="membership" element={<AccountMembership />} />
                             <Route path="cs" element={<AccountCS />} />
                             <Route path="watchingcontent" element={<WatchingContent />} />
+                            <Route path="membershipmanagement" element={<MembershipManagement />} />
+                            <Route path="cancelmembership" element={<Cancelmembership />} />
+                            <Route path="noticecontents" element={<NoticeContents />} />
                         </Route>
                     </Route>
                 </Routes>

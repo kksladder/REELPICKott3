@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Null from "./Null";
 import HeartNull from "./HeartNull";
 import MembershipNull from "./MembershipNull";
+import { useSelector } from "react-redux";
+import Membershipstate from "./Membershipstate";
 
 export const H1 = styled.h1`
     font-size: 40px;
@@ -52,22 +54,36 @@ const AccountContents = () => {
         console.log(selectedMembership.price); // '5,500'
         console.log(selectedMembership.date); // '2025-02-12T01:37:39.259Z'
     }
+    const { goTg } = useSelector((state) => state.authR);
+    const aRef = useRef(null);
+    const bRef = useRef(null);
+    const cRef = useRef(null);
 
+    useEffect(() => {
+        if (goTg === "a" && aRef.current) {
+            window.scrollTo({ top: aRef.current.offsetTop, behavior: "smooth" });
+        } else if (goTg === "b" && bRef.current) {
+            window.scrollTo({ top: bRef.current.offsetTop, behavior: "smooth" });
+        } else if (goTg === "c" && cRef.current) {
+            window.scrollTo({ top: cRef.current.offsetTop, behavior: "smooth" });
+        }
+    }, [goTg]);
+    const { authed } = useSelector((state) => state.authR); // 로그인 여부 상태 가져오기
     return (
         <>
             <H1>MY</H1>
-            <Content>
+            <Content ref={aRef}>
                 <h3>최근 시청중인 컨텐츠</h3>
                 <Null />
             </Content>
-            <Content id="membership-section2">
+            <Content ref={bRef}>
                 <h3>찜한 컨텐츠</h3>
                 <HeartNull />
             </Content>
-            <Content id="membership-section">
+            <Content ref={cRef}>
                 <h3>현재 이용중인 멤버십</h3>
 
-                {selectedMembership && <MembershipNull />}
+                {authed ? <Membershipstate /> : <MembershipNull />}
             </Content>
         </>
     );
