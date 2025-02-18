@@ -35,6 +35,8 @@ import {
 } from "./style";
 
 const SearchPage = () => {
+
+
     const [searchQuery, setSearchQuery] = useState("");
     const [showResults, setShowResults] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -182,6 +184,7 @@ const SearchPage = () => {
             </ThumbnailsSection>
         </SearchContainer>
     );
+
 };
 
 export default SearchPage;
