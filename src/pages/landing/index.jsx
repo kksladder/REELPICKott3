@@ -73,7 +73,7 @@ const Gallery = () => {
                 throttleTimeout = setTimeout(() => {
                     throttleTimeout = null;
                     handleMouseMove(e);
-                }, 16); // 약 60fps
+                }, 16);
             }
         };
 

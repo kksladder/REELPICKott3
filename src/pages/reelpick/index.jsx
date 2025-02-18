@@ -116,7 +116,7 @@ const Reelpick = () => {
     if (isLoading) {
         return (
             <LoadingWrapper>
-                <div>릴픽 불러오는 중 !!</div>
+                <div></div>
             </LoadingWrapper>
         );
     }
