@@ -249,6 +249,20 @@ export const ProductDetail = styled.section`
 export const SeasonVideo = styled.section`
     margin-bottom: 85px;
 
+    .season-selector{
+button{
+        width: 66px;
+        height: 31px;
+        background-color: var(--secondary-600);
+        color: var(--white);
+        border-radius: 7px;
+        margin-right: 5px;
+        &:hover{
+            background-color: var( --secondary-500);
+        }
+    }
+    }
+    
     .under-line {
         padding-top: 85px;
         border-bottom: 2px solid var(--secondary-600);

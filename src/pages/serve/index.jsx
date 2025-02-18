@@ -8,6 +8,7 @@ import { getMovieDetails } from "../../store/modules/getThunk";
 import CastList from "../../components/sub/cast/CastList";
 import { useLocation } from "react-router-dom";
 import EpisodeList from "../../components/sub/episode/EpisodeList";
+import { GlassRightCircleBtn } from "../../ui/icon/GlassCircle";
 
 const ServePage = () => {
     const { movieId } = useParams();
@@ -171,7 +172,8 @@ const ServePage = () => {
                 <div className="pd_sec">
                     <div className="director">
                         {director && (
-                            <Link to={`/director/${director.id}`}>
+                            // <Link to={`/director/${director.id}`}>
+                            <Link to={"/director"}>
                                 <div className="pd_img">
                                     <img
                                         src={
@@ -203,6 +205,7 @@ const ServePage = () => {
                             <div className="season-selector">
                                 {currentMovie.seasons.map((season) => (
                                     <button
+                                        className="season-btn"
                                         key={season.season_number}
                                         onClick={() => setSelectedSeason(season.season_number)}
                                         className={selectedSeason === season.season_number ? "active" : ""}
@@ -213,6 +216,10 @@ const ServePage = () => {
                             </div>
                         )}
                         <div className="season-title">{seasonContent?.title}</div>
+
+                        {/* <div className="season-button">
+                            <GlassRightCircleBtn />
+                        </div> */}
                         <EpisodeList episodes={seasonContent?.content || []} />
                         <div className="under-line"></div>
                     </SeasonVideo>
