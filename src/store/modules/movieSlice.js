@@ -1,22 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { getMovie, getMovieDetails } from './getThunk';
+import { createSlice } from "@reduxjs/toolkit";
+import { getMovie, getMovieDetails } from "./getThunk";
 
 const initialState = {
     movieData: [],
     currentMovie: null,
     loading: false,
-    error: null
+    error: null,
 };
 
 const movieSlice = createSlice({
-    name: 'movieR', // Using your existing slice name
+    name: "movieR",
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // Handle getMovie thunk
             .addCase(getMovie.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(getMovie.fulfilled, (state, action) => {
                 state.loading = false;
@@ -26,10 +26,9 @@ const movieSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
             })
-            
-            // Handle getMovieDetails thunk
             .addCase(getMovieDetails.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(getMovieDetails.fulfilled, (state, action) => {
                 state.loading = false;
@@ -39,7 +38,7 @@ const movieSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
             });
-    }
+    },
 });
 
 export default movieSlice.reducer;

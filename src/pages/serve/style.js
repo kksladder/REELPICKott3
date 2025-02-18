@@ -179,70 +179,67 @@ export const HeartButton = styled.section`
 `;
 
 export const ProductDetail = styled.section`
-    width: 100%;
-    flex-shrink: 1;
-    display: block;
-    margin-top: 58px;
-    padding-left: 64px;
-    height: 378px;
-    overflow: hidden; // 불필요한 스크롤 방지
-    /* background-color: aliceblue; */
-    .title {
-        font-size: var(--font-content-XXsmall);
-    }
-    .pd_sec,
-    .actor_sec {
-        display: flex;
-        overflow-y: hidden;
-    }
-    ::-webkit-scrollbar {
-        display: none;
-    }
-    .pd {
-        display: block;
-        width: fit-content;
-        padding-right: 20px;
+  width: 100%;
+  flex-shrink: 1;
+  display: block;
+  margin-top: 58px;
+  padding-left: 64px;
+  height: 378px;
+  overflow: hidden;
 
-        margin-top: 16px;
-        flex-shrink: 1;
-        height: auto;
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
 
-        font-size: var(--font-content-XXsmall);
-        flex-wrap: wrap;
-        align-content: flex-start;
-        position: relative;
-        position: sticky;
-        top: 0;
-        a {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .pd_img {
-            width: 137px;
-            height: 130px;
-            border-radius: 50%;
-            background: #d9d9d9;
-        }
-        .pd_name {
-            margin: 10px 0;
-        }
-        .pd_part {
-            color: var(--secondary-300);
-        }
-    }
-    .pd::after {
-        content: '';
-        position: absolute;
-        right: 0;
-        width: 2px;
-        height: 50%;
-        background-color: var(--secondary-600);
-        top: 50%;
-        transform: translateY(-50%);
+  .pd_sec {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .director {
+    width: 130px;
+    text-align: center;
+    margin-right: 30px;
+    position: sticky;
+    top: 0;
+
+    .pd_img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 10px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
 
+    .pd_name {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pd_part {
+      font-size: 14px;
+      color: #999;
+    }
+  }
+
+  .cast {
+    flex: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-left: 30px;
+  }
 `;
 
 /////////////////////

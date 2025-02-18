@@ -1,17 +1,17 @@
-// components/sub/cast/CastList.jsx
 import { CastListWrap } from "../style";
 import CastItem from "./CastItem";
 
-const CastList = ({ cast = [], onMouseMove }) => {
-    // If no cast data, return empty component
+// CastList.jsx
+const CastList = ({ cast }) => {
     if (!cast || cast.length === 0) {
-        return <CastListWrap onMouseMove={onMouseMove}></CastListWrap>;
+        return <div>출연진 정보가 없습니다.</div>;
     }
 
+    // 중복을 방지하기 위해 index를 추가한 고유 key 생성
     return (
-        <CastListWrap onMouseMove={onMouseMove}>
-            {cast.map((actor) => (
-                <CastItem key={actor.id} actor={actor} />
+        <CastListWrap>
+            {cast.map((actor, index) => (
+                <CastItem key={`${actor.id}_${index}`} actor={actor} />
             ))}
         </CastListWrap>
     );
