@@ -1,3 +1,4 @@
+// store/modules/movieSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import { getMovie, getMovieDetails } from "./getThunk";
 
