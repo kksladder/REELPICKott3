@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const SearchContainer = styled.div`
     width: 1920px;
-    height: 1977px;
+    height: 1900px;
     background-color: #111;
     color: white;
     display: flex;
@@ -30,13 +30,13 @@ export const SearchInput = styled.input`
     flex: 1;
     background-color: transparent;
     border: none;
-    color: white;
+    color: var(--white);
     font-size: 20px;
     padding: 15px 0;
     outline: none;
 
     &::placeholder {
-        color: var(--white);
+        color: var(--secondary-70);
     }
 `;
 
@@ -132,7 +132,7 @@ export const DropdownContainer = styled.div`
     top: 100%;
     left: 0;
     width: 1780px;
-    height: 719px;
+    height: 549px;
     background-color: #1c1c1c;
     border: 1px solid #333;
     z-index: 1000;
@@ -149,11 +149,32 @@ export const DropdownColumns = styled.div`
     height: 100%;
 `;
 
-export const ColumnTitle = styled.h3`
-    font-size: 26px;
-    color: #fff;
+export const ColumnTitleContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 20px;
-    font-weight: 700;
+`;
+
+export const ColumnTitle = styled.h3`
+    font-size: 24px;
+    color: #fff;
+    font-weight: var(--font-weight-SemiBold);
+`;
+
+export const ClearAllButton = styled.button`
+    background: none;
+    border: none;
+    color: #777;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &:hover {
+        color: #999;
+    }
 `;
 
 export const Column = styled.div`
@@ -175,11 +196,9 @@ export const Divider = styled.div`
 `;
 
 export const SearchItem = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #333;
+    position: relative;
+    padding: 12px 10px; /* 좌우 패딩 추가 */
+    border-bottom: 1px solid var(--secondary-400);
 
     &:hover {
         background-color: #252525;
@@ -187,12 +206,13 @@ export const SearchItem = styled.div`
 `;
 
 export const SearchItemText = styled.span`
-    color: #bbb;
+    color: var(--secondary-70);
     font-size: var(--font-W-Content-S);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    flex: 1;
+    display: inline-block;
+    max-width: calc(100% - 30px); /* X 버튼 공간 확보 */
 `;
 
 export const DeleteButton = styled.button`
@@ -200,10 +220,11 @@ export const DeleteButton = styled.button`
     border: none;
     color: #666;
     cursor: pointer;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 4px;
+    line-height: 1.7; /* X 아이콘 정렬을 위해 */
+    padding: 0;
 
     &:hover {
         color: #999;

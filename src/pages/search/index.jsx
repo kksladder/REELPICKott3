@@ -32,6 +32,8 @@ import {
     SearchListItem,
     RankNumber,
     UpdateTime,
+    ColumnTitleContainer,
+    ClearAllButton,
 } from "./style";
 
 const SearchPage = () => {
@@ -39,6 +41,26 @@ const SearchPage = () => {
     const [showResults, setShowResults] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const searchContainerRef = useRef(null);
+
+    // 최근 검색어 상태 관리
+    const [recentSearches, setRecentSearches] = useState([
+        { id: 1, text: "워터멜론 코난" },
+        { id: 2, text: "신시우기" },
+    ]);
+
+    // 실시간 인기 검색어 데이터
+    const popularSearches = [
+        { id: 1, text: "워터멜론 코난 : 100만 달러의 백태경주 - 극장판 27기" },
+        { id: 2, text: "창문은 못 닫았어" },
+        { id: 3, text: "사냥꾼" },
+        { id: 4, text: "골건은 무덤에" },
+        { id: 5, text: "침입" },
+        { id: 6, text: "언네임드 히어" },
+        { id: 7, text: "착한말" },
+        { id: 8, text: "원피스 골드 : 100만 달러의 필름 스트라이크 - 극장판 26기" },
+        { id: 9, text: "원피스 골드 : 100만 달러의 필름 스트라이크 - 극장판 25기" },
+        { id: 10, text: "원피스 골드 : 100만 달러의 필름 스트라이크 - 극장판 28기" },
+    ];
 
     // 외부 클릭 감지 로직
     useEffect(() => {
@@ -82,25 +104,15 @@ const SearchPage = () => {
         setIsDropdownOpen(false);
     };
 
-    // 최근 검색어 데이터
-    const recentSearches = [
-        { id: 1, text: "워터멜론 코난" },
-        { id: 2, text: "신시우기" },
-    ];
+    // 최근 검색어 삭제 함수
+    const handleDeleteRecentSearch = (id) => {
+        setRecentSearches((prevSearches) => prevSearches.filter((item) => item.id !== id));
+    };
 
-    // 실시간 인기 검색어 데이터
-    const popularSearches = [
-        { id: 1, text: "워터멜론 코난 : 100만 달러의 백태경주 - 극장판 27기" },
-        { id: 2, text: "창문은 못 닫았어" },
-        { id: 3, text: "사냥꾼" },
-        { id: 4, text: "골건은 무덤에" },
-        { id: 5, text: "침입" },
-        { id: 6, text: "언네임드 히어" },
-        { id: 7, text: "착한말" },
-        { id: 8, text: "원피스 골드 : 100만 달러의 필름 스트라이크 - 극장판 26기" },
-        { id: 9, text: "원피스 골드 : 100만 달러의 필름 스트라이크 - 극장판 25기" },
-        { id: 10, text: "원피스 골드 : 100만 달러의 필름 스트라이크 - 극장판 28기" },
-    ];
+    // 모든 최근 검색어 삭제 함수
+    const clearAllRecentSearches = () => {
+        setRecentSearches([]);
+    };
 
     // Mock data for thumbnails (5 identical thumbnails as shown in the image)
     const thumbnails = Array(5).fill({
@@ -132,15 +144,30 @@ const SearchPage = () => {
                         <DropdownContent>
                             <DropdownColumns>
                                 <LeftColumn>
-                                    <ColumnTitle>최근 검색어</ColumnTitle>
-                                    {recentSearches.map((item) => (
-                                        <SearchItem key={item.id}>
-                                            <SearchItemText>{item.text}</SearchItemText>
-                                            <DeleteButton>
-                                                <IoClose size={20} />
-                                            </DeleteButton>
+                                    <ColumnTitleContainer>
+                                        <ColumnTitle>최근 검색어</ColumnTitle>
+                                        <ClearAllButton onClick={clearAllRecentSearches}>
+                                            <IoClose size={20} />
+                                            모두 지우기
+                                        </ClearAllButton>
+                                    </ColumnTitleContainer>
+                                    {recentSearches.length > 0 ? (
+                                        recentSearches.map((item) => (
+                                            <SearchItem key={item.id}>
+                                                <SearchItemText>{item.text}</SearchItemText>
+                                                <DeleteButton
+                                                    onClick={() => handleDeleteRecentSearch(item.id)}
+                                                    aria-label="삭제"
+                                                >
+                                                    <IoClose size={18} />
+                                                </DeleteButton>
+                                            </SearchItem>
+                                        ))
+                                    ) : (
+                                        <SearchItem>
+                                            <SearchItemText>최근 검색 내역이 없습니다</SearchItemText>
                                         </SearchItem>
-                                    ))}
+                                    )}
                                 </LeftColumn>
                                 <Divider />
                                 <Divider />
