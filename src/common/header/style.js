@@ -122,10 +122,5 @@ export const TopMenu2 = styled.nav`
             align-items: center;
             transition: opacity 0.3s ease;
         }
-
-        img {
-            width: 28px;
-            height: 28px;
-        }
     }
 `;
