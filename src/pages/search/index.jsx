@@ -16,12 +16,18 @@ import {
     ThumbnailItem,
     ThumbnailImage,
     ThumbnailTitle,
+    SearchResultsContainer,
+    SearchResultsHeader,
+    SearchResultItem,
+    SearchResultTitle,
+    SearchResultContent,
 
     // 드롭다운 관련 스타일
     DropdownContainer,
     DropdownContent,
     DropdownColumns,
     ColumnTitle,
+    ColumnTitleContainer,
     LeftColumn,
     RightColumn,
     Divider,
@@ -32,21 +38,25 @@ import {
     SearchListItem,
     RankNumber,
     UpdateTime,
-    ColumnTitleContainer,
     ClearAllButton,
 } from "./style";
+
+// 로컬스토리지 키
+const RECENT_SEARCHES_KEY = "recentSearches";
+// 최대 저장 검색어 수
+const MAX_RECENT_SEARCHES = 10;
 
 const SearchPage = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [showResults, setShowResults] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [searchExecuted, setSearchExecuted] = useState(false);
+    const [searchResults, setSearchResults] = useState([]);
     const searchContainerRef = useRef(null);
+    const searchInputRef = useRef(null);
 
-    // 최근 검색어 상태 관리
-    const [recentSearches, setRecentSearches] = useState([
-        { id: 1, text: "워터멜론 코난" },
-        { id: 2, text: "신시우기" },
-    ]);
+    // 최근 검색어 상태 관리 - 초기값은 빈 배열
+    const [recentSearches, setRecentSearches] = useState([]);
 
     // 실시간 인기 검색어 데이터
     const popularSearches = [
@@ -62,6 +72,21 @@ const SearchPage = () => {
         { id: 10, text: "원피스 골드 : 100만 달러의 필름 스트라이크 - 극장판 28기" },
     ];
 
+    // 컴포넌트 마운트 시 로컬스토리지에서 최근 검색어 불러오기
+    useEffect(() => {
+        const savedSearches = localStorage.getItem(RECENT_SEARCHES_KEY);
+        if (savedSearches) {
+            try {
+                const parsedSearches = JSON.parse(savedSearches);
+                setRecentSearches(parsedSearches);
+            } catch (error) {
+                console.error("Failed to parse saved searches:", error);
+                // 파싱 오류 시 로컬스토리지 초기화
+                localStorage.removeItem(RECENT_SEARCHES_KEY);
+            }
+        }
+    }, []);
+
     // 외부 클릭 감지 로직
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -76,10 +101,32 @@ const SearchPage = () => {
         };
     }, []);
 
+    // 검색어를 로컬스토리지에 저장하는 함수
+    const saveRecentSearchesToLocalStorage = (searches) => {
+        localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(searches));
+    };
+
+    // 새 검색어 추가 함수
+    const addRecentSearch = (searchText) => {
+        if (!searchText.trim()) return;
+
+        const newSearch = { id: Date.now(), text: searchText.trim() };
+
+        // 중복 검색어 필터링
+        const filteredSearches = recentSearches.filter(
+            (item) => item.text.toLowerCase() !== searchText.trim().toLowerCase()
+        );
+
+        // 최대 개수 제한하여 새 검색어 추가 (최신 검색어가 맨 앞에 위치)
+        const updatedSearches = [newSearch, ...filteredSearches].slice(0, MAX_RECENT_SEARCHES);
+
+        setRecentSearches(updatedSearches);
+        saveRecentSearchesToLocalStorage(updatedSearches);
+    };
+
     const handleSearch = (e) => {
         const value = e.target.value;
         setSearchQuery(value);
-        setShowResults(value.length > 0);
 
         // 검색어 입력 시 드롭다운 닫기
         if (value.length > 0) {
@@ -87,9 +134,61 @@ const SearchPage = () => {
         }
     };
 
+    // 가상의 검색 결과를 생성하는 함수 (실제로는 API 호출로 대체)
+    const getSearchResults = (query) => {
+        // 간단한 예시 결과 생성
+        return [
+            {
+                id: 1,
+                title: `"${query}" 검색 결과 `,
+                content: `이것은 "${query}"에 대한 첫 번째 검색 결과입니다.`,
+                imageUrl: "/images/search-result1.jpg",
+            },
+            {
+                id: 2,
+                title: `"${query}" 관련 콘텐츠`,
+                content: `"${query}"와 관련된 인기 콘텐츠를 확인해보세요.`,
+                imageUrl: "/images/search-result2.jpg",
+            },
+            {
+                id: 3,
+                title: `최신 "${query}" 업데이트`,
+                content: `최근 업데이트된 "${query}" 관련 정보입니다.`,
+                imageUrl: "/images/search-result3.jpg",
+            },
+        ];
+    };
+
+    // 검색 실행 함수 (Enter 키 누를 때 또는 검색 버튼 클릭 시)
+    const executeSearch = () => {
+        if (searchQuery.trim()) {
+            // 검색어 로컬스토리지에 저장
+            addRecentSearch(searchQuery);
+
+            // 검색 결과 설정 (실제 환경에서는 API 호출)
+            const results = getSearchResults(searchQuery);
+            setSearchResults(results);
+
+            // 검색 실행 상태 설정
+            setSearchExecuted(true);
+            setShowResults(true);
+
+            // 드롭다운 닫기
+            setIsDropdownOpen(false);
+        }
+    };
+
+    // Enter 키 감지
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+            executeSearch();
+        }
+    };
+
     const clearSearch = () => {
         setSearchQuery("");
         setShowResults(false);
+        setSearchExecuted(false);
         setIsDropdownOpen(false);
     };
 
@@ -100,18 +199,30 @@ const SearchPage = () => {
         }
     };
 
-    const closeDropdown = () => {
-        setIsDropdownOpen(false);
+    // 최근 검색어 클릭 시 해당 검색어로 검색
+    const handleSearchItemClick = (searchText) => {
+        setSearchQuery(searchText);
+
+        // setTimeout을 사용하여 상태 업데이트 후 검색 실행
+        setTimeout(() => {
+            executeSearch();
+        }, 0);
     };
 
     // 최근 검색어 삭제 함수
-    const handleDeleteRecentSearch = (id) => {
-        setRecentSearches((prevSearches) => prevSearches.filter((item) => item.id !== id));
+    const handleDeleteRecentSearch = (id, e) => {
+        // 이벤트 버블링 방지
+        e.stopPropagation();
+
+        const updatedSearches = recentSearches.filter((item) => item.id !== id);
+        setRecentSearches(updatedSearches);
+        saveRecentSearchesToLocalStorage(updatedSearches);
     };
 
     // 모든 최근 검색어 삭제 함수
     const clearAllRecentSearches = () => {
         setRecentSearches([]);
+        localStorage.removeItem(RECENT_SEARCHES_KEY);
     };
 
     // Mock data for thumbnails (5 identical thumbnails as shown in the image)
@@ -124,13 +235,15 @@ const SearchPage = () => {
     return (
         <SearchContainer ref={searchContainerRef}>
             <SearchBarContainer>
-                <IoIosSearch size={40} />
+                <IoIosSearch size={40} onClick={executeSearch} style={{ cursor: "pointer" }} />
                 <SearchInput
+                    ref={searchInputRef}
                     type="text"
                     placeholder="검색어 내용을 입력해 주세요."
                     value={searchQuery}
                     onChange={handleSearch}
                     onFocus={handleSearchBarFocus}
+                    onKeyPress={handleKeyPress}
                 />
                 {(searchQuery || isDropdownOpen) && (
                     <CloseButton onClick={clearSearch}>
@@ -146,17 +259,23 @@ const SearchPage = () => {
                                 <LeftColumn>
                                     <ColumnTitleContainer>
                                         <ColumnTitle>최근 검색어</ColumnTitle>
-                                        <ClearAllButton onClick={clearAllRecentSearches}>
-                                            <IoClose size={20} />
-                                            모두 지우기
-                                        </ClearAllButton>
+                                        {recentSearches.length > 0 && (
+                                            <ClearAllButton onClick={clearAllRecentSearches}>
+                                                <IoClose size={18} />
+                                                모두 지우기
+                                            </ClearAllButton>
+                                        )}
                                     </ColumnTitleContainer>
                                     {recentSearches.length > 0 ? (
                                         recentSearches.map((item) => (
-                                            <SearchItem key={item.id}>
+                                            <SearchItem
+                                                key={item.id}
+                                                onClick={() => handleSearchItemClick(item.text)}
+                                                style={{ cursor: "pointer" }}
+                                            >
                                                 <SearchItemText>{item.text}</SearchItemText>
                                                 <DeleteButton
-                                                    onClick={() => handleDeleteRecentSearch(item.id)}
+                                                    onClick={(e) => handleDeleteRecentSearch(item.id, e)}
                                                     aria-label="삭제"
                                                 >
                                                     <IoClose size={18} />
@@ -175,7 +294,11 @@ const SearchPage = () => {
                                     <ColumnTitle>실시간 인기검색어</ColumnTitle>
                                     <SearchList>
                                         {popularSearches.map((item, index) => (
-                                            <SearchListItem key={item.id}>
+                                            <SearchListItem
+                                                key={item.id}
+                                                onClick={() => handleSearchItemClick(item.text)}
+                                                style={{ cursor: "pointer" }}
+                                            >
                                                 <RankNumber isTop3={index < 3}>{index + 1}</RankNumber>
                                                 <SearchItemText>{item.text}</SearchItemText>
                                             </SearchListItem>
@@ -189,24 +312,41 @@ const SearchPage = () => {
                 )}
             </SearchBarContainer>
 
-            {!showResults && (
-                <NoResultsContainer>
-                    <img src="/icon/noserch.svg" alt="검색 결과 없음" width="80" height="80" />
-                    <NoResultsText>검색 내용이 없습니다!</NoResultsText>
-                </NoResultsContainer>
-            )}
-
-            <ThumbnailsSection>
-                <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
-                <ThumbnailsGrid>
-                    {thumbnails.map((thumbnail, index) => (
-                        <ThumbnailItem key={index}>
-                            <ThumbnailImage src={thumbnail.imageUrl} alt={thumbnail.title} />
-                            <ThumbnailTitle>{thumbnail.title}</ThumbnailTitle>
-                        </ThumbnailItem>
+            {/* 검색 결과 또는 기본 화면 표시 */}
+            {searchExecuted && showResults ? (
+                <SearchResultsContainer>
+                    <SearchResultsHeader>
+                        "{searchQuery}" 검색 결과 ({searchResults.length})
+                    </SearchResultsHeader>
+                    {searchResults.map((result) => (
+                        <SearchResultItem key={result.id}>
+                            <SearchResultTitle>{result.title}</SearchResultTitle>
+                            <SearchResultContent>{result.content}</SearchResultContent>
+                        </SearchResultItem>
                     ))}
-                </ThumbnailsGrid>
-            </ThumbnailsSection>
+                </SearchResultsContainer>
+            ) : (
+                <>
+                    {!showResults && (
+                        <NoResultsContainer>
+                            <img src="/icon/noserch.svg" alt="검색 결과 없음" width="80" height="80" />
+                            <NoResultsText>검색 내용이 없습니다!</NoResultsText>
+                        </NoResultsContainer>
+                    )}
+
+                    <ThumbnailsSection>
+                        <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
+                        <ThumbnailsGrid>
+                            {thumbnails.map((thumbnail, index) => (
+                                <ThumbnailItem key={index}>
+                                    <ThumbnailImage src={thumbnail.imageUrl} alt={thumbnail.title} />
+                                    <ThumbnailTitle>{thumbnail.title}</ThumbnailTitle>
+                                </ThumbnailItem>
+                            ))}
+                        </ThumbnailsGrid>
+                    </ThumbnailsSection>
+                </>
+            )}
         </SearchContainer>
     );
 };
