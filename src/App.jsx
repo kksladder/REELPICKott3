@@ -22,12 +22,14 @@ import ProfileAdd from "./components/account/ProfileAdd";
 import AccountMembership from "./components/account/AccountMembership";
 import AccountCS from "./components/account/AccountCS";
 import TestPage from "./pages/test";
+import DirectorPage from "./pages/directer";
 import AccountContents from "./components/account/AccountContents";
 import WatchingContent from "./components/account/WatchingContent";
 import MembershipManagement from "./components/account/MembershipManagement";
 import Cancelmembership from "./components/account/Cancelmembership";
 import NoticeContents from "./components/account/NoticeContents";
 import MyPageLayout from "./common/myPageLayout/MyPageLayout";
+
 
 function App() {
     return (
@@ -47,7 +49,7 @@ function App() {
                         <Route path="/search" element={<SearchPage />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signUp" element={<SignUpPage />} />
-                        <Route path="/serve/:moviId" element={<ServePage />} />
+                        <Route path="/serve/:movieId" element={<ServePage />} />
                         <Route path="/membership" element={<Membership />} />
                         <Route path="/reelpick" element={<Reelpick />} />
                         <Route path="/basket" element={<Basket />} />
@@ -57,6 +59,9 @@ function App() {
                         <Route path="/landing" element={<Landing />} />
                         <Route path="/pwfind" element={<PWFind />} />
                         <Route path="/test" element={<TestPage />} />
+                        <Route path="/director" element={<DirectorPage />} />
+
+
                         {/* 조심 */}
                         <Route path="/mypage" element={<MyPageLayout />}>
                             <Route index element={<MyPageLayout />} />

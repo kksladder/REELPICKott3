@@ -1,52 +1,70 @@
 import styled from "styled-components";
 
 export const CastListWrap = styled.div`
-    display: flex;
-    overflow-x: auto;
-    gap: 16px;
-    width: 100%;
-    
-    /* Hide scrollbar for Chrome, Safari and Opera */
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    
-    /* Hide scrollbar for IE, Edge and Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+  }
 `;
 
+
 export const CastItemWrap = styled.div`
-    .actor {
-        min-width: 120px;
-        text-align: center;
-        
-        .actor_img {
-            width: 120px;
-            height: 180px;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 8px;
-            background: #333;
-            
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-        }
-        
-        .actor_name {
-            font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-        
-        .actor_part {
-            font-size: 12px;
-            color: #999;
-        }
+  .actor {
+    width: 120px;
+    text-align: center;
+
+    .actor_img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 8px;
+      background: #333;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .placeholder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background-color: #f0f0f0;
+        color: #999;
+        font-size: 14px;
+      }
     }
+
+    .actor_name {
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .actor_part {
+      font-size: 12px;
+      color: #999;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 `;
 
 export const EpisodeListWrap = styled.section`

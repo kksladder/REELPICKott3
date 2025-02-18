@@ -8,14 +8,14 @@ const CastItem = ({ actor }) => {
 
     const imageUrl = actor.profile_path
         ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
-        : "/placeholder-actor.png"; // You should add a placeholder image
+        : "/images/profileNo.png"; // You should add a placeholder image
 
     return (
         <CastItemWrap>
             <div className="actor">
                 <Link to={`/person/${actor.id}`}>
                     <div className="actor_img">
-                        <img src={imageUrl} alt={actor.name} />
+                        <img src={imageUrl} />
                     </div>
                     <p className="actor_name">{actor.name}</p>
                     <p className="actor_part">{actor.character}</p>

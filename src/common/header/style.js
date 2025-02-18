@@ -1,40 +1,49 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 // 링크에 대한 스타일 정의
 export const StyledLink = styled(Link)`
-    text-decoration: none; /* 링크에 밑줄 없애기 */
-    color: inherit; /* 상속된 색상 사용 (링크 색상 수정 시 이 부분도 필요할 수 있습니다) */
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: var(--primary-40);
+    }
 `;
 
 // HeaderWrap 컴포넌트
 export const HeaderWrap = styled.header`
     margin: 0 70px;
-    width: calc(100% - 140px); // 전체 너비에서 좌우 마진 빼기
+    width: calc(100% - 140px);
     height: 70px;
-    max-width: 1920px; // 최대 너비 설정 (선택사항)
+    max-width: 1920px;
     min-width: 390px;
+
     .header_inner {
         display: flex;
         width: 100%;
         height: 100%;
+
         h1 {
             width: 13%;
             margin: 0;
             padding: 0;
             height: 100%;
-            line-height: 70px;
+            line-height: 82px;
         }
     }
 `;
 
-// NavWrap 컴포넌트 (비어 있는 경우 불필요할 수 있음)
-export const NavWrap = styled.nav``;
+// NavWrap 컴포넌트
+export const NavWrap = styled.nav`
+    width: 100%;
+`;
 
 // TopMenu 컴포넌트
 export const TopMenu = styled.div`
     width: 87%;
     height: 70px;
+
     div {
         width: 100%;
         height: 100%;
@@ -42,8 +51,9 @@ export const TopMenu = styled.div`
         align-items: center;
         display: flex;
         justify-content: flex-end;
+
         button {
-            color: white;
+            color: var(--white);
             border: none;
             border-radius: 3px;
             cursor: pointer;
@@ -51,11 +61,19 @@ export const TopMenu = styled.div`
             padding: 10px 16px;
             font-weight: 600;
             background: #dedede;
-}
-        }
+            transition: background-color 0.3s ease;
 
-        .b1 {
-            background-color: #f59c04;
+            &:hover {
+                background-color: var(--primary-40);
+            }
+        }
+    }
+
+    .b1 {
+        background-color: var(--primary-40);
+
+        &:hover {
+            background-color: var(--primary-50);
         }
     }
 `;
@@ -69,27 +87,28 @@ export const TopMenu2 = styled.nav`
         display: flex;
         gap: 1.875rem;
         align-items: center;
-        margin-left: 51px;
+        margin-left: 82px;
     }
 
     .left-menu {
-        color: white;
-        font-size: 18px;
-        li {
-        }
+        color: var(--white);
+        font-size: var(--font-header-Small);
+        gap: 40px;
     }
 
     .right-menu {
-        height: 70px; // 원하는 높이 설정
+        height: 70px;
         display: flex;
-        align-items: center; // 세로 중앙 정렬
-        color: white;
+        align-items: center;
+        color: var(--white);
+
         ul {
             display: flex;
             list-style: none;
             gap: 1.625rem;
             align-items: center;
             height: 100%;
+            margin: 0;
         }
 
         li {
@@ -101,11 +120,7 @@ export const TopMenu2 = styled.nav`
         a {
             display: flex;
             align-items: center;
-        }
-
-        img {
-            width: 28px;
-            height: 28px;
+            transition: opacity 0.3s ease;
         }
     }
 `;

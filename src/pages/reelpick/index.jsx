@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Modal from '../../components/modal/Modal';
-import { IoClose } from 'react-icons/io5';
+import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { getMovieRecommendations } from "../../api/movieService";
+import Modal from "../../components/modal/Modal";
+import { IoClose } from "react-icons/io5";
 import {
     ReelpickWrapper,
     ReelpickTitle,
@@ -20,39 +21,38 @@ import {
     CartItemImage,
     RemoveButton,
     EmptySlot,
-} from './style';
-import { FaCheck } from 'react-icons/fa6';
-import { FaArrowUp } from 'react-icons/fa';
+    LoadingWrapper,
+} from "./style";
+import { FaCheck } from "react-icons/fa6";
+import { FaArrowUp } from "react-icons/fa";
 
 const Reelpick = () => {
     const navigate = useNavigate();
+    const [movies, setMovies] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [showScroll, setShowScroll] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [setIsPosterSelectActive] = useState(false);
     const [selectedMovies, setSelectedMovies] = useState([]);
     const [showCart, setShowCart] = useState(false);
 
     const maxItems = 10;
 
-    const movies = [
-        { id: 1, title: 'Movie 1', poster: '/images/22.jpg' },
-        { id: 2, title: 'Movie 2', poster: '/images/23.jpg' },
-        { id: 3, title: 'Movie 3', poster: '/images/24.jpg' },
-        { id: 4, title: 'Movie 4', poster: '/images/AAA.jpg' },
-        { id: 6, title: 'Movie 5', poster: '/images/pandabear.jpg' },
-        { id: 7, title: 'Movie 6', poster: '/images/monster.jpg' },
-        { id: 8, title: 'Movie 7', poster: '/images/parasite.jpg' },
-        { id: 9, title: 'Movie 8', poster: '/images/mother.jpg' },
-        { id: 10, title: 'Movie 9', poster: '/images/memorykilling.jpg' },
-        { id: 11, title: 'Movie 10', poster: '/images/okja.jpg' },
-        { id: 12, title: 'Movie 11', poster: '/images/dog.jpg' },
-        { id: 13, title: 'Movie 12', poster: '/images/ret.jpg' },
-        { id: 14, title: 'Movie 13', poster: '/images/nomnomnom.jpg' },
-        { id: 15, title: 'Movie 14', poster: '/images/lookeddevil.jpg' },
-        { id: 16, title: 'Movie 15', poster: '/images/janhwa.jpg' },
-    ];
-
     useEffect(() => {
+        const fetchMovies = async () => {
+            try {
+                setIsLoading(true);
+                const movieData = await getMovieRecommendations();
+                setMovies(movieData);
+            } catch (err) {
+                setError(err.message);
+                console.error("Failed to fetch movies:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchMovies();
         setIsModalOpen(true);
     }, []);
 
@@ -65,23 +65,22 @@ const Reelpick = () => {
             }
         };
 
-        window.addEventListener('scroll', checkScrollTop);
-        return () => window.removeEventListener('scroll', checkScrollTop);
+        window.addEventListener("scroll", checkScrollTop);
+        return () => window.removeEventListener("scroll", checkScrollTop);
     }, [showScroll]);
 
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
-            behavior: 'smooth',
+            behavior: "smooth",
         });
     };
 
     const handlePosterSelect = () => {
         setIsModalOpen(false);
-        setIsPosterSelectActive(true);
     };
 
-    const toggleMovieSelection = (movieId) => {
+    const toggleMovieSelection = useCallback((movieId) => {
         setSelectedMovies((prev) => {
             if (prev.includes(movieId)) {
                 const newSelection = prev.filter((id) => id !== movieId);
@@ -91,14 +90,14 @@ const Reelpick = () => {
                 return newSelection;
             } else {
                 if (prev.length >= maxItems) {
-                    alert('최대 10개까지만 선택할 수 있습니다.');
+                    alert("최대 10개까지만 선택할 수 있습니다.");
                     return prev;
                 }
                 setShowCart(true);
                 return [...prev, movieId];
             }
         });
-    };
+    }, []);
 
     const handleCancelAll = () => {
         setSelectedMovies([]);
@@ -106,27 +105,38 @@ const Reelpick = () => {
     };
 
     const goToBasket = () => {
-        navigate('/basket');
         const selectedMoviesData = movies.filter((movie) => selectedMovies.includes(movie.id));
-        navigate('/basket', {
+        navigate("/basket", {
             state: {
                 selectedMovies: selectedMoviesData,
             },
         });
     };
 
+    if (isLoading) {
+        return (
+            <LoadingWrapper>
+                <div></div>
+            </LoadingWrapper>
+        );
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
     return (
         <ReelpickWrapper>
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSelectPoster={handlePosterSelect} />
             <ReelpickTitle>릴픽 추천</ReelpickTitle>
             <ButtonGroup>
-                <Button onClick={handleCancelAll}>전체취소</Button>
+                {selectedMovies.length > 0 && <Button onClick={handleCancelAll}>전체취소</Button>}
                 <Button onClick={goToBasket}>릴픽확인</Button>
             </ButtonGroup>
             <MoviesGrid>
                 {movies.map((movie) => (
-                    <MovieCard key={movie.id} onClick={() => toggleMovieSelection(movie.id)}>
-                        <img src={movie.poster} alt={movie.title} />
+                    <MovieCard key={movie.id} onClick={() => toggleMovieSelection(movie.id)} $isKorean={movie.isKorean}>
+                        <img src={movie.poster} alt={movie.title} loading="lazy" />
                         {selectedMovies.includes(movie.id) && (
                             <CheckIcon>
                                 <FaCheck />
@@ -152,7 +162,7 @@ const Reelpick = () => {
                             <CartItemsContainer>
                                 {selectedMovies.map((movieId) => {
                                     const movie = movies.find((m) => m.id === movieId);
-                                    return (
+                                    return movie ? (
                                         <CartItem key={movieId}>
                                             <CartItemImage src={movie.poster} alt={movie.title} />
                                             <RemoveButton
@@ -164,7 +174,7 @@ const Reelpick = () => {
                                                 <IoClose size={16} />
                                             </RemoveButton>
                                         </CartItem>
-                                    );
+                                    ) : null;
                                 })}
 
                                 {Array.from({ length: maxItems - selectedMovies.length }).map((_, index) => (

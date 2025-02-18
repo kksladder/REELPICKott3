@@ -86,6 +86,28 @@ const Gallery = () => {
         };
     }, [handleMouseMove]);
 
+    useEffect(() => {
+        let frameId;
+        let throttleTimeout;
+
+        const throttledMouseMove = (e) => {
+            if (!throttleTimeout) {
+                throttleTimeout = setTimeout(() => {
+                    throttleTimeout = null;
+                    handleMouseMove(e);
+                }, 16);
+            }
+        };
+
+        window.addEventListener("mousemove", throttledMouseMove, { passive: true });
+
+        return () => {
+            window.removeEventListener("mousemove", throttledMouseMove);
+            cancelAnimationFrame(frameId);
+            clearTimeout(throttleTimeout);
+        };
+    }, [handleMouseMove]);
+
     return (
         <OverboardWindow>
             <Overboard x={mousePosition.x} y={mousePosition.y}>

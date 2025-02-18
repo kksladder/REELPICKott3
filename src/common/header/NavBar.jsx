@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { StyledLink, TopMenu, TopMenu2 } from "./style";
 import { useSelector } from "react-redux"; // You can remove useDispatch if not using it
 import { IoSearchOutline } from "react-icons/io5";
+import { BsPerson } from "react-icons/bs";
 
 const NavBar = () => {
     return (
@@ -33,7 +34,7 @@ const NavBar = () => {
                         </li>
                         <li>
                             <StyledLink to="/mypage/accountcontents">
-                                <img src="./images/profile.svg" alt="Profile" />
+                                <BsPerson size={30} />
                             </StyledLink>
                         </li>
                     </ul>
