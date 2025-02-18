@@ -48,7 +48,7 @@ function App() {
                         <Route path="/search" element={<SearchPage />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signUp" element={<SignUpPage />} />
-                        <Route path="/serve/:moviId" element={<ServePage />} />
+                        <Route path="/serve/:movieId" element={<ServePage />} />
                         <Route path="/membership" element={<Membership />} />
                         <Route path="/reelpick" element={<Reelpick />} />
                         <Route path="/basket" element={<Basket />} />

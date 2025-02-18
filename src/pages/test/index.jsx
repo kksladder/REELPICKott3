@@ -14,9 +14,8 @@ const TestPage = () => {
             <InputFill>ReelPick 시작하기</InputFill>
             <InputFillDe>test</InputFillDe>
             <InputLine customWidth="452px">로그인</InputLine>
-            <TestList/>
+            <TestList />
         </div>
-
     );
 };
 
