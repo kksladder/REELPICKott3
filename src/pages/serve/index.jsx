@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMovieDetails } from "../../store/modules/getThunk";
 import CastList from "../../components/sub/cast/CastList";
 import { useLocation } from "react-router-dom";
+import EpisodeList from "../../components/sub/episode/EpisodeList";
+import { GlassRightCircleBtn } from "../../ui/icon/GlassCircle";
 
 const ServePage = () => {
     const { movieId } = useParams();
@@ -170,7 +172,8 @@ const ServePage = () => {
                 <div className="pd_sec">
                     <div className="director">
                         {director && (
-                            <Link to={`/director/${director.id}`}>
+                            // <Link to={`/director/${director.id}`}>
+                            <Link to={"/director"}>
                                 <div className="pd_img">
                                     <img
                                         src={
@@ -202,6 +205,7 @@ const ServePage = () => {
                             <div className="season-selector">
                                 {currentMovie.seasons.map((season) => (
                                     <button
+                                        className="season-btn"
                                         key={season.season_number}
                                         onClick={() => setSelectedSeason(season.season_number)}
                                         className={selectedSeason === season.season_number ? "active" : ""}
@@ -211,41 +215,12 @@ const ServePage = () => {
                                 ))}
                             </div>
                         )}
-                        <div className="season-title">{seasonContent.title}</div>
-                        <div
-                            className="season-slide"
-                            onMouseDown={handleMouseDown}
-                            onMouseUp={handleMouseUp}
-                            onMouseLeave={handleMouseUp}
-                            onMouseMove={handleMouseMove}
-                        >
-                            <div className="season_vid-wrap">
-                                {seasonContent.content.map((item, index) => (
-                                    <div key={item.id || index} className="season_vid">
-                                        <div className="season_vid-item">
-                                            <img
-                                                src={`https://image.tmdb.org/t/p/w500${item.still_path}`}
-                                                alt={item.title}
-                                                onError={(e) => {
-                                                    e.target.src = "/images/profileNo.png";
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="season-vid_tit">{item.title}</div>
-                                        <div className="season-vid_info">
-                                            <div className="season-vid_day">
-                                                {item.air_date?.substring(0, 10) || "방영일 미정"}
-                                            </div>
-                                            <div className="season-vid_time">{item.runtime}분</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="season_slide-button">
-                                <SquarePreveBtn />
-                                <SquareNextBtn />
-                            </div>
-                        </div>
+                        <div className="season-title">{seasonContent?.title}</div>
+
+                        {/* <div className="season-button">
+                            <GlassRightCircleBtn />
+                        </div> */}
+                        <EpisodeList episodes={seasonContent?.content || []} />
                         <div className="under-line"></div>
                     </SeasonVideo>
 
