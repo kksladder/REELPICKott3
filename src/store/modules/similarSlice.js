@@ -8,35 +8,6 @@ const options = {
 };
 
 // 비슷한 컨텐츠 가져오기
-<<<<<<< HEAD
-export const getSimilarContent = createAsyncThunk("similar/getSimilarContent", async (params) => {
-    const { id, mediaType } = params;
-    const originalId = id.split("_")[1] || id;
-
-    try {
-        let url =
-            mediaType === "tv"
-                ? `https://api.themoviedb.org/3/tv/${originalId}/similar`
-                : `https://api.themoviedb.org/3/movie/${originalId}/similar`;
-
-        const response = await axios.get(url, { params: options });
-
-        // 결과 매핑
-        const similarContent = response.data.results.map((item) => ({
-            ...item,
-            media_type: mediaType,
-            id: `${mediaType}_${item.id}`,
-            title: mediaType === "tv" ? item.name : item.title,
-            release_date: mediaType === "tv" ? item.first_air_date : item.release_date,
-        }));
-
-        return similarContent.slice(0, 8); // 8개 항목으로 제한
-    } catch (error) {
-        console.error("Similar Content API Error:", error);
-        throw error;
-    }
-});
-=======
 export const getSimilarContent = createAsyncThunk(
     "similar/getSimilarContent",
     async (params) => {
@@ -66,7 +37,6 @@ export const getSimilarContent = createAsyncThunk(
         }
     }
 );
->>>>>>> ec4ea5dee80279e04ca170ec6a862dd96da1ab30
 
 // 초기 상태
 const initialState = {
@@ -103,8 +73,4 @@ const similarSlice = createSlice({
 });
 
 export const { clearSimilarContent } = similarSlice.actions;
-<<<<<<< HEAD
 export default similarSlice.reducer;
-=======
-export default similarSlice.reducer;
->>>>>>> ec4ea5dee80279e04ca170ec6a862dd96da1ab30

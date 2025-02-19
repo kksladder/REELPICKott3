@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> ec4ea5dee80279e04ca170ec6a862dd96da1ab30
 import { useDispatch, useSelector } from "react-redux";
 import { SquareNextBtn, SquarePreveBtn } from "../../../ui/Button/SlideButton"; // 경로 수정
 import { useEffect, useRef, useState } from "react";
