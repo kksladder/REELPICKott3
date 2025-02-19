@@ -1,12 +1,7 @@
-import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { OverboardWindow, Overboard, ImagesPlacer, MoviePoster } from "./style";
 
 const Gallery = () => {
-    const containerRef = useRef(null);
-    const posterRefs = useRef({});
-    const [hovered, setHovered] = useState(null);
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
     const movies = useMemo(
         () => [
             // 첫 번째 행 (11개)
@@ -51,6 +46,8 @@ const Gallery = () => {
         []
     );
 
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
     const handleMouseMove = useCallback((e) => {
         requestAnimationFrame(() => {
             const width = window.innerWidth;
@@ -90,67 +87,33 @@ const Gallery = () => {
     }, [handleMouseMove]);
 
     useEffect(() => {
-        if (!containerRef.current) return;
+        let frameId;
+        let throttleTimeout;
 
-        containerRef.current.style.setProperty("--mouseX", `${mousePosition.x}deg`);
-        containerRef.current.style.setProperty("--mouseY", `${mousePosition.y}deg`);
-
-        // Apply 3D effects to movie posters
-        Object.entries(posterRefs.current).forEach(([id, element]) => {
-            if (element) {
-                const index = parseInt(id);
-                const direction = index % 2 === 0 ? 1 : -1;
-                const depth = (index % 10) * 5 + 10;
-                const baseTransform = `translate(${direction * (mousePosition.x * 2)}px, ${
-                    direction * (mousePosition.y * 2)
-                }px)`;
-
-                if (hovered === index) {
-                    // Apply enhanced 3D effect on hover
-                    element.style.transform = `
-                        perspective(1000px) 
-                        rotateY(var(--mouseX)) 
-                        rotateX(var(--mouseY)) 
-                        translateZ(${depth}px)
-                        ${baseTransform}
-                        scale(1.05)
-                    `;
-                    element.style.zIndex = 10;
-                } else {
-                    // Apply basic parallax effect
-                    element.style.transform = baseTransform;
-                    element.style.zIndex = 1;
-                }
-
-                // Apply dynamic shadow based on mouse position
-                const shadowIntensity = hovered === index ? 0.7 : 0.4;
-                const shadowX = mousePosition.x * -1;
-                const shadowY = mousePosition.y * -1;
-                element.style.filter = `drop-shadow(${shadowX}px ${shadowY}px 15px rgba(0, 0, 0, ${shadowIntensity}))`;
-
-                // Add transition for smoother effect
-                element.style.transition =
-                    hovered === index
-                        ? "transform 0.2s ease, filter 0.2s ease"
-                        : "transform 0.4s ease, filter 0.4s ease";
+        const throttledMouseMove = (e) => {
+            if (!throttleTimeout) {
+                throttleTimeout = setTimeout(() => {
+                    throttleTimeout = null;
+                    handleMouseMove(e);
+                }, 16);
             }
-        });
-    }, [mousePosition, hovered]);
+        };
+
+        window.addEventListener("mousemove", throttledMouseMove, { passive: true });
+
+        return () => {
+            window.removeEventListener("mousemove", throttledMouseMove);
+            cancelAnimationFrame(frameId);
+            clearTimeout(throttleTimeout);
+        };
+    }, [handleMouseMove]);
 
     return (
-        <OverboardWindow ref={containerRef}>
+        <OverboardWindow>
             <Overboard x={mousePosition.x} y={mousePosition.y}>
                 <ImagesPlacer x={mousePosition.x} y={mousePosition.y}>
                     {movies.map((movie) => (
-                        <MoviePoster
-                            key={movie.id}
-                            className={`${movie.area} atvImg`}
-                            x={mousePosition.x}
-                            y={mousePosition.y}
-                            ref={(el) => (posterRefs.current[movie.id] = el)}
-                            onMouseEnter={() => setHovered(movie.id)}
-                            onMouseLeave={() => setHovered(null)}
-                        >
+                        <MoviePoster key={movie.id} className={movie.area} x={mousePosition.x} y={mousePosition.y}>
                             <img src={movie.poster} alt={movie.title} />
                         </MoviePoster>
                     ))}
