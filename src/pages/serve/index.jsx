@@ -193,40 +193,50 @@ const ServePage = () => {
                         )}
                     </div>
                     <div className="cast">
-                        {cast.length > 0 ? <CastList cast={cast} /> : <div>출연진 정보가 없습니다.</div>}
+                        {cast.length > 0 ? (
+                            <CastList cast={cast} />
+                        ) : (
+                            <div className="cast-no">출연진 정보가 없습니다.</div>
+                        )}
                     </div>
                 </div>
             </ProductDetail>
-
-            {seasonContent && (
-                <Inner>
+            <Inner>
+                {seasonContent && (
                     <SeasonVideo>
                         <div className="season-title-wrapper">
                             <div className="season-title">{seasonContent?.title}</div>
-                            {isSeries && currentMovie.seasons?.length > 1 && (
-                                <div className="season-selector">
-                                    {currentMovie.seasons.map((season) => (
-                                        <button
-                                            key={season.season_number}
-                                            onClick={() => setSelectedSeason(season.season_number)}
-                                            className={selectedSeason === season.season_number ? "active" : ""}
-                                        >
-                                            시즌 {season.season_number}
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
+                            
+                            <img
+                                src={isSeries ? "/icon/Iconex/Glass/Right.png" : "/icon/Iconex/Glass/Off.png"}
+                                alt=""
+                                className="glass-icon"
+                            />
+                            <div className="season-selector-wrap">
+                                {isSeries && currentMovie.seasons?.length > 1 && (
+                                    <div className="season-selector">
+                                        {currentMovie.seasons.map((season) => (
+                                            <button
+                                                key={season.season_number}
+                                                onClick={() => setSelectedSeason(season.season_number)}
+                                                className={selectedSeason === season.season_number ? "active" : ""}
+                                            >
+                                                시즌 {season.season_number}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <EpisodeList episodes={seasonContent?.content || []} />
                         <div className="under-line"></div>
                     </SeasonVideo>
-                    {/* Replace the existing SimilarCont section in ServePage */}
-                    <SimilarCont>
-                        <div className="con-title">비슷한 컨텐츠</div>
-                        <SimilarList movieId={movieId} mediaType={currentMovie?.media_type} />
-                    </SimilarCont>
-                </Inner>
-            )}
+                )}
+                <SimilarCont>
+                    <div className="con-title">비슷한 컨텐츠</div>
+                    <SimilarList movieId={movieId} mediaType={currentMovie?.media_type} />
+                </SimilarCont>
+            </Inner>
         </MoveDetailWrap>
     );
 };
