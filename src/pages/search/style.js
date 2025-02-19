@@ -110,8 +110,9 @@ export const ThumbnailItem = styled.div`
 `;
 
 export const ThumbnailImage = styled.img`
-    width: 100%;
-    aspect-ratio: 16/9;
+    width: 330px;
+    height: 190px;
+    gap: 5px;
     object-fit: cover;
 `;
 
@@ -132,7 +133,6 @@ export const DropdownContainer = styled.div`
     top: 100%;
     left: 0;
     width: 1780px;
-    height: 549px;
     background-color: #1c1c1c;
     border: 1px solid #333;
     z-index: 1000;
@@ -146,7 +146,7 @@ export const DropdownContent = styled.div`
 
 export const DropdownColumns = styled.div`
     display: flex;
-    height: 100%;
+    height: auto;
 `;
 
 export const ColumnTitleContainer = styled.div`
@@ -182,12 +182,17 @@ export const Column = styled.div`
     flex: 1;
     height: 100%;
     padding: 0 20px;
-    overflow-y: auto;
 `;
 
 export const LeftColumn = styled(Column)``;
 export const MiddleColumn = styled(Column)``;
-export const RightColumn = styled(Column)``;
+export const RightColumn = styled(Column)`
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+`;
 
 export const Divider = styled.div`
     width: 1px;
@@ -198,7 +203,7 @@ export const Divider = styled.div`
 
 export const SearchItem = styled.div`
     position: relative;
-    padding: 12px 10px; /* 좌우 패딩 추가 */
+    padding: 12px 10px;
 `;
 
 export const SearchItemText = styled.span`
@@ -207,8 +212,7 @@ export const SearchItemText = styled.span`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
-    max-width: calc(100% - 30px); /* X 버튼 공간 확보 */
+    max-width: calc(100% - 30px);
 `;
 
 export const DeleteButton = styled.button`
@@ -230,6 +234,10 @@ export const SearchList = styled.ol`
     list-style-type: none;
     padding: 0;
     margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 `;
 
 export const SearchListItem = styled.li`
@@ -242,8 +250,6 @@ export const SearchListItem = styled.li`
         background-color: #252525;
     }
 `;
-
-// style.js 파일에서 RankNumber 스타일 컴포넌트 수정
 
 export const RankNumber = styled.span`
     display: inline-flex;
@@ -268,28 +274,9 @@ export const UpdateTime = styled.div`
 `;
 
 // 검색 결과 관련 스타일
-
 export const SearchResultsSection = styled.div`
     width: 100%;
     margin-top: 30px;
-`;
-
-export const SearchResultsCount = styled.h3`
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-`;
-
-export const SearchResultsGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 24px;
-    width: 100%;
-`;
-export const SearchResultsContainer = styled.div`
-    width: 1778px;
-    margin: 40px auto;
-    padding: 0 30px;
 `;
 
 export const SearchResultsHeader = styled.h2`
@@ -298,6 +285,48 @@ export const SearchResultsHeader = styled.h2`
     margin-bottom: 30px;
     padding-bottom: 15px;
     border-bottom: 1px solid #333;
+`;
+
+export const SearchResultsCount = styled.h3`
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+`;
+
+// 가로 스크롤을 위한 SearchResultsGrid 수정
+export const SearchResultsGrid = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 24px;
+    width: 100%;
+    padding-bottom: 16px;
+
+    /* 스크롤바 스타일링 (선택사항) */
+    &::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+`;
+
+export const SearchResultsContainer = styled.div`
+    width: 1778px;
+    margin: 40px auto;
+    padding: 0 30px;
 `;
 
 export const SearchResultItem = styled.div`
@@ -427,6 +456,46 @@ export const PaginationButton = styled.button`
         opacity: 0.5;
         cursor: not-allowed;
     }
+`;
+
+// 추천 영화 관련 스타일
+export const RecommendationsSection = styled.div`
+    margin-top: 40px;
+    width: 100%;
+`;
+
+export const RecommendationsHeader = styled.h2`
+    font-size: 22px;
+    font-weight: 500;
+    color: #ebebeb;
+    margin-bottom: 40px;
+    position: relative;
+    padding-left: 100px;
+
+    &:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 24px;
+        border-radius: 2px;
+    }
+`;
+
+// 추천 영화 그리드도 가로 스크롤 적용
+export const RecommendationsGrid = styled(SearchResultsGrid)`
+    /* SearchResultsGrid와 동일한 스타일 상속 */
+`;
+
+// ThumbnailItem을 가로 스크롤에 맞게 수정
+export const HorizontalThumbnailItem = styled(ThumbnailItem)`
+    flex: 0 0 auto;
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
 `;
 
 export const PageInfo = styled.span`

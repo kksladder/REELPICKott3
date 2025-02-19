@@ -41,6 +41,10 @@ import {
     SearchResultsHeader,
     SearchResultsCount,
     SearchResultsGrid,
+
+    // 추천 영화 관련 스타일 (style.js에 추가 필요)
+    RecommendationsSection,
+    RecommendationsHeader,
 } from "./style";
 
 // 로컬스토리지 키
@@ -48,6 +52,9 @@ const RECENT_SEARCHES_KEY = "recentSearches";
 
 // 최대 저장 검색어 수
 const MAX_RECENT_SEARCHES = 15;
+
+// 유사 영화 추천 수
+const SIMILAR_MOVIES_COUNT = 5;
 
 const SearchPage = () => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -63,6 +70,9 @@ const SearchPage = () => {
 
     //출력
     const [movieResult, setMovieResult] = useState([]);
+
+    // 유사 영화 추천
+    const [similarMovies, setSimilarMovies] = useState([]);
 
     // 최근 검색어 상태 관리 - 초기값은 빈 배열
     const [recentSearches, setRecentSearches] = useState([]);
@@ -134,6 +144,76 @@ const SearchPage = () => {
         localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(searches));
     };
 
+    // 유사한 영화 찾기 함수
+    const findSimilarMovies = (results) => {
+        // 검색 결과가 없거나 매우 적은 경우
+        if (!results || results.length === 0) {
+            // 인기 영화 중에서 무작위로 5개 선택
+            return getRandomMovies(movies, SIMILAR_MOVIES_COUNT);
+        }
+
+        // 첫 번째 검색 결과 기준으로 유사한 영화 찾기
+        const firstResult = results[0];
+        let similarMovies = [];
+
+        // 간단한 유사도 계산: 제목의 일부가 일치하거나, 비슷한 발매 연도의 영화
+        if (firstResult && firstResult.title) {
+            // 1. 제목에서 주요 키워드 추출 (예: "원피스 골드" -> "원피스")
+            const keywordMatch = firstResult.title.match(/^[가-힣a-zA-Z]+/);
+            const keyword = keywordMatch ? keywordMatch[0] : "";
+
+            if (keyword && keyword.length >= 2) {
+                // 키워드로 유사한 영화 검색하되 원본 검색 결과는 제외
+                similarMovies = movies.filter((movie) => movie.id !== firstResult.id && movie.title.includes(keyword));
+            }
+
+            // 2. 키워드로 찾은 영화가 충분하지 않으면 비슷한 연도의 영화도 추가
+            if (similarMovies.length < SIMILAR_MOVIES_COUNT && firstResult.releaseDate) {
+                const releaseYear = new Date(firstResult.releaseDate).getFullYear();
+                const yearSimilarMovies = movies.filter((movie) => {
+                    if (!movie.releaseDate) return false;
+                    const movieYear = new Date(movie.releaseDate).getFullYear();
+                    return (
+                        movie.id !== firstResult.id &&
+                        !similarMovies.some((m) => m.id === movie.id) &&
+                        Math.abs(movieYear - releaseYear) <= 2
+                    );
+                });
+
+                similarMovies = [...similarMovies, ...yearSimilarMovies];
+            }
+        }
+
+        // 여전히 추천 영화가 부족하면 인기 영화로 채우기
+        if (similarMovies.length < SIMILAR_MOVIES_COUNT) {
+            const remainingCount = SIMILAR_MOVIES_COUNT - similarMovies.length;
+            const popularMovies = getRandomMovies(
+                movies.filter(
+                    (m) => !similarMovies.some((sm) => sm.id === m.id) && !results.some((r) => r.id === m.id)
+                ),
+                remainingCount
+            );
+            similarMovies = [...similarMovies, ...popularMovies];
+        }
+
+        // 최대 5개까지만 반환
+        return similarMovies.slice(0, SIMILAR_MOVIES_COUNT).map((movie) => ({
+            id: movie.id,
+            title: movie.title,
+            poster_path: movie.poster_path,
+            releaseDate: movie.releaseDate,
+            rating: movie.rating,
+        }));
+    };
+
+    // 무작위 영화 선택 함수
+    const getRandomMovies = (movieList, count) => {
+        if (!movieList || movieList.length <= count) return movieList || [];
+
+        const shuffled = [...movieList].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
+    };
+
     // 새 검색어 추가 함수
     const addRecentSearch = (searchText) => {
         if (!searchText.trim()) return;
@@ -156,9 +236,15 @@ const SearchPage = () => {
                 rating: movie.rating,
             }));
 
+        // 유사 영화 추천 생성
+        const recommendations = findSimilarMovies(filteredData);
+        setSimilarMovies(recommendations);
+
         // 디버깅 로그 추가
         console.log("검색 텍스트:", searchText);
         console.log("검색 결과 수:", filteredData.length);
+        console.log("추천 영화 수:", recommendations.length);
+
         if (filteredData.length > 0) {
             console.log("첫 번째 검색 결과:", filteredData[0]);
             console.log("포스터 경로:", filteredData[0].poster_path);
@@ -213,6 +299,7 @@ const SearchPage = () => {
         setShowResults(false);
         setIsDropdownOpen(false);
         setMovieResult([]);
+        setSimilarMovies([]);
     };
 
     const handleSearchBarFocus = () => {
@@ -341,32 +428,80 @@ const SearchPage = () => {
 
             {/* 검색 결과가 있을 때 영화 포스터 리스트 표시 */}
             {showResults && movieResult.length > 0 ? (
-                <SearchResultsSection>
-                    <SearchResultsHeader>
-                        <SearchResultsCount>검색 결과: {movieResult.length}개</SearchResultsCount>
-                    </SearchResultsHeader>
-                    <SearchResultsGrid>
-                        {movieResult.map((movie) => (
-                            <ThumbnailItem key={movie.id}>
-                                <ThumbnailImage
-                                    src={movie.poster_path || defaultImageUrl}
-                                    alt={movie.title}
-                                    onError={(e) => {
-                                        console.log("이미지 로딩 실패:", movie.poster_path);
-                                        e.target.onerror = null;
-                                        e.target.src = defaultImageUrl;
-                                    }}
-                                />
-                                <ThumbnailTitle>{movie.title}</ThumbnailTitle>
-                            </ThumbnailItem>
-                        ))}
-                    </SearchResultsGrid>
-                </SearchResultsSection>
+                <>
+                    <SearchResultsSection>
+                        <SearchResultsHeader>
+                            <SearchResultsCount>검색 결과: {movieResult.length}개</SearchResultsCount>
+                        </SearchResultsHeader>
+                        <SearchResultsGrid>
+                            {movieResult.map((movie) => (
+                                <ThumbnailItem key={movie.id}>
+                                    <ThumbnailImage
+                                        src={movie.poster_path || defaultImageUrl}
+                                        alt={movie.title}
+                                        onError={(e) => {
+                                            console.log("이미지 로딩 실패:", movie.poster_path);
+                                            e.target.onerror = null;
+                                            e.target.src = defaultImageUrl;
+                                        }}
+                                    />
+                                    <ThumbnailTitle>{movie.title}</ThumbnailTitle>
+                                </ThumbnailItem>
+                            ))}
+                        </SearchResultsGrid>
+                    </SearchResultsSection>
+
+                    {/* 유사 영화 추천 섹션 */}
+                    {similarMovies.length > 0 && (
+                        <RecommendationsSection>
+                            <RecommendationsHeader>이런 영화는 어떠세요?</RecommendationsHeader>
+                            <ThumbnailsGrid>
+                                {similarMovies.map((movie) => (
+                                    <ThumbnailItem key={movie.id}>
+                                        <ThumbnailImage
+                                            src={movie.poster_path || defaultImageUrl}
+                                            alt={movie.title}
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = defaultImageUrl;
+                                            }}
+                                        />
+                                        <ThumbnailTitle>{movie.title}</ThumbnailTitle>
+                                    </ThumbnailItem>
+                                ))}
+                            </ThumbnailsGrid>
+                        </RecommendationsSection>
+                    )}
+                </>
             ) : showResults && movieResult.length === 0 ? (
-                <NoResultsContainer>
-                    <img src="/icon/noserch.svg" alt="검색 결과 없음" width="80" height="80" />
-                    <NoResultsText>검색 결과가 없습니다!</NoResultsText>
-                </NoResultsContainer>
+                <>
+                    <NoResultsContainer>
+                        <img src="/icon/noserch.svg" alt="검색 결과 없음" width="80" height="80" />
+                        <NoResultsText>검색 결과가 없습니다!</NoResultsText>
+                    </NoResultsContainer>
+
+                    {/* 검색 결과가 없을 때도 추천 영화 표시 */}
+                    {similarMovies.length > 0 && (
+                        <RecommendationsSection>
+                            <RecommendationsHeader>이런 영화는 어떠세요?</RecommendationsHeader>
+                            <ThumbnailsGrid>
+                                {similarMovies.map((movie) => (
+                                    <ThumbnailItem key={movie.id}>
+                                        <ThumbnailImage
+                                            src={movie.poster_path || defaultImageUrl}
+                                            alt={movie.title}
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = defaultImageUrl;
+                                            }}
+                                        />
+                                        <ThumbnailTitle>{movie.title}</ThumbnailTitle>
+                                    </ThumbnailItem>
+                                ))}
+                            </ThumbnailsGrid>
+                        </RecommendationsSection>
+                    )}
+                </>
             ) : (
                 <NoResultsContainer>
                     <img src="/icon/noserch.svg" alt="검색 결과 없음" width="80" height="80" />
@@ -374,8 +509,8 @@ const SearchPage = () => {
                 </NoResultsContainer>
             )}
 
-            {/* 추천 섹션: 검색 결과가 없을 때만 표시 */}
-            {(!showResults || (showResults && movieResult.length === 0)) && (
+            {/* 추천 섹션: 검색 결과가 없고 유사 영화 추천도 없을 때만 표시 */}
+            {(!showResults || (showResults && movieResult.length === 0 && similarMovies.length === 0)) && (
                 <ThumbnailsSection>
                     <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
                     <ThumbnailsGrid>
