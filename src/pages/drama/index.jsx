@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 
-const DramaPage = () => {
-    return <div></div>;
-};
+const DramaPage = () => {};
 
 export default DramaPage;

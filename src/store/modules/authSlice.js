@@ -91,11 +91,6 @@ export const authSlice = createSlice({
             state.isSignUpComplete = action.payload;
         },
 
-        // 초기화 후 데이터를 로드하는 액션
-        setJoinData: (state, action) => {
-            state.joinData = action.payload;
-        },
-
         loginSuccess: (state, action) => {
             const userData = action.payload; // userData를 받아옴
             state.authed = true; // 로그인 성공 시 authed 값을 true로 설정
@@ -134,11 +129,11 @@ export const authSlice = createSlice({
             const { newProfileImage, newUsername } = action.payload;
             state.user.profileImage = newProfileImage;
             state.user.username = newUsername;
-          },
-          removeUsername: (state) => {
-            state.user.username = '';
-            state.user.profileImage = '/images/default_profile.png';
-          },
+        },
+        removeUsername: (state) => {
+            state.user.username = "";
+            state.user.profileImage = "/images/default_profile.png";
+        },
     },
 });
 
