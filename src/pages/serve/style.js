@@ -399,3 +399,60 @@ margin-bottom: 70px;
 export const InputFillDeWrapper = styled.section`
     margin-left: 20px;
 `;
+
+export const StyledEpisodeList = styled.div`
+    .series-movies {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        
+        .movie-item {
+            display: flex;
+            gap: 20px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            
+            .movie-poster {
+                width: 200px;
+                height: 300px;
+                flex-shrink: 0;
+                
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+            
+            .movie-info {
+                padding: 20px;
+                flex: 1;
+                
+                .movie-title {
+                    font-size: 1.5rem;
+                    margin-bottom: 10px;
+                }
+                
+                .movie-overview {
+                    color: #666;
+                    margin-bottom: 15px;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+                
+                .movie-meta {
+                    display: flex;
+                    gap: 15px;
+                    color: #888;
+                }
+            }
+            
+            &:hover {
+                background: rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+`;

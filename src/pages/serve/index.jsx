@@ -1,4 +1,4 @@
-import { Inner, MoveDetailWrap, MovieVideo, ProductDetail, SeasonVideo, SimilarCont } from "./style";
+import { Inner, MoveDetailWrap, MovieVideo, ProductDetail, SeasonVideo, SimilarCont, StyledEpisodeList } from "./style";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { HeartToggle, PlySquareLg, RestartLg, SpeakerOffLg } from "../../ui/Button/Button";
@@ -75,15 +75,22 @@ const ServePage = () => {
     const hasSeasons = currentMovie?.seasons?.length > 0;
 
     const renderSeasonContent = () => {
-        if (isMovie && hasSeasons) {
+        if (isMovie && currentMovie.belongs_to_collection) {
+            // 영화 시리즈인 경우
             return {
-                title: `${currentMovie.title} - 시즌 ${currentMovie.seasons.length}`,
-                content: currentMovie.seasons.map((season) => ({
-                    ...season,
-                    title: `시즌 ${season.season_number}`,
-                    still_path: season.poster_path,
-                    runtime: currentMovie.episode_run_time?.[0] || "",
-                })),
+                title: `${currentMovie.title} - 시리즈`,
+                content: [
+                    {
+                        id: currentMovie.id,
+                        title: currentMovie.title,
+                        overview: currentMovie.overview,
+                        still_path: currentMovie.backdrop_path,
+                        runtime: currentMovie.runtime,
+                        release_date: currentMovie.release_date,
+                        vote_average: currentMovie.vote_average,
+                    },
+                    // 시리즈의 다른 영화들도 여기에 추가됨
+                ],
             };
         }
 
@@ -201,37 +208,35 @@ const ServePage = () => {
                     </div>
                 </div>
             </ProductDetail>
+
             <Inner>
-                {seasonContent && (
+                {(seasonContent || currentMovie?.seriesMovies?.length > 0) && (
                     <SeasonVideo>
                         <div className="season-title-wrapper">
-                            <div className="season-title">{seasonContent?.title}</div>
-                            
+                            <div className="season-title">
+                                {currentMovie?.seriesMovies?.length > 0
+                                    ? `${currentMovie.title} 시리즈`
+                                    : seasonContent?.title}
+                            </div>
+
                             <img
                                 src={isSeries ? "/icon/Iconex/Glass/Right.png" : "/icon/Iconex/Glass/Off.png"}
                                 alt=""
                                 className="glass-icon"
                             />
-                            <div className="season-selector-wrap">
-                                {isSeries && currentMovie.seasons?.length > 1 && (
-                                    <div className="season-selector">
-                                        {currentMovie.seasons.map((season) => (
-                                            <button
-                                                key={season.season_number}
-                                                onClick={() => setSelectedSeason(season.season_number)}
-                                                className={selectedSeason === season.season_number ? "active" : ""}
-                                            >
-                                                시즌 {season.season_number}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
                         </div>
-                        <EpisodeList episodes={seasonContent?.content || []} />
+
+                        <StyledEpisodeList>
+                            <EpisodeList
+                                episodes={seasonContent?.content || []}
+                                seriesMovies={currentMovie?.seriesMovies || []}
+                            />
+                        </StyledEpisodeList>
+
                         <div className="under-line"></div>
                     </SeasonVideo>
                 )}
+
                 <SimilarCont>
                     <div className="con-title">비슷한 컨텐츠</div>
                     <SimilarList movieId={movieId} mediaType={currentMovie?.media_type} />

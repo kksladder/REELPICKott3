@@ -9,18 +9,33 @@ const options = {
 // 모든 컨텐츠 가져오기
 export const getMovie = createAsyncThunk(
     "movie/getMovie",
-    async () => {
+    async ({ page = 1 }, { getState }) => {
         try {
+            const { movieR } = getState();
+            const existingMovies = movieR.movieData || [];
+
             // 영화 가져오기
             const moviesResponse = await axios.get(
                 "https://api.themoviedb.org/3/movie/now_playing",
-                { params: options }
+                {
+                    params: {
+                        ...options,
+                        page
+                    }
+                }
             );
 
             // TV 시리즈 가져오기
             const tvResponse = await axios.get(
-                "https://api.themoviedb.org/3/tv/on_the_air",
-                { params: options }
+                "https://api.themoviedb.org/3/discover/tv",
+                {
+                    params: {
+                        ...options,
+                        with_genres: 18,
+                        sort_by: 'popularity.desc',
+                        page
+                    }
+                }
             );
 
             // 애니메이션 가져오기
@@ -30,7 +45,8 @@ export const getMovie = createAsyncThunk(
                     params: {
                         ...options,
                         with_genres: 16,
-                        sort_by: 'popularity.desc'
+                        sort_by: 'popularity.desc',
+                        page
                     }
                 }
             );
@@ -56,14 +72,25 @@ export const getMovie = createAsyncThunk(
                 id: `animation_${item.id}`
             }));
 
-            // 데이터 합치기
-            const combinedData = [...movies, ...tvShows, ...animations];
+            // 새로운 데이터와 기존 데이터 합치기
+            const newData = [...movies, ...tvShows, ...animations];
+            const combinedData = page === 1 ? newData : [...existingMovies, ...newData];
 
-            // 중복 제거 (혹시 모를 중복을 방지)
+            // 중복 제거
             const uniqueData = Array.from(new Set(combinedData.map(item => item.id)))
                 .map(id => combinedData.find(item => item.id === id));
 
-            return uniqueData;
+            // 더 불러올 데이터가 있는지 확인
+            const hasMore =
+                page < moviesResponse.data.total_pages ||
+                page < tvResponse.data.total_pages ||
+                page < animationResponse.data.total_pages;
+
+            return {
+                data: uniqueData,
+                hasMore,
+                currentPage: page
+            };
         } catch (error) {
             console.error(error);
             throw error;
@@ -71,11 +98,10 @@ export const getMovie = createAsyncThunk(
     }
 );
 
-// 상세 정보 가져오기
+// 상세 정보 가져오기 (기존 코드 유지)
 export const getMovieDetails = createAsyncThunk(
     "movie/getMovieDetails",
     async (params) => {
-        // ID에서 실제 TMDB ID 추출
         const originalId = params.id.split('_')[1] || params.id;
         const { mediaType } = params;
 
@@ -87,12 +113,23 @@ export const getMovieDetails = createAsyncThunk(
             const response = await axios.get(url, {
                 params: {
                     ...options,
-                    append_to_response: "credits,seasons"
+                    append_to_response: "credits,similar,belongs_to_collection"
                 }
             });
-            const director = response.data.credits.crew.find(person => person.job === "Director");
 
-            // 배우 정보 가져오기
+            // 영화 시리즈인 경우 컬렉션 정보 가져오기
+            let seriesMovies = [];
+            if (mediaType !== 'tv' && response.data.belongs_to_collection) {
+                const collectionResponse = await axios.get(
+                    `https://api.themoviedb.org/3/collection/${response.data.belongs_to_collection.id}`,
+                    { params: options }
+                );
+                seriesMovies = collectionResponse.data.parts.sort(
+                    (a, b) => new Date(a.release_date) - new Date(b.release_date)
+                );
+            }
+
+            const director = response.data.credits.crew.find(person => person.job === "Director");
             const cast = response.data.credits.cast;
 
             if (mediaType === 'tv') {
@@ -110,7 +147,8 @@ export const getMovieDetails = createAsyncThunk(
                     media_type: 'tv',
                     episodes: seasonResponse.data.episodes || [],
                     director,
-                    cast
+                    cast,
+                    seriesMovies: []
                 };
             }
 
@@ -118,12 +156,11 @@ export const getMovieDetails = createAsyncThunk(
                 ...response.data,
                 media_type: mediaType,
                 director,
-                cast
+                cast,
+                seriesMovies
             };
         } catch (error) {
             console.error("API Error:", error);
             throw error;
         }
-    }
-);
-
+    });
