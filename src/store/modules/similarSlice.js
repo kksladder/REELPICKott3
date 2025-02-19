@@ -8,34 +8,35 @@ const options = {
 };
 
 // 비슷한 컨텐츠 가져오기
+export const getSimilarContent = createAsyncThunk(
+    "similar/getSimilarContent",
+    async (params) => {
+        const { id, mediaType } = params;
+        const originalId = id.split('_')[1] || id;
 
-export const getSimilarContent = createAsyncThunk("similar/getSimilarContent", async (params) => {
-    const { id, mediaType } = params;
-    const originalId = id.split("_")[1] || id;
-
-    try {
-        let url =
-            mediaType === "tv"
+        try {
+            let url = mediaType === 'tv'
                 ? `https://api.themoviedb.org/3/tv/${originalId}/similar`
                 : `https://api.themoviedb.org/3/movie/${originalId}/similar`;
 
-        const response = await axios.get(url, { params: options });
+            const response = await axios.get(url, { params: options });
 
-        // 결과 매핑
-        const similarContent = response.data.results.map((item) => ({
-            ...item,
-            media_type: mediaType,
-            id: `${mediaType}_${item.id}`,
-            title: mediaType === "tv" ? item.name : item.title,
-            release_date: mediaType === "tv" ? item.first_air_date : item.release_date,
-        }));
+            // 결과 매핑
+            const similarContent = response.data.results.map(item => ({
+                ...item,
+                media_type: mediaType,
+                id: `${mediaType}_${item.id}`,
+                title: mediaType === 'tv' ? item.name : item.title,
+                release_date: mediaType === 'tv' ? item.first_air_date : item.release_date
+            }));
 
-        return similarContent.slice(0, 8); // 8개 항목으로 제한
-    } catch (error) {
-        console.error("Similar Content API Error:", error);
-        throw error;
+            return similarContent.slice(0, 8); // 8개 항목으로 제한
+        } catch (error) {
+            console.error("Similar Content API Error:", error);
+            throw error;
+        }
     }
-});
+);
 
 // 초기 상태
 const initialState = {
