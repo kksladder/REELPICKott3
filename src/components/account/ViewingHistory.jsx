@@ -278,7 +278,7 @@ const ViewingHistory = () => {
     return (
         <Container id ="viewing-seciton">
             {/* <H1>계정</H1> */}
-            <MainTitle>시청기록관리</MainTitle>
+           
             <Header onClick={toggleOpen}>
                 <Title>시청 기록</Title>
                 <FaChevronUp isOpen={isOpen} />

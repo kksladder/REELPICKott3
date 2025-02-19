@@ -126,3 +126,34 @@ export const getMovieDetails = createAsyncThunk(
         }
     }
 );
+
+// Add this to getThunk.js
+export const getSimilarContent = createAsyncThunk(
+    "movie/getSimilarContent",
+    async (params) => {
+        const { id, mediaType } = params;
+        const originalId = id.split('_')[1] || id;
+
+        try {
+            let url = mediaType === 'tv'
+                ? `https://api.themoviedb.org/3/tv/${originalId}/similar`
+                : `https://api.themoviedb.org/3/movie/${originalId}/similar`;
+
+            const response = await axios.get(url, { params: options });
+
+            // Map the results to include media type and consistent ID format
+            const similarContent = response.data.results.map(item => ({
+                ...item,
+                media_type: mediaType,
+                id: `${mediaType}_${item.id}`,
+                title: mediaType === 'tv' ? item.name : item.title,
+                release_date: mediaType === 'tv' ? item.first_air_date : item.release_date
+            }));
+
+            return similarContent.slice(0, 8); // Limit to 8 items as per your layout
+        } catch (error) {
+            console.error("Similar Content API Error:", error);
+            throw error;
+        }
+    }
+);

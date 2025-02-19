@@ -82,12 +82,15 @@ display: flex;
 
 export const EpisodeItemWrap = styled.section`
 .season_vid {
-img{
-        width: 317px;
-        height: 166px;
-        flex-shrink: 0;
-        background-color: aliceblue;
-}
+  a{
+
+    img{
+            width: 317px;
+            height: 166px;
+            flex-shrink: 0;
+            background-color: aliceblue;
+    }
+  }
     }
 
     .season-vid_tit {

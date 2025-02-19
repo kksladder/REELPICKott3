@@ -6,7 +6,8 @@ const initialState = {
     authed: false,
     user: null,
     isSignUpComplete: false,
-    selectedMemberships: "",
+    selectedMembership: "",
+    goTg: null,
 };
 
 let no = initialState.joinData.length;
@@ -15,6 +16,10 @@ export const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
+        gotoTarget: (state, action) => {
+            state.goTg = action.payload;
+        },
+
         // 로그인 로직
         login: (state, action) => {
             const { id_email, password } = action.payload;
@@ -86,11 +91,6 @@ export const authSlice = createSlice({
             state.isSignUpComplete = action.payload;
         },
 
-        // 초기화 후 데이터를 로드하는 액션
-        setJoinData: (state, action) => {
-            state.joinData = action.payload;
-        },
-
         loginSuccess: (state, action) => {
             const userData = action.payload; // userData를 받아옴
             state.authed = true; // 로그인 성공 시 authed 값을 true로 설정
@@ -107,7 +107,7 @@ export const authSlice = createSlice({
             }
         },
         setSelectedMembership: (state, action) => {
-            state.selectedMemberships = action.payload; // 선택된 멤버십을 상태로 설정
+            state.selectedMembership = action.payload; // 선택된 멤버십을 상태로 설정
             const membershipInfo = {
                 type: selectedMembership,
                 price:
@@ -120,28 +120,19 @@ export const authSlice = createSlice({
                 devices: selectedMembership === "premium" ? "4" : "2",
                 profiles: selectedMembership === "AD_standard" ? "2" : selectedMembership === "standard" ? "4" : "6",
                 downloads: selectedMembership === "premium" ? "400" : "200",
-                hasAds: selectedMembership === "AD_standard",
+                hasAds: selectedMemberships === "AD_standard",
                 date: new Date().toISOString(),
             };
             localStorage.setItem("selectedMembership", JSON.stringify(membershipInfo));
         },
-        // Redux Slice에 프로필 수정 액션 추가
         updateProfileImage: (state, action) => {
-            const { id_email, newProfileImage, newUsername } = action.payload;
-
-            // 상태가 업데이트되는 부분
-            if (state.user && state.user.id_email === id_email) {
-                state.user.profileImage = newProfileImage; // 프로필 이미지 변경
-                state.user.username = newUsername; // 사용자 이름 변경
-
-                // 로컬스토리지에도 저장하여 페이지 리로드 시 유지
-                localStorage.setItem("user_" + id_email, JSON.stringify(state.user));
-            }
+            const { newProfileImage, newUsername } = action.payload;
+            state.user.profileImage = newProfileImage;
+            state.user.username = newUsername;
         },
-        removeUsername(state) {
-            if (state.user) {
-                state.user.username = ""; // Clear only the username
-            }
+        removeUsername: (state) => {
+            state.user.username = "";
+            state.user.profileImage = "/images/default_profile.png";
         },
     },
 });

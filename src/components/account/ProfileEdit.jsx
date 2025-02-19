@@ -300,10 +300,6 @@ const InputSection = styled.div`
     }
 `;
 
-const MainTitle = styled.p`
-    margin-top: 60px;
-    margin-bottom: 20px;
-`;
 const ProfileEdit = () => {
     const { user } = useSelector((state) => state.authR);
     /*   const [isOpen, setIsOpen] = useState(false); */
@@ -325,7 +321,7 @@ const ProfileEdit = () => {
     return (
         <>
             {/*    <H1>계정</H1> */}
-            <MainTitle>회원정보 수정</MainTitle>
+            
             <Container id="profileEdit-seciton">
                 <Header1>
                     <ProfileInfo>

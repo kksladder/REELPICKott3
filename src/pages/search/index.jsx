@@ -42,6 +42,8 @@ const RECENT_SEARCHES_KEY = "recentSearches";
 const MAX_RECENT_SEARCHES = 10;
 
 const SearchPage = () => {
+
+
     const [searchQuery, setSearchQuery] = useState("");
     const [showResults, setShowResults] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -296,6 +298,7 @@ const SearchPage = () => {
             </ThumbnailsSection>
         </SearchContainer>
     );
+
 };
 
 export default SearchPage;

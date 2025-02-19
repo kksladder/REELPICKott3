@@ -2,11 +2,13 @@ import { Inner, MoveDetailWrap, MovieVideo, ProductDetail, SeasonVideo, SimilarC
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { HeartToggle, PlySquareLg, RestartLg, SpeakerOffLg } from "../../ui/Button/Button";
-import { SquareNextBtn, SquarePreveBtn } from "../../ui/Button/SlideButton";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getMovieDetails } from "../../store/modules/getThunk";
 import CastList from "../../components/sub/cast/CastList";
 import { useLocation } from "react-router-dom";
+import EpisodeList from "../../components/sub/episode/EpisodeList";
+import SimilarList from "../../components/sub/similar/SimilarList";
 
 const ServePage = () => {
     const { movieId } = useParams();
@@ -170,7 +172,8 @@ const ServePage = () => {
                 <div className="pd_sec">
                     <div className="director">
                         {director && (
-                            <Link to={`/director/${director.id}`}>
+                            // <Link to={`/director/${director.id}`}>
+                            <Link to={"/director"}>
                                 <div className="pd_img">
                                     <img
                                         src={
@@ -198,72 +201,29 @@ const ServePage = () => {
             {seasonContent && (
                 <Inner>
                     <SeasonVideo>
-                        {isSeries && currentMovie.seasons?.length > 1 && (
-                            <div className="season-selector">
-                                {currentMovie.seasons.map((season) => (
-                                    <button
-                                        key={season.season_number}
-                                        onClick={() => setSelectedSeason(season.season_number)}
-                                        className={selectedSeason === season.season_number ? "active" : ""}
-                                    >
-                                        시즌 {season.season_number}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
-                        <div className="season-title">{seasonContent.title}</div>
-                        <div
-                            className="season-slide"
-                            onMouseDown={handleMouseDown}
-                            onMouseUp={handleMouseUp}
-                            onMouseLeave={handleMouseUp}
-                            onMouseMove={handleMouseMove}
-                        >
-                            <div className="season_vid-wrap">
-                                {seasonContent.content.map((item, index) => (
-                                    <div key={item.id || index} className="season_vid">
-                                        <div className="season_vid-item">
-                                            <img
-                                                src={`https://image.tmdb.org/t/p/w500${item.still_path}`}
-                                                alt={item.title}
-                                                onError={(e) => {
-                                                    e.target.src = "/images/profileNo.png";
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="season-vid_tit">{item.title}</div>
-                                        <div className="season-vid_info">
-                                            <div className="season-vid_day">
-                                                {item.air_date?.substring(0, 10) || "방영일 미정"}
-                                            </div>
-                                            <div className="season-vid_time">{item.runtime}분</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="season_slide-button">
-                                <SquarePreveBtn />
-                                <SquareNextBtn />
-                            </div>
+                        <div className="season-title-wrapper">
+                            <div className="season-title">{seasonContent?.title}</div>
+                            {isSeries && currentMovie.seasons?.length > 1 && (
+                                <div className="season-selector">
+                                    {currentMovie.seasons.map((season) => (
+                                        <button
+                                            key={season.season_number}
+                                            onClick={() => setSelectedSeason(season.season_number)}
+                                            className={selectedSeason === season.season_number ? "active" : ""}
+                                        >
+                                            시즌 {season.season_number}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
+                        <EpisodeList episodes={seasonContent?.content || []} />
                         <div className="under-line"></div>
                     </SeasonVideo>
-
+                    {/* Replace the existing SimilarCont section in ServePage */}
                     <SimilarCont>
                         <div className="con-title">비슷한 컨텐츠</div>
-                        <div className="con-slide">
-                            <div className="con-sec">
-                                {[...Array(8)].map((_, index) => (
-                                    <Link key={index} to="#">
-                                        <div className="con-item"></div>
-                                    </Link>
-                                ))}
-                            </div>
-                            <div className="con_slide-button">
-                                <SquarePreveBtn />
-                                <SquareNextBtn />
-                            </div>
-                        </div>
+                        <SimilarList movieId={movieId} mediaType={currentMovie?.media_type} />
                     </SimilarCont>
                 </Inner>
             )}
