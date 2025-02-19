@@ -42,8 +42,15 @@ const Reelpick = () => {
         const fetchMovies = async () => {
             try {
                 setIsLoading(true);
-                const movieData = await getMovieRecommendations();
-                setMovies(movieData);
+                const movieData = await getMovieRecommendations(10);
+                // API 응답 데이터를 컴포넌트에서 사용하는 형태로 변환
+                const formattedMovies = movieData.map((movie) => ({
+                    id: movie.id,
+                    title: movie.title,
+                    poster: movie.poster_path, // API에서 받아온 포스터 경로 사용
+                    isKorean: movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null,
+                }));
+                setMovies(formattedMovies);
             } catch (err) {
                 setError(err.message);
                 console.error("Failed to fetch movies:", err);

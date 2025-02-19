@@ -337,11 +337,28 @@ const SearchPage = () => {
     };
 
     // Mock data for thumbnails (5 identical thumbnails as shown in the image)
-    const thumbnails = Array(5).fill({
-        id: 1,
-        imageUrl: "/images/casino.jpg",
-        title: "카지노",
-    });
+    const thumbnails = [
+        {
+            id: 1,
+            imageUrl: "/images/casino.jpg",
+        },
+        {
+            id: 2,
+            imageUrl: "/images/breakinbad.jpg",
+        },
+        {
+            id: 3,
+            imageUrl: "/images/ozak.jpg",
+        },
+        {
+            id: 4,
+            imageUrl: "/images/crimecity.jpg",
+        },
+        {
+            id: 5,
+            imageUrl: "/images/slowhorses.jpg",
+        },
+    ];
 
     // 기본 이미지 경로 설정 (영화 포스터 이미지가 없을 경우 사용)
     const defaultImageUrl = "/images/default-poster.jpg";
@@ -445,7 +462,6 @@ const SearchPage = () => {
                                             e.target.src = defaultImageUrl;
                                         }}
                                     />
-                                    <ThumbnailTitle>{movie.title}</ThumbnailTitle>
                                 </ThumbnailItem>
                             ))}
                         </SearchResultsGrid>
@@ -466,7 +482,6 @@ const SearchPage = () => {
                                                 e.target.src = defaultImageUrl;
                                             }}
                                         />
-                                        <ThumbnailTitle>{movie.title}</ThumbnailTitle>
                                     </ThumbnailItem>
                                 ))}
                             </ThumbnailsGrid>

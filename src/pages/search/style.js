@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const SearchContainer = styled.div`
     width: 1920px;
     height: 1900px;
-    background-color: #111;
-    color: white;
+    background-color: var(--background-color);
+    color: var(--white);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -15,13 +15,13 @@ export const SearchBarContainer = styled.div`
     position: relative;
     width: 1778px;
     padding: 20px 30px;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--secondary-500);
     display: flex;
     align-items: center;
     margin: 0 auto;
 
     svg {
-        color: #777;
+        color: var(--secondary-90);
         margin-right: 10px;
     }
 `;
@@ -31,7 +31,7 @@ export const SearchInput = styled.input`
     background-color: transparent;
     border: none;
     color: var(--white);
-    font-size: 20px;
+    font-size: var(--font-W-Content-M);
     padding: 15px 0;
     outline: none;
 
@@ -43,7 +43,7 @@ export const SearchInput = styled.input`
 export const CloseButton = styled.button`
     background: none;
     border: none;
-    color: #777;
+    color: var(--secondary-90);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -54,6 +54,7 @@ export const CloseButton = styled.button`
 export const NoResultsContainer = styled.div`
     position: absolute;
     top: 200px;
+    width: 1836px;
     left: 0;
     right: 0;
     display: flex;
@@ -67,34 +68,33 @@ export const NoResultsContainer = styled.div`
 `;
 
 export const NoResultsText = styled.p`
-    font-size: 20px;
+    font-size: var(--font-W-Content-M);
     color: var(--secondary-60);
 `;
 
 export const ThumbnailsSection = styled.div`
     position: absolute;
-    top: 481px;
-    left: 0;
-    right: 0;
+    top: 480px;
+    right: 85px;
     margin: 0 auto;
     padding: 0 30px;
-    width: 1850px;
+    width: 1837px;
 `;
 
 export const ThumbnailsHeader = styled.h2`
-    font-size: 24px;
-    color: var(--secondary-60);
-    border-top: 1px solid #333;
-    width: 1778px;
+    font-size: var(--font-W-Header);
+    color: var(--secondary-40);
+    border-top: 1px solid var(--secondary-500);
+    width: 1765px;
     margin-top: 156px;
     margin-bottom: 50px;
     padding-top: 50px;
+    margin-left: 100px;
 `;
 
 export const ThumbnailsGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
 `;
 
 export const ThumbnailItem = styled.div`
@@ -110,10 +110,11 @@ export const ThumbnailItem = styled.div`
 `;
 
 export const ThumbnailImage = styled.img`
-    width: 330px;
-    height: 190px;
-    gap: 5px;
+    width: 250px;
+    height: 400px;
     object-fit: cover;
+    border-radius: 3px;
+    margin-left: 100px;
 `;
 
 export const ThumbnailTitle = styled.div`
@@ -123,8 +124,8 @@ export const ThumbnailTitle = styled.div`
     right: 0;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
     padding: 10px;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: var(--font-W-Content-S);
+    font-weight: var(--font-weight-Bold);
 `;
 
 // 드롭다운 관련 스타일
@@ -133,8 +134,8 @@ export const DropdownContainer = styled.div`
     top: 100%;
     left: 0;
     width: 1780px;
-    background-color: #1c1c1c;
-    border: 1px solid #333;
+    background-color: var(--secondary-700);
+    border: 1px solid var(--secondary-500);
     z-index: 1000;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 `;
@@ -157,7 +158,7 @@ export const ColumnTitleContainer = styled.div`
 `;
 
 export const ColumnTitle = styled.h3`
-    font-size: 24px;
+    font-size: var(--font-W-Header);
     margin-bottom: 15px;
     color: var(--white);
     font-weight: var(--font-weight-SemiBold);
@@ -166,15 +167,15 @@ export const ColumnTitle = styled.h3`
 export const ClearAllButton = styled.button`
     background: none;
     border: none;
-    color: #777;
-    font-size: 14px;
+    color: var(--secondary-90);
+    font-size: var(--font-W-Content-S);
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 4px;
 
     &:hover {
-        color: #999;
+        color: var(--secondary-50);
     }
 `;
 
@@ -197,7 +198,7 @@ export const RightColumn = styled(Column)`
 export const Divider = styled.div`
     width: 1px;
     height: 90%;
-    background-color: #333;
+    background-color: var(--secondary-500);
     margin: auto 0;
 `;
 
@@ -218,7 +219,7 @@ export const SearchItemText = styled.span`
 export const DeleteButton = styled.button`
     background: none;
     border: none;
-    color: #666;
+    color: var(--secondary-200);
     cursor: pointer;
     display: inline-block;
     vertical-align: middle;
@@ -226,7 +227,7 @@ export const DeleteButton = styled.button`
     padding: 0;
 
     &:hover {
-        color: #999;
+        color: var(--secondary-50);
     }
 `;
 
@@ -244,10 +245,10 @@ export const SearchListItem = styled.li`
     display: flex;
     align-items: center;
     padding: 12px 0;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--secondary-500);
 
     &:hover {
-        background-color: #252525;
+        background-color: var(--secondary-600);
     }
 `;
 
@@ -259,16 +260,16 @@ export const RankNumber = styled.span`
     height: 24px;
     margin-right: 10px;
     border-radius: 50%;
-    font-weight: 600;
+    font-weight: var(--font-weight-SemiBold);
 
     /* data-top3 속성을 사용하도록 변경 */
-    color: ${(props) => (props["data-top3"] ? "#fff" : "#333")};
-    background-color: ${(props) => (props["data-top3"] ? "#f59c04" : "transparent")};
+    color: ${(props) => (props["data-top3"] ? "var(--white)" : "var(--secondary-500)")};
+    background-color: ${(props) => (props["data-top3"] ? "var(--primary-40)" : "transparent")};
 `;
 
 export const UpdateTime = styled.div`
-    color: #666;
-    font-size: 12px;
+    color: var(--secondary-200);
+    font-size: var(--font-footer);
     margin-top: 20px;
     text-align: right;
 `;
@@ -280,17 +281,17 @@ export const SearchResultsSection = styled.div`
 `;
 
 export const SearchResultsHeader = styled.h2`
-    font-size: 24px;
-    color: #fff;
+    font-size: var(--font-W-Header);
+    color: var(--white);
     margin-bottom: 30px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #333;
 `;
 
 export const SearchResultsCount = styled.h3`
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
+    font-size: var(--font-W-Header);
+    font-weight: var(--font-weight-Medium);
+    color: var(--white);
+    margin-left: 100px;
 `;
 
 // 가로 스크롤을 위한 SearchResultsGrid 수정
@@ -309,17 +310,17 @@ export const SearchResultsGrid = styled.div`
     }
 
     &::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: var(--secondary-30);
         border-radius: 4px;
     }
 
     &::-webkit-scrollbar-thumb {
-        background: #888;
+        background: var(--secondary-90);
         border-radius: 4px;
     }
 
     &::-webkit-scrollbar-thumb:hover {
-        background: #555;
+        background: var(--secondary-400);
     }
 `;
 
@@ -332,7 +333,7 @@ export const SearchResultsContainer = styled.div`
 export const SearchResultItem = styled.div`
     display: flex;
     padding: 20px 0;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--secondary-500);
     cursor: pointer;
     transition: background-color 0.2s;
 
@@ -357,13 +358,13 @@ export const SearchResultInfo = styled.div`
 `;
 
 export const SearchResultTitle = styled.h3`
-    font-size: 18px;
-    color: #fff;
+    font-size: var(--font-W-Content-M);
+    color: var(--white);
     margin-bottom: 10px;
 
     span {
-        color: #aaa;
-        font-weight: normal;
+        color: var(--secondary-50);
+        font-weight: var(--font-weight-Regular);
     }
 `;
 
@@ -374,14 +375,14 @@ export const SearchResultMeta = styled.div`
 `;
 
 export const SearchResultReleaseDate = styled.span`
-    font-size: 14px;
-    color: #aaa;
+    font-size: var(--font-W-Content-S);
+    color: var(--secondary-50);
     margin-right: 20px;
 `;
 
 export const SearchResultRating = styled.span`
-    font-size: 14px;
-    color: #ffc107;
+    font-size: var(--font-W-Content-S);
+    color: var(--primary-40);
     display: flex;
     align-items: center;
 
@@ -392,8 +393,8 @@ export const SearchResultRating = styled.span`
 `;
 
 export const SearchResultOverview = styled.p`
-    font-size: 14px;
-    color: #ccc;
+    font-size: var(--font-W-Content-S);
+    color: var(--secondary-40);
     line-height: 1.5;
     max-height: 80px;
     overflow: hidden;
@@ -404,8 +405,8 @@ export const SearchResultOverview = styled.p`
 `;
 
 export const SearchResultContent = styled.p`
-    font-size: 14px;
-    color: #aaa;
+    font-size: var(--font-W-Content-S);
+    color: var(--secondary-50);
     line-height: 1.5;
 `;
 
@@ -415,7 +416,7 @@ export const LoadingSpinner = styled.div`
     height: 50px;
     border: 5px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    border-top-color: #fff;
+    border-top-color: var(--white);
     margin: 50px auto;
     animation: spin 1s linear infinite;
 
@@ -440,7 +441,7 @@ export const PaginationContainer = styled.div`
 
 export const PaginationButton = styled.button`
     background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    color: var(--white);
     border: none;
     border-radius: 4px;
     padding: 8px 16px;
@@ -460,15 +461,16 @@ export const PaginationButton = styled.button`
 
 // 추천 영화 관련 스타일
 export const RecommendationsSection = styled.div`
-    margin-top: 40px;
+    margin-top: 30px;
     width: 100%;
 `;
 
 export const RecommendationsHeader = styled.h2`
-    font-size: 22px;
-    font-weight: 500;
-    color: #ebebeb;
+    font-size: var(--font-W-Header);
+    font-weight: var(--font-weight-Medium);
+    color: var(--secondary-40);
     margin-bottom: 40px;
+    gap: 5px;
     position: relative;
     padding-left: 100px;
 
@@ -499,6 +501,6 @@ export const HorizontalThumbnailItem = styled(ThumbnailItem)`
 `;
 
 export const PageInfo = styled.span`
-    color: #aaa;
-    font-size: 14px;
+    color: var(--secondary-50);
+    font-size: var(--font-W-Content-S);
 `;
