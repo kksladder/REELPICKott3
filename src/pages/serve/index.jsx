@@ -9,6 +9,7 @@ import CastList from "../../components/sub/cast/CastList";
 import { useLocation } from "react-router-dom";
 import EpisodeList from "../../components/sub/episode/EpisodeList";
 import SimilarList from "../../components/sub/similar/SimilarList";
+import { GlassRightCircleBtn } from "../../ui/icon/GlassCircle";
 
 const ServePage = () => {
     const { movieId } = useParams();
@@ -203,24 +204,27 @@ const ServePage = () => {
                     <SeasonVideo>
                         <div className="season-title-wrapper">
                             <div className="season-title">{seasonContent?.title}</div>
-                            {isSeries && currentMovie.seasons?.length > 1 && (
-                                <div className="season-selector">
-                                    {currentMovie.seasons.map((season) => (
-                                        <button
-                                            key={season.season_number}
-                                            onClick={() => setSelectedSeason(season.season_number)}
-                                            className={selectedSeason === season.season_number ? "active" : ""}
-                                        >
-                                            시즌 {season.season_number}
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
+                            {/* <GlassRightCircleBtn/> */}
+                            <img src="/icon/Iconex/Glass/Right.png" alt="" className="glass-icon" />
+                            <div className="season-selector-wrap">
+                                {isSeries && currentMovie.seasons?.length > 1 && (
+                                    <div className="season-selector">
+                                        {currentMovie.seasons.map((season) => (
+                                            <button
+                                                key={season.season_number}
+                                                onClick={() => setSelectedSeason(season.season_number)}
+                                                className={selectedSeason === season.season_number ? "active" : ""}
+                                            >
+                                                시즌 {season.season_number}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <EpisodeList episodes={seasonContent?.content || []} />
                         <div className="under-line"></div>
                     </SeasonVideo>
-                    {/* Replace the existing SimilarCont section in ServePage */}
                     <SimilarCont>
                         <div className="con-title">비슷한 컨텐츠</div>
                         <SimilarList movieId={movieId} mediaType={currentMovie?.media_type} />

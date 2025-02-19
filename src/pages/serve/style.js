@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Inner = styled.section`
     padding: 0 64px;
@@ -13,14 +13,14 @@ export const MoveDetailWrap = styled.section`
 export const MovieVideo = styled.section`
     position: relative;
     width: 100%;
-    height: 1035px;
+    height: 858px;
 
     .video {
         position: relative;
         width: 100%;
         height: 100%;
         background: linear-gradient(180deg, rgba(0, 0, 0, 0) 60.95%, rgba(12, 12, 12, 0.61) 87.65%, #141414 100%),
-            url('/images/test.jpg') lightgray 50% / cover no-repeat;
+            url("/images/test.jpg") lightgray 50% / cover no-repeat;
         background-size: cover;
     }
 
@@ -42,80 +42,80 @@ export const MovieVideo = styled.section`
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-       .desc {
-        flex: 1;
-        margin-left: 35px;
-        max-width: 1282px;
-        font-size: var(--font-content-Small);
-        font-weight: var(--font-weight-Regular);
-        line-height: 34px;
+        .desc {
+            flex: 1;
+            margin-left: 35px;
+            max-width: 1282px;
+            font-size: var(--font-content-Small);
+            font-weight: var(--font-weight-Regular);
+            line-height: 34px;
 
-        p {
-        overflow: hidden;
-        transition: max-height 0.3s ease-in-out;
+            p {
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
 
-        &.collapsed {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2; /* 두 줄만 보이도록 설정 */
-            max-height: 68px;
-            text-overflow: ellipsis;
+                &.collapsed {
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2; /* 두 줄만 보이도록 설정 */
+                    max-height: 68px;
+                    text-overflow: ellipsis;
+                }
+
+                &.full-text {
+                    -webkit-line-clamp: unset;
+                    max-height: 1000px;
+                }
+            }
+
+            .desc_add {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                cursor: pointer;
+                user-select: none;
+            }
         }
 
-        &.full-text {
-            -webkit-line-clamp: unset;
-            max-height: 1000px;
-        }
-    }
-
-        .desc_add {
+        .playGroup {
             display: flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            user-select: none;
+            gap: 16px;
         }
-    }
 
-    .playGroup {
-        display: flex;
-        gap: 16px;
-    }
-
-    .playItem {
-        display: flex;
-        gap: 22px;
-        margin-left: 45px;
-    }
-
-    .tag {
-        display: flex;
-        gap: 9px;
-        margin-top: 10px;
-
-        .tag_age {
+        .playItem {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 3px;
-            font-weight: var(--font-weight-ExtraBold);
-            width: 28px;
-            height: 28px;
-            background-color: #D92B35;
+            gap: 22px;
+            margin-left: 45px;
         }
 
-        .tag_year,
-        .tag_genre,
-        .tag_time {
+        .tag {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 3px;
-            padding: 4.5px 6.5px;
-            border: 1px solid var(--secondary-60);
-            color: var(--secondary-60);
+            gap: 9px;
+            margin-top: 10px;
+
+            .tag_age {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 3px;
+                font-weight: var(--font-weight-ExtraBold);
+                width: 28px;
+                height: 28px;
+                background-color: #d92b35;
+            }
+
+            .tag_year,
+            .tag_genre,
+            .tag_time {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 3px;
+                padding: 4.5px 6.5px;
+                border: 1px solid var(--secondary-60);
+                color: var(--secondary-60);
+            }
         }
-    }
     }
 
     .playGroup {
@@ -139,7 +139,7 @@ export const MovieVideo = styled.section`
             font-weight: var(--font-weight-Regular);
             line-height: 34px;
         }
-        .desc_add{
+        .desc_add {
             display: flex;
             align-items: center;
             gap: 4px;
@@ -179,67 +179,67 @@ export const HeartButton = styled.section`
 `;
 
 export const ProductDetail = styled.section`
-  width: 100%;
-  flex-shrink: 1;
-  display: block;
-  margin-top: 58px;
-  padding-left: 64px;
-  height: 378px;
-  overflow: hidden;
+    width: 100%;
+    flex-shrink: 1;
+    display: block;
+    margin-top: 58px;
+    padding-left: 64px;
+    height: 378px;
+    overflow: hidden;
 
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-
-  .pd_sec {
-    display: flex;
-    align-items: flex-start;
-  }
-
-  .director {
-    width: 130px;
-    text-align: center;
-    margin-right: 30px;
-    position: sticky;
-    top: 0;
-
-    .pd_img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin-bottom: 10px;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
     }
 
-    .pd_name {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 5px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .pd_sec {
+        display: flex;
+        align-items: flex-start;
     }
 
-    .pd_part {
-      font-size: 14px;
-      color: #999;
-    }
-  }
+    .director {
+        width: 130px;
+        text-align: center;
+        margin-right: 30px;
+        position: sticky;
+        top: 0;
 
-  .cast {
-    flex: 1;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding-left: 30px;
-  }
+        .pd_img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 10px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .pd_name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pd_part {
+            font-size: 14px;
+            color: #999;
+        }
+    }
+
+    .cast {
+        flex: 1;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-left: 30px;
+    }
 `;
 
 /////////////////////
@@ -248,30 +248,66 @@ export const ProductDetail = styled.section`
 
 export const SeasonVideo = styled.section`
     margin-bottom: 85px;
+    .season-title-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
 
-    .season-selector{
-button{
-        width: 66px;
-        height: 31px;
-        background-color: var(--secondary-600);
-        color: var(--white);
-        border-radius: 7px;
-        margin-right: 5px;
-        &:hover{
-            background-color: var( --secondary-500);
-        }
-    }
+    .season-title {
+        width: fit-content;
+        font-size: var(--font-header-Medium);
+        margin: 0;
     }
     
+    .glass-icon {
+        width: auto;
+        height: auto;
+        margin: 0 15px 0 9px;
+        cursor: pointer;
+    }
+    
+    .season-selector-wrap {
+        display: none; /* 기본적으로 숨김 */
+        position: absolute; /*절대 위치로 변경*/
+        left: 0; /* 위치 조정 */
+        top: 0; /* title-wrapper 바로 아래에 위치 */
+        z-index: 10; /* 다른 요소들 위에 표시 */
+        
+        .season-selector {
+            display: flex;
+            padding: 10px;
+            gap: 5px;
+            
+            button {
+                width: auto;
+                height: 28px;
+                background-color: var(--secondary-600);
+                color: var(--white);
+                border-radius: 7px;
+                padding: 0 12px;
+                
+                &:hover {
+                    background-color: var(--secondary-500);
+                }
+                
+                &.active {
+                    background-color: var(--secondary-500);
+                }
+            }
+        }
+    }
+    
+    /* hover 시 season-selector-wrap 표시 */
+    .glass-icon:hover + .season-selector-wrap,
+    .season-selector-wrap:hover { /* season-selector-wrap에 마우스가 있을 때도 유지 */
+        display: flex;
+    }
+}
+
     .under-line {
         padding-top: 85px;
         border-bottom: 2px solid var(--secondary-600);
-    }
-
-    .season-title {
-        font-size: var(--font-header-Medium);
-        width: fit-content;
-        margin-bottom: 20px;
     }
 
     /* Hover effect for season-slide */
@@ -285,45 +321,6 @@ button{
     ::-webkit-scrollbar {
         display: none;
     }
-
-    /* .season-sec {
-        display: flex;
-        overflow-x: auto;
-        overflow-y: hidden;
-        gap: 24px; 
-        scroll-behavior: smooth;
-        a {
-            display: inline-block;
-            width: fit-content;
-            height: fit-content;
-        }
-    }
-
-    .season_vid {
-        width: 317px;
-        height: 166px;
-        flex-shrink: 0;
-        background-color: aliceblue;
-    }
-
-    .season-vid_tit {
-        font-size: var(--font-content-XXsmall);
-        padding-top: 24px;
-    }
-
-    .season-vid_info {
-        display: flex;
-        color: var(--secondary-200);
-        padding-top: 5px;
-        .season-vid_day {
-            position: relative;
-            padding-right: 7px;
-            border-right: 2px solid var(--secondary-600);
-        }
-        .season-vid_time {
-            margin-left: 7px;
-        }
-    } */
 
     /* Button visibility and positioning */
     .season_slide-button {
