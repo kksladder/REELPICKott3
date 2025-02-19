@@ -309,56 +309,82 @@ const ProfileEdit = () => {
     const [isTelOpen, setIsTelOpen] = useState(false);
 
     // 비밀번호 폼 상태 관리
+    const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const handleUpdatePassword = () => {
-        // 기본 유효성 검사
-        if (!newPassword || !confirmPassword) {
-            alert("새 비밀번호를 입력해주세요.");
-            return;
-        }
+    const resetForm = () => {
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+        setErrorMessage("");
+    };
 
-        if (newPassword !== confirmPassword) {
-            alert("새 비밀번호가 일치하지 않습니다.");
-            return;
-        }
-
+    const handleUpdatePassword = async () => {
         try {
-            // 1. localStorage 업데이트
-            if (user && user.id_email) {
-                const userData = JSON.parse(localStorage.getItem(`user_${user.id_email}`));
-                if (userData) {
-                    // 비밀번호 업데이트
-                    userData.password = newPassword;
-
-                    // localStorage 저장
-                    localStorage.setItem(`user_${user.id_email}`, JSON.stringify(userData));
-                    localStorage.setItem("user__로그인정보", JSON.stringify(userData));
-
-                    // 2. Redux 상태 업데이트
-                    dispatch(
-                        authActions.updatePassword({
-                            newPassword: newPassword,
-                        })
-                    );
-
-                    // 3. 폼 초기화
-                    setNewPassword("");
-                    setConfirmPassword("");
-
-                    // 4. 성공 메시지
-                    alert("비밀번호가 성공적으로 변경되었습니다.");
-                    setIsPWOpen(false);
-                }
+            // 기본 입력값 확인
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                setErrorMessage("모든 필드를 입력해주세요.");
+                return;
             }
+
+            // 새 비밀번호 일치 확인
+            if (newPassword !== confirmPassword) {
+                setErrorMessage("새 비밀번호가 일치하지 않습니다.");
+                return;
+            }
+
+            // 현재 사용자 정보 확인
+            if (!user?.id_email) {
+                setErrorMessage("사용자 정보를 찾을 수 없습니다.");
+                return;
+            }
+
+            // localStorage에서 현재 사용자 정보 가져오기
+            const userData = JSON.parse(localStorage.getItem(`user_${user.id_email}`));
+
+            // 현재 비밀번호 확인
+            if (userData?.password !== currentPassword) {
+                setErrorMessage("현재 비밀번호가 일치하지 않습니다.");
+                return;
+            }
+
+            // 비밀번호 업데이트
+            const updatedUserData = {
+                ...userData,
+                password: newPassword,
+            };
+
+            // localStorage 업데이트
+            localStorage.setItem(`user_${user.id_email}`, JSON.stringify(updatedUserData));
+            localStorage.setItem("user__로그인정보", JSON.stringify(updatedUserData));
+
+            // Redux 상태 업데이트
+            dispatch(
+                authActions.updatePassword({
+                    password: newPassword,
+                    user: updatedUserData,
+                })
+            );
+
+            // 성공 메시지 표시 및 폼 초기화
+            alert("비밀번호가 성공적으로 변경되었습니다.");
+            resetForm();
+            setIsPWOpen(false);
         } catch (error) {
             console.error("비밀번호 변경 중 오류 발생:", error);
-            alert("비밀번호 변경에 실패했습니다.");
+            setErrorMessage("비밀번호 변경 중 오류가 발생했습니다.");
         }
     };
 
-    const togglePW = () => setIsPWOpen(!isPWOpen);
+    const togglePW = () => {
+        setIsPWOpen(!isPWOpen);
+        if (isPWOpen) {
+            resetForm();
+        }
+    };
+
     const toggleEmail = () => setIsEmailOpen(!isEmailOpen);
     const toggleTel = () => setIsTelOpen(!isTelOpen);
     return (
@@ -381,12 +407,6 @@ const ProfileEdit = () => {
                                     d="M3.25 13C3.25 10.3766 5.37665 8.25 8 8.25H16C18.6234 8.25 20.75 10.3766 20.75 13V17C20.75 19.6234 18.6234 21.75 16 21.75H8C5.37665 21.75 3.25 19.6234 3.25 17V13ZM12.75 14C12.75 13.5858 12.4142 13.25 12 13.25C11.5858 13.25 11.25 13.5858 11.25 14V16C11.25 16.4142 11.5858 16.75 12 16.75C12.4142 16.75 12.75 16.4142 12.75 16V14Z"
                                     fill="white"
                                 />
-                                <path
-                                    opacity="0.3"
-                                    d="M16 9V7C16 4.79086 14.2091 3 12 3V3C9.79086 3 8 4.79086 8 7L8 9"
-                                    stroke="white"
-                                    stroke-width="1.5"
-                                />
                             </svg>
                             비밀번호
                         </HeaderText>
@@ -402,21 +422,38 @@ const ProfileEdit = () => {
                         <EditSection>
                             <InputSection>
                                 <div>
-                                    <Input placeholder="기존 비밀번호" /> <span>비밀번호 찾기</span>
+                                    <Input
+                                        type="password"
+                                        placeholder="현재 비밀번호"
+                                        value={currentPassword}
+                                        onChange={(e) => setCurrentPassword(e.target.value)}
+                                    />
                                 </div>
-
-                                <Input
-                                    placeholder="새 비밀번호"
-                                    value={currentProfile.password}
-                                    onChange={(e) => setCurrentProfile({ ...currentProfile, password: e.target.value })}
-                                />
-                                <Input placeholder="비밀번호 확인" />
+                                <div>
+                                    <Input
+                                        type="password"
+                                        placeholder="새 비밀번호"
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <Input
+                                        type="password"
+                                        placeholder="새 비밀번호 확인"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                    />
+                                </div>
+                                {errorMessage && <div style={{ color: "red", marginTop: "10px" }}>{errorMessage}</div>}
                             </InputSection>
                         </EditSection>
 
                         <ButtonGroup>
-                            <Button onClick={handleUpdatePWProfile}>저장</Button>
-                            <Button secondary>취소</Button>
+                            <Button onClick={handleUpdatePassword}>저장</Button>
+                            <Button secondary onClick={togglePW}>
+                                취소
+                            </Button>
                         </ButtonGroup>
                     </div>
                 </EditContainer>
