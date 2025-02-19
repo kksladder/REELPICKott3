@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
+import { getMovieRecommendations } from "../../api/movieService";
 
 import {
     SearchContainer,
@@ -34,21 +35,34 @@ import {
     RankNumber,
     UpdateTime,
     ClearAllButton,
+
+    // 검색 결과 관련 스타일
+    SearchResultsSection,
+    SearchResultsHeader,
+    SearchResultsCount,
+    SearchResultsGrid,
 } from "./style";
 
 // 로컬스토리지 키
 const RECENT_SEARCHES_KEY = "recentSearches";
+
 // 최대 저장 검색어 수
-const MAX_RECENT_SEARCHES = 10;
+const MAX_RECENT_SEARCHES = 15;
 
 const SearchPage = () => {
-
-
     const [searchQuery, setSearchQuery] = useState("");
     const [showResults, setShowResults] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const searchContainerRef = useRef(null);
     const searchInputRef = useRef(null);
+
+    //** 무비 담기
+    const [movies, setMovies] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    //출력
+    const [movieResult, setMovieResult] = useState([]);
 
     // 최근 검색어 상태 관리 - 초기값은 빈 배열
     const [recentSearches, setRecentSearches] = useState([]);
@@ -66,6 +80,25 @@ const SearchPage = () => {
         { id: 9, text: "원피스 골드 : 100만 달러의 필름 스트라이크 - 극장판 25기" },
         { id: 10, text: "원피스 골드 : 100만 달러의 필름 스트라이크 - 극장판 28기" },
     ];
+
+    //데이터 가져오기
+    useEffect(() => {
+        const fetchMovies = async () => {
+            try {
+                setIsLoading(true);
+                const movieData = await getMovieRecommendations();
+                setMovies(movieData);
+                console.log("가져온 영화 데이터 샘플:", movieData.length > 0 ? movieData[0] : "데이터 없음");
+            } catch (err) {
+                setError(err.message);
+                console.error("Failed to fetch movies:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchMovies();
+    }, []);
 
     // 컴포넌트 마운트 시 로컬스토리지에서 최근 검색어 불러오기
     useEffect(() => {
@@ -112,6 +145,30 @@ const SearchPage = () => {
             (item) => item.text.toLowerCase() !== searchText.trim().toLowerCase()
         );
 
+        //** 데이터 처리 추가 - map 함수 사용하여 필요한 데이터 추출 */
+        const filteredData = movies
+            .filter((item) => item.title.toLowerCase().includes(searchText.trim().toLowerCase()))
+            .map((movie) => ({
+                id: movie.id,
+                title: movie.title,
+                poster_path: movie.poster_path,
+                releaseDate: movie.releaseDate,
+                rating: movie.rating,
+            }));
+
+        // 디버깅 로그 추가
+        console.log("검색 텍스트:", searchText);
+        console.log("검색 결과 수:", filteredData.length);
+        if (filteredData.length > 0) {
+            console.log("첫 번째 검색 결과:", filteredData[0]);
+            console.log("포스터 경로:", filteredData[0].poster_path);
+        }
+
+        setMovieResult(filteredData);
+
+        //** 추가
+        setRecentSearches(filteredSearches);
+
         // 최대 개수 제한하여 새 검색어 추가 (최신 검색어가 맨 앞에 위치)
         const updatedSearches = [newSearch, ...filteredSearches].slice(0, MAX_RECENT_SEARCHES);
 
@@ -155,6 +212,7 @@ const SearchPage = () => {
         setSearchQuery("");
         setShowResults(false);
         setIsDropdownOpen(false);
+        setMovieResult([]);
     };
 
     const handleSearchBarFocus = () => {
@@ -197,6 +255,9 @@ const SearchPage = () => {
         imageUrl: "/images/casino.jpg",
         title: "카지노",
     });
+
+    // 기본 이미지 경로 설정 (영화 포스터 이미지가 없을 경우 사용)
+    const defaultImageUrl = "/images/default-poster.jpg";
 
     return (
         <SearchContainer ref={searchContainerRef}>
@@ -265,7 +326,7 @@ const SearchPage = () => {
                                                 onClick={() => handleSearchItemClick(item.text)}
                                                 style={{ cursor: "pointer" }}
                                             >
-                                                <RankNumber isTop3={index < 3}>{index + 1}</RankNumber>
+                                                <RankNumber data-top3={index < 3}>{index + 1}</RankNumber>
                                                 <SearchItemText>{item.text}</SearchItemText>
                                             </SearchListItem>
                                         ))}
@@ -278,27 +339,57 @@ const SearchPage = () => {
                 )}
             </SearchBarContainer>
 
-            {!showResults && (
+            {/* 검색 결과가 있을 때 영화 포스터 리스트 표시 */}
+            {showResults && movieResult.length > 0 ? (
+                <SearchResultsSection>
+                    <SearchResultsHeader>
+                        <SearchResultsCount>검색 결과: {movieResult.length}개</SearchResultsCount>
+                    </SearchResultsHeader>
+                    <SearchResultsGrid>
+                        {movieResult.map((movie) => (
+                            <ThumbnailItem key={movie.id}>
+                                <ThumbnailImage
+                                    src={movie.poster_path || defaultImageUrl}
+                                    alt={movie.title}
+                                    onError={(e) => {
+                                        console.log("이미지 로딩 실패:", movie.poster_path);
+                                        e.target.onerror = null;
+                                        e.target.src = defaultImageUrl;
+                                    }}
+                                />
+                                <ThumbnailTitle>{movie.title}</ThumbnailTitle>
+                            </ThumbnailItem>
+                        ))}
+                    </SearchResultsGrid>
+                </SearchResultsSection>
+            ) : showResults && movieResult.length === 0 ? (
+                <NoResultsContainer>
+                    <img src="/icon/noserch.svg" alt="검색 결과 없음" width="80" height="80" />
+                    <NoResultsText>검색 결과가 없습니다!</NoResultsText>
+                </NoResultsContainer>
+            ) : (
                 <NoResultsContainer>
                     <img src="/icon/noserch.svg" alt="검색 결과 없음" width="80" height="80" />
                     <NoResultsText>검색 내용이 없습니다!</NoResultsText>
                 </NoResultsContainer>
             )}
 
-            <ThumbnailsSection>
-                <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
-                <ThumbnailsGrid>
-                    {thumbnails.map((thumbnail, index) => (
-                        <ThumbnailItem key={index}>
-                            <ThumbnailImage src={thumbnail.imageUrl} alt={thumbnail.title} />
-                            <ThumbnailTitle>{thumbnail.title}</ThumbnailTitle>
-                        </ThumbnailItem>
-                    ))}
-                </ThumbnailsGrid>
-            </ThumbnailsSection>
+            {/* 추천 섹션: 검색 결과가 없을 때만 표시 */}
+            {(!showResults || (showResults && movieResult.length === 0)) && (
+                <ThumbnailsSection>
+                    <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
+                    <ThumbnailsGrid>
+                        {thumbnails.map((thumbnail, index) => (
+                            <ThumbnailItem key={index}>
+                                <ThumbnailImage src={thumbnail.imageUrl} alt={thumbnail.title} />
+                                <ThumbnailTitle>{thumbnail.title}</ThumbnailTitle>
+                            </ThumbnailItem>
+                        ))}
+                    </ThumbnailsGrid>
+                </ThumbnailsSection>
+            )}
         </SearchContainer>
     );
-
 };
 
 export default SearchPage;

@@ -243,12 +243,21 @@ export const SearchListItem = styled.li`
     }
 `;
 
+// style.js 파일에서 RankNumber 스타일 컴포넌트 수정
+
 export const RankNumber = styled.span`
-    color: ${({ isTop3 }) => (isTop3 ? "#f59c04" : "#666")};
-    font-weight: ${({ isTop3 }) => (isTop3 ? "bold" : "normal")};
-    margin-right: 15px;
-    min-width: 20px;
-    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    border-radius: 50%;
+    font-weight: 600;
+
+    /* data-top3 속성을 사용하도록 변경 */
+    color: ${(props) => (props["data-top3"] ? "#fff" : "#333")};
+    background-color: ${(props) => (props["data-top3"] ? "#f59c04" : "transparent")};
 `;
 
 export const UpdateTime = styled.div`
@@ -259,6 +268,24 @@ export const UpdateTime = styled.div`
 `;
 
 // 검색 결과 관련 스타일
+
+export const SearchResultsSection = styled.div`
+    width: 100%;
+    margin-top: 30px;
+`;
+
+export const SearchResultsCount = styled.h3`
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+`;
+
+export const SearchResultsGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 24px;
+    width: 100%;
+`;
 export const SearchResultsContainer = styled.div`
     width: 1778px;
     margin: 40px auto;
