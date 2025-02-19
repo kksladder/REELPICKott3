@@ -9,7 +9,6 @@ import CastList from "../../components/sub/cast/CastList";
 import { useLocation } from "react-router-dom";
 import EpisodeList from "../../components/sub/episode/EpisodeList";
 import SimilarList from "../../components/sub/similar/SimilarList";
-import { GlassRightCircleBtn } from "../../ui/icon/GlassCircle";
 
 const ServePage = () => {
     const { movieId } = useParams();
@@ -194,18 +193,25 @@ const ServePage = () => {
                         )}
                     </div>
                     <div className="cast">
-                        {cast.length > 0 ? <CastList cast={cast} /> : <div>출연진 정보가 없습니다.</div>}
+                        {cast.length > 0 ? (
+                            <CastList cast={cast} />
+                        ) : (
+                            <div className="cast-no">출연진 정보가 없습니다.</div>
+                        )}
                     </div>
                 </div>
             </ProductDetail>
-
-            {seasonContent && (
-                <Inner>
+            <Inner>
+                {seasonContent && (
                     <SeasonVideo>
                         <div className="season-title-wrapper">
                             <div className="season-title">{seasonContent?.title}</div>
-                            {/* <GlassRightCircleBtn/> */}
-                            <img src="/icon/Iconex/Glass/Right.png" alt="" className="glass-icon" />
+                            
+                            <img
+                                src={isSeries ? "/icon/Iconex/Glass/Right.png" : "/icon/Iconex/Glass/Off.png"}
+                                alt=""
+                                className="glass-icon"
+                            />
                             <div className="season-selector-wrap">
                                 {isSeries && currentMovie.seasons?.length > 1 && (
                                     <div className="season-selector">
@@ -225,12 +231,12 @@ const ServePage = () => {
                         <EpisodeList episodes={seasonContent?.content || []} />
                         <div className="under-line"></div>
                     </SeasonVideo>
-                    <SimilarCont>
-                        <div className="con-title">비슷한 컨텐츠</div>
-                        <SimilarList movieId={movieId} mediaType={currentMovie?.media_type} />
-                    </SimilarCont>
-                </Inner>
-            )}
+                )}
+                <SimilarCont>
+                    <div className="con-title">비슷한 컨텐츠</div>
+                    <SimilarList movieId={movieId} mediaType={currentMovie?.media_type} />
+                </SimilarCont>
+            </Inner>
         </MoveDetailWrap>
     );
 };

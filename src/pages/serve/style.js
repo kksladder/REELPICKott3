@@ -184,9 +184,9 @@ export const ProductDetail = styled.section`
     display: block;
     margin-top: 58px;
     padding-left: 64px;
-    height: 378px;
+    height: 310px;
     overflow: hidden;
-
+    position: relative;
     .title {
         font-size: 24px;
         font-weight: bold;
@@ -239,6 +239,14 @@ export const ProductDetail = styled.section`
         overflow-x: auto;
         white-space: nowrap;
         padding-left: 30px;
+        .cast-no{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 60%;
+    height: 60%;
+            position: absolute;
+        }
     }
 `;
 
@@ -342,6 +350,7 @@ export const SeasonVideo = styled.section`
 //비슷한 컨텐츠 Section
 /////////////////////
 export const SimilarCont = styled.section`
+margin-bottom: 70px;
     .con-title {
         font-size: var(--font-header-Medium);
         width: fit-content;
