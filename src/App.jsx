@@ -30,7 +30,6 @@ import Cancelmembership from "./components/account/Cancelmembership";
 import NoticeContents from "./components/account/NoticeContents";
 import MyPageLayout from "./common/myPageLayout/MyPageLayout";
 
-
 function App() {
     return (
         <>
@@ -60,7 +59,6 @@ function App() {
                         <Route path="/pwfind" element={<PWFind />} />
                         <Route path="/test" element={<TestPage />} />
                         <Route path="/director" element={<DirectorPage />} />
-
 
                         {/* 조심 */}
                         <Route path="/mypage" element={<MyPageLayout />}>

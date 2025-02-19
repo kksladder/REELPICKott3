@@ -16,11 +16,6 @@ import {
     ThumbnailItem,
     ThumbnailImage,
     ThumbnailTitle,
-    SearchResultsContainer,
-    SearchResultsHeader,
-    SearchResultItem,
-    SearchResultTitle,
-    SearchResultContent,
 
     // 드롭다운 관련 스타일
     DropdownContainer,
@@ -52,8 +47,6 @@ const SearchPage = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [showResults, setShowResults] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [searchExecuted, setSearchExecuted] = useState(false);
-    const [searchResults, setSearchResults] = useState([]);
     const searchContainerRef = useRef(null);
     const searchInputRef = useRef(null);
 
@@ -129,36 +122,12 @@ const SearchPage = () => {
     const handleSearch = (e) => {
         const value = e.target.value;
         setSearchQuery(value);
+        setShowResults(value.length > 0);
 
         // 검색어 입력 시 드롭다운 닫기
         if (value.length > 0) {
             setIsDropdownOpen(false);
         }
-    };
-
-    // 가상의 검색 결과를 생성하는 함수 (실제로는 API 호출로 대체)
-    const getSearchResults = (query) => {
-        // 간단한 예시 결과 생성
-        return [
-            {
-                id: 1,
-                title: `"${query}" 검색 결과 `,
-                content: `이것은 "${query}"에 대한 첫 번째 검색 결과입니다.`,
-                imageUrl: "/images/search-result1.jpg",
-            },
-            {
-                id: 2,
-                title: `"${query}" 관련 콘텐츠`,
-                content: `"${query}"와 관련된 인기 콘텐츠를 확인해보세요.`,
-                imageUrl: "/images/search-result2.jpg",
-            },
-            {
-                id: 3,
-                title: `최신 "${query}" 업데이트`,
-                content: `최근 업데이트된 "${query}" 관련 정보입니다.`,
-                imageUrl: "/images/search-result3.jpg",
-            },
-        ];
     };
 
     // 검색 실행 함수 (Enter 키 누를 때 또는 검색 버튼 클릭 시)
@@ -167,15 +136,10 @@ const SearchPage = () => {
             // 검색어 로컬스토리지에 저장
             addRecentSearch(searchQuery);
 
-            // 검색 결과 설정 (실제 환경에서는 API 호출)
-            const results = getSearchResults(searchQuery);
-            setSearchResults(results);
+            // 실제 검색 로직은 여기에 구현
+            console.log("검색 실행:", searchQuery);
 
-            // 검색 실행 상태 설정
-            setSearchExecuted(true);
-            setShowResults(true);
-
-            // 드롭다운 닫기
+            // 필요하다면 검색 후 드롭다운 닫기
             setIsDropdownOpen(false);
         }
     };
@@ -190,7 +154,6 @@ const SearchPage = () => {
     const clearSearch = () => {
         setSearchQuery("");
         setShowResults(false);
-        setSearchExecuted(false);
         setIsDropdownOpen(false);
     };
 
@@ -204,8 +167,9 @@ const SearchPage = () => {
     // 최근 검색어 클릭 시 해당 검색어로 검색
     const handleSearchItemClick = (searchText) => {
         setSearchQuery(searchText);
-
-        // setTimeout을 사용하여 상태 업데이트 후 검색 실행
+        setShowResults(true);
+        setIsDropdownOpen(false);
+        // 검색어를 검색창에 설정하고 검색 실행
         setTimeout(() => {
             executeSearch();
         }, 0);
@@ -314,41 +278,24 @@ const SearchPage = () => {
                 )}
             </SearchBarContainer>
 
-            {/* 검색 결과 또는 기본 화면 표시 */}
-            {searchExecuted && showResults ? (
-                <SearchResultsContainer>
-                    <SearchResultsHeader>
-                        "{searchQuery}" 검색 결과 ({searchResults.length})
-                    </SearchResultsHeader>
-                    {searchResults.map((result) => (
-                        <SearchResultItem key={result.id}>
-                            <SearchResultTitle>{result.title}</SearchResultTitle>
-                            <SearchResultContent>{result.content}</SearchResultContent>
-                        </SearchResultItem>
-                    ))}
-                </SearchResultsContainer>
-            ) : (
-                <>
-                    {!showResults && (
-                        <NoResultsContainer>
-                            <img src="/icon/noserch.svg" alt="검색 결과 없음" width="80" height="80" />
-                            <NoResultsText>검색 내용이 없습니다!</NoResultsText>
-                        </NoResultsContainer>
-                    )}
-
-                    <ThumbnailsSection>
-                        <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
-                        <ThumbnailsGrid>
-                            {thumbnails.map((thumbnail, index) => (
-                                <ThumbnailItem key={index}>
-                                    <ThumbnailImage src={thumbnail.imageUrl} alt={thumbnail.title} />
-                                    <ThumbnailTitle>{thumbnail.title}</ThumbnailTitle>
-                                </ThumbnailItem>
-                            ))}
-                        </ThumbnailsGrid>
-                    </ThumbnailsSection>
-                </>
+            {!showResults && (
+                <NoResultsContainer>
+                    <img src="/icon/noserch.svg" alt="검색 결과 없음" width="80" height="80" />
+                    <NoResultsText>검색 내용이 없습니다!</NoResultsText>
+                </NoResultsContainer>
             )}
+
+            <ThumbnailsSection>
+                <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
+                <ThumbnailsGrid>
+                    {thumbnails.map((thumbnail, index) => (
+                        <ThumbnailItem key={index}>
+                            <ThumbnailImage src={thumbnail.imageUrl} alt={thumbnail.title} />
+                            <ThumbnailTitle>{thumbnail.title}</ThumbnailTitle>
+                        </ThumbnailItem>
+                    ))}
+                </ThumbnailsGrid>
+            </ThumbnailsSection>
         </SearchContainer>
     );
 
