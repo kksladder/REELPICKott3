@@ -1,5 +1,3 @@
-// components/sub/similar/SimilarItem.jsx
-import React from "react";
 import { Link } from "react-router-dom";
 
 const SimilarItem = ({ item }) => {

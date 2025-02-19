@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { SquareNextBtn, SquarePreveBtn } from "../../../ui/Button/SlideButton"; // 경로 수정
 import { useEffect, useRef, useState } from "react";
-import { clearSimilarContent, getSimilarContent } from "../../../store/modules/similarSlice"; // 경로 수정
+import { clearSimilarContent, getSimilarContent } from "../../../store/modules/similarSlice";
 import SimilarItem from "./SimilarItem";
 
 const SimilarList = ({ movieId, mediaType }) => {
