@@ -30,12 +30,11 @@ export const MainTitle = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     strong {
         color: var(--white);
         text-align: center;
-        font-size: var(--font-body-Super);
-        font-weight: var(--font-weight-Bold);
+        font-size: var(--font-body-XXXlarge);
+        font-weight: var(--font-weight-ExtraBold);
         line-height: 135px;
         display: block;
         white-space: nowrap;
