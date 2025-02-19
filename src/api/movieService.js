@@ -1,4 +1,3 @@
-// src/api/movieService.js
 import axios from "axios";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -31,7 +30,7 @@ export const getMovieRecommendations = async (totalPages = 10) => {
             response.data.results.map((movie) => ({
                 id: movie.id,
                 title: movie.title,
-                poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+                poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
                 releaseDate: movie.release_date,
                 rating: movie.vote_average,
                 overview: movie.overview,
