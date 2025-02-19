@@ -443,7 +443,7 @@ const SearchPage = () => {
                 )}
             </SearchBarContainer>
 
-            {/* 검색 결과가 있을 때 영화 포스터 리스트 표시 */}
+            {/* 검색 결과가 있을 때 영화 포스터 리스트 표시 - title 완전히 제거 */}
             {showResults && movieResult.length > 0 ? (
                 <>
                     <SearchResultsSection>
@@ -452,7 +452,7 @@ const SearchPage = () => {
                         </SearchResultsHeader>
                         <SearchResultsGrid>
                             {movieResult.map((movie) => (
-                                <ThumbnailItem key={movie.id}>
+                                <div key={movie.id} className="thumbnail-wrapper" style={{ marginBottom: "0" }}>
                                     <ThumbnailImage
                                         src={movie.poster_path || defaultImageUrl}
                                         alt={movie.title}
@@ -462,18 +462,18 @@ const SearchPage = () => {
                                             e.target.src = defaultImageUrl;
                                         }}
                                     />
-                                </ThumbnailItem>
+                                </div>
                             ))}
                         </SearchResultsGrid>
                     </SearchResultsSection>
 
-                    {/* 유사 영화 추천 섹션 */}
+                    {/* 유사 영화 추천 섹션 - title 완전히 제거, 컨테이너도 변경 */}
                     {similarMovies.length > 0 && (
                         <RecommendationsSection>
                             <RecommendationsHeader>이런 영화는 어떠세요?</RecommendationsHeader>
                             <ThumbnailsGrid>
                                 {similarMovies.map((movie) => (
-                                    <ThumbnailItem key={movie.id}>
+                                    <div key={movie.id} className="thumbnail-wrapper" style={{ marginBottom: "0" }}>
                                         <ThumbnailImage
                                             src={movie.poster_path || defaultImageUrl}
                                             alt={movie.title}
@@ -482,7 +482,7 @@ const SearchPage = () => {
                                                 e.target.src = defaultImageUrl;
                                             }}
                                         />
-                                    </ThumbnailItem>
+                                    </div>
                                 ))}
                             </ThumbnailsGrid>
                         </RecommendationsSection>
@@ -495,7 +495,7 @@ const SearchPage = () => {
                         <NoResultsText>검색 결과가 없습니다!</NoResultsText>
                     </NoResultsContainer>
 
-                    {/* 검색 결과가 없을 때도 추천 영화 표시 */}
+                    {/* 검색 결과가 없을 때도 추천 영화 표시 - 여기는 title 유지 (추천에서는 제목 표시) */}
                     {similarMovies.length > 0 && (
                         <RecommendationsSection>
                             <RecommendationsHeader>이런 영화는 어떠세요?</RecommendationsHeader>
@@ -510,7 +510,6 @@ const SearchPage = () => {
                                                 e.target.src = defaultImageUrl;
                                             }}
                                         />
-                                        <ThumbnailTitle>{movie.title}</ThumbnailTitle>
                                     </ThumbnailItem>
                                 ))}
                             </ThumbnailsGrid>

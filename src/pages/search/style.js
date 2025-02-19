@@ -84,7 +84,6 @@ export const ThumbnailsSection = styled.div`
 export const ThumbnailsHeader = styled.h2`
     font-size: var(--font-W-Header);
     color: var(--secondary-40);
-    border-top: 1px solid var(--secondary-500);
     width: 1765px;
     margin-top: 156px;
     margin-bottom: 50px;
@@ -122,10 +121,7 @@ export const ThumbnailTitle = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
     padding: 10px;
-    font-size: var(--font-W-Content-S);
-    font-weight: var(--font-weight-Bold);
 `;
 
 // 드롭다운 관련 스타일
@@ -463,6 +459,7 @@ export const PaginationButton = styled.button`
 export const RecommendationsSection = styled.div`
     margin-top: 30px;
     width: 100%;
+    padding-right: 70px;
 `;
 
 export const RecommendationsHeader = styled.h2`
