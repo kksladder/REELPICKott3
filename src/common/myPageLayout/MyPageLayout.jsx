@@ -6,6 +6,9 @@ export const Wrap = styled.div`
     height: 100vh;
     padding: 0 184px;
     display: flex;
+    @media (max-width: 768px) {
+        padding: 0 30px;
+    }
 `;
 export const LeftAccount = styled.div`
     width: calc(100% - 270px);

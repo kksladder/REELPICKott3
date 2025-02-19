@@ -10,6 +10,8 @@ const images = [
     "/images/profile5.png",
     "/images/profile6.png",
     "/images/profile7.png",
+    "/images/profile_rupee.png",
+    "/images/profile_ruppee2.png",
 ];
 
 const ModalOverlay = styled.div`
@@ -129,7 +131,7 @@ const Button = styled.button`
     }
 `;
 
-const ProfileModal = ({ isOpen, onClose, onProfileSelect }) => {
+const ProfileModal = ({ isOpen, onClose, onProfileSelect, onProfileSelect2 }) => {
     const [selectedImage, setSelectedImage] = useState(null);
 
     const handleImageClick = (image) => {
@@ -139,6 +141,7 @@ const ProfileModal = ({ isOpen, onClose, onProfileSelect }) => {
     const handleProfileRegister = () => {
         if (selectedImage) {
             onProfileSelect(selectedImage); // 부모로 선택된 이미지 전달
+            onProfileSelect2(selectedImage);
             onClose();
         }
     };

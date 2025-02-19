@@ -12,6 +12,11 @@ const MenuArea = styled.div`
     height: 100%;
     position: relative;
     margin-right: 87px;
+
+    /* 화면 너비가 768px 이하일 때 MenuArea 숨기기 */
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
 
 const MainMenu = styled.ul`
