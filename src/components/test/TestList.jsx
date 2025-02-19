@@ -49,7 +49,7 @@ const TestList = () => {
         <ListContainer>
             {movieData &&
                 movieData.map((movie) => (
-                    <Link to={`/serve/${movie.id}`} key={movie.id}>
+                    <Link to={`/serve/${movie.id}?type=${movie.media_type}`} key={movie.id}>
                         <MovieCard>
                             <div className="poster">
                                 <img
