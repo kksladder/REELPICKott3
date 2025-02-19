@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     joinData: [],
     authed: false,
-    user: null,
+    user: "",
     isSignUpComplete: false,
     selectedMembership: "",
     goTg: null,
@@ -125,14 +125,34 @@ export const authSlice = createSlice({
             };
             localStorage.setItem("selectedMembership", JSON.stringify(membershipInfo));
         },
-        updateProfileImage: (state, action) => {
-            const { newProfileImage, newUsername } = action.payload;
-            state.user.profileImage = newProfileImage;
-            state.user.username = newUsername;
-        },
+
         removeUsername: (state) => {
             state.user.username = "";
             state.user.profileImage = "/images/default_profile.png";
+        },
+        // 사용자 이름 업데이트
+        // authSlice.js 리듀서 예시
+        updateUsername: (state, action) => {
+            if (state.user) {
+                state.user.username = action.payload; // user 객체의 username 값을 업데이트
+            }
+        },
+        updatePassword: (state, action) => {
+            const { currentPassword, newPassword } = action.payload;
+
+            if (state.user && state.user.password === currentPassword) {
+                // 현재 비밀번호가 맞다면 새로운 비밀번호로 업데이트
+                state.user.password = newPassword;
+            } else {
+                // 현재 비밀번호가 일치하지 않으면 오류를 처리할 수 있음
+                console.error("현재 비밀번호가 일치하지 않습니다.");
+            }
+        },
+        // 프로필 이미지 업데이트
+        updateProfileImage: (state, action) => {
+            if (state.user) {
+                state.user.profileImage = action.payload; // 전달된 payload로 profileImage 업데이트
+            }
         },
     },
 });

@@ -17,8 +17,9 @@ const ImageItem = styled.div`
 const ProfileImage = () => {
     const { user } = useSelector((state) => state.authR);
     const dispatch = useDispatch();
-    const [selectedImage, setSelectedImage] = useState("/images/default_profile2.png");
 
+    const [selectedImage, setSelectedImage] = useState("/images/default_profile2.png");
+    const savedImage = localStorage.getItem("profileImage");
     // 페이지가 로드될 때 로컬스토리지에서 기존 프로필 이미지 확인 (초기값 설정)
     useEffect(() => {
         if (user && user.profileImage) {
@@ -28,7 +29,7 @@ const ProfileImage = () => {
 
     return (
         <ImageItem>
-            <img src={selectedImage} alt="프로필 이미지" />
+            <img src={savedImage ? savedImage : "/images/default_profile2.png"} alt="프로필 이미지" />
         </ImageItem>
     );
 };

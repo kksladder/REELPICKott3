@@ -1,8 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SlArrowRight } from "react-icons/sl";
 import { FaChevronDown } from "react-icons/fa";
+import { authActions } from "../../store/modules/authSlice";
 
 const Container = styled.div`
     position: relative;
@@ -301,27 +302,68 @@ const InputSection = styled.div`
 `;
 
 const ProfileEdit = () => {
+    const dispatch = useDispatch();
     const { user } = useSelector((state) => state.authR);
-    /*   const [isOpen, setIsOpen] = useState(false); */
     const [isPWOpen, setIsPWOpen] = useState(false);
-    /*     const [isPWOpen, setIsPWOpen] = useState(false); */
     const [isEmailOpen, setIsEmailOpen] = useState(false);
     const [isTelOpen, setIsTelOpen] = useState(false);
 
-    const togglePW = () => {
-        setIsPWOpen(!isPWOpen);
-    };
-    const toggleEmail = () => {
-        setIsEmailOpen(!isEmailOpen);
-    };
-    const toggleTel = () => {
-        setIsTelOpen(!isTelOpen);
+    // 비밀번호 폼 상태 관리
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const handleUpdatePassword = () => {
+        // 기본 유효성 검사
+        if (!newPassword || !confirmPassword) {
+            alert("새 비밀번호를 입력해주세요.");
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            alert("새 비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        try {
+            // 1. localStorage 업데이트
+            if (user && user.id_email) {
+                const userData = JSON.parse(localStorage.getItem(`user_${user.id_email}`));
+                if (userData) {
+                    // 비밀번호 업데이트
+                    userData.password = newPassword;
+
+                    // localStorage 저장
+                    localStorage.setItem(`user_${user.id_email}`, JSON.stringify(userData));
+                    localStorage.setItem("user__로그인정보", JSON.stringify(userData));
+
+                    // 2. Redux 상태 업데이트
+                    dispatch(
+                        authActions.updatePassword({
+                            newPassword: newPassword,
+                        })
+                    );
+
+                    // 3. 폼 초기화
+                    setNewPassword("");
+                    setConfirmPassword("");
+
+                    // 4. 성공 메시지
+                    alert("비밀번호가 성공적으로 변경되었습니다.");
+                    setIsPWOpen(false);
+                }
+            }
+        } catch (error) {
+            console.error("비밀번호 변경 중 오류 발생:", error);
+            alert("비밀번호 변경에 실패했습니다.");
+        }
     };
 
+    const togglePW = () => setIsPWOpen(!isPWOpen);
+    const toggleEmail = () => setIsEmailOpen(!isEmailOpen);
+    const toggleTel = () => setIsTelOpen(!isTelOpen);
     return (
         <>
             {/*    <H1>계정</H1> */}
-            
             <Container id="profileEdit-seciton">
                 <Header1>
                     <ProfileInfo>
@@ -363,13 +405,17 @@ const ProfileEdit = () => {
                                     <Input placeholder="기존 비밀번호" /> <span>비밀번호 찾기</span>
                                 </div>
 
-                                <Input placeholder="새 비밀번호" />
+                                <Input
+                                    placeholder="새 비밀번호"
+                                    value={currentProfile.password}
+                                    onChange={(e) => setCurrentProfile({ ...currentProfile, password: e.target.value })}
+                                />
                                 <Input placeholder="비밀번호 확인" />
                             </InputSection>
                         </EditSection>
 
                         <ButtonGroup>
-                            <Button>저장</Button>
+                            <Button onClick={handleUpdatePWProfile}>저장</Button>
                             <Button secondary>취소</Button>
                         </ButtonGroup>
                     </div>
