@@ -1,7 +1,7 @@
-import { Inner, MoveDetailWrap, MovieVideo, ProductDetail, SeasonVideo, SimilarCont } from "./style";
-import { useEffect, useState } from "react";
+import { Inner, MoveDetailWrap, MovieVideo, ProductDetail, SeasonVideo, SimilarCont, StyledEpisodeList } from "./style";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { HeartToggle, PlySquareLg, RestartLg, SpeakerOffLg } from "../../ui/Button/Button";
+import { HeartToggle, PlySquareLg, RestartLg, SpeakerOffLg, SpeakerOnLg, StopSquareLg } from "../../ui/Button/Button";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getMovieDetails } from "../../store/modules/getThunk";
@@ -13,16 +13,14 @@ import SimilarList from "../../components/sub/similar/SimilarList";
 const ServePage = () => {
     const { movieId } = useParams();
     const dispatch = useDispatch();
-    const { currentMovie, movieData, loading, error } = useSelector((state) => state.movieR);
+    const { currentMovie, movieData, error } = useSelector((state) => state.movieR);
     const [expanded, setExpanded] = useState(false);
     const [selectedSeason, setSelectedSeason] = useState(1);
     const location = useLocation();
     const mediaType = new URLSearchParams(location.search).get("type") || "movie";
-
-    // 슬라이드 관련 상태
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(true);
+    const [isMuted, setIsMuted] = useState(true);
+    const playerRef = useRef(null);
 
     useEffect(() => {
         if (movieId && movieData) {
@@ -39,51 +37,113 @@ const ServePage = () => {
         }
     }, [dispatch, movieId, mediaType, selectedSeason]);
 
-    const handleMouseDown = (e) => {
-        setIsDragging(true);
-        setStartX(e.pageX - e.currentTarget.offsetLeft);
-        setScrollLeft(e.currentTarget.scrollLeft);
+    // YouTube API 초기화와 컨트롤 관련 코드
+    useEffect(() => {
+        // YouTube IFrame API 로드
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName("script")[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // API 준비되면 플레이어 초기화
+        window.onYouTubeIframeAPIReady = () => {
+            if (currentMovie?.trailer?.key) {
+                const player = new window.YT.Player("youtube-player", {
+                    events: {
+                        onReady: (event) => {
+                            playerRef.current = event.target;
+                            if (isMuted) {
+                                event.target.mute();
+                            }
+                        },
+                        onStateChange: (event) => {
+                            // 동영상 상태 변경 시 재생/정지 상태 업데이트
+                            if (event.data === window.YT.PlayerState.PLAYING) {
+                                setIsPlaying(true);
+                            } else if (event.data === window.YT.PlayerState.PAUSED) {
+                                setIsPlaying(false);
+                            }
+                        },
+                    },
+                });
+            }
+        };
+
+        // 컴포넌트 언마운트 시 정리
+        return () => {
+            window.onYouTubeIframeAPIReady = null;
+            if (playerRef.current) {
+                playerRef.current = null;
+            }
+        };
+    }, [currentMovie?.trailer?.key]);
+
+    // 비디오 URL 생성 함수 수정
+    const getVideoUrl = () => {
+        if (!currentMovie?.trailer?.key) return null;
+        return `https://www.youtube.com/embed/${currentMovie.trailer.key}?enablejsapi=1&autoplay=1&mute=${
+            isMuted ? 1 : 0
+        }&controls=0&showinfo=0&rel=0&loop=1&playlist=${currentMovie.trailer.key}&origin=${window.location.origin}`;
     };
 
-    const handleMouseUp = () => {
-        setIsDragging(false);
+    // 재생/정지 핸들러 수정
+    const handlePlayPause = () => {
+        if (playerRef.current) {
+            try {
+                if (isPlaying) {
+                    playerRef.current.pauseVideo();
+                } else {
+                    playerRef.current.playVideo();
+                }
+                setIsPlaying(!isPlaying);
+            } catch (error) {
+                console.error("Failed to control video:", error);
+            }
+        }
     };
 
-    const handleMouseMove = (e) => {
-        if (!isDragging) return;
-        e.preventDefault();
-        const x = e.pageX - e.currentTarget.offsetLeft;
-        const walk = (x - startX) * 2;
-        e.currentTarget.scrollLeft = scrollLeft - walk;
+    // 음소거 핸들러 수정
+    const handleMuteToggle = () => {
+        if (playerRef.current) {
+            try {
+                if (isMuted) {
+                    playerRef.current.unMute();
+                } else {
+                    playerRef.current.mute();
+                }
+                setIsMuted(!isMuted);
+            } catch (error) {
+                console.error("Failed to toggle mute:", error);
+            }
+        }
     };
-
-    if (loading) return <div>데이터를 불러오는 중입니다...</div>;
-    if (error)
-        return (
-            <div className="error-container">
-                <h2>오류가 발생했습니다</h2>
-                <p>{error}</p>
-            </div>
-        );
-    if (!movieData) return <div>데이터를 불러오는 중입니다...</div>;
-    if (!currentMovie) return <div>영화 정보를 불러오는 중입니다...</div>;
+    // if (!movieData) return <div>데이터를 불러오는 중입니다...</div>;
+    // if (!currentMovie) return <div>영화 정보를 불러오는 중입니다...</div>;
 
     const cast = currentMovie?.credits?.cast || [];
     const director = currentMovie?.credits?.crew?.find((person) => person.job === "Director");
     const isMovie = currentMovie?.media_type === "movie";
     const isSeries = currentMovie?.media_type === "tv" || currentMovie?.media_type === "animation";
-    const hasSeasons = currentMovie?.seasons?.length > 0;
+
+    // const hasSeasons = currentMovie?.seasons?.length > 0;
 
     const renderSeasonContent = () => {
-        if (isMovie && hasSeasons) {
+        if (isMovie && currentMovie.belongs_to_collection) {
+            // 영화 시리즈인 경우
             return {
-                title: `${currentMovie.title} - 시즌 ${currentMovie.seasons.length}`,
-                content: currentMovie.seasons.map((season) => ({
-                    ...season,
-                    title: `시즌 ${season.season_number}`,
-                    still_path: season.poster_path,
-                    runtime: currentMovie.episode_run_time?.[0] || "",
-                })),
+                title: `${currentMovie.title} - 시리즈`,
+                content: [
+                    {
+                        id: currentMovie.id,
+                        title: currentMovie.title,
+                        overview: currentMovie.overview,
+                        still_path: currentMovie.backdrop_path,
+                        runtime: currentMovie.runtime,
+                        release_date: currentMovie.release_date,
+                        vote_average: currentMovie.vote_average,
+                    },
+                    // 시리즈의 다른 영화들도 여기에 추가됨
+                ],
             };
         }
 
@@ -108,31 +168,54 @@ const ServePage = () => {
 
     const seasonContent = renderSeasonContent();
 
+    //비디오 재생버튼 item
+
+    // const getVideoUrl = () => {
+    //     if (!currentMovie?.trailer?.key) return null;
+    //     return `https://www.youtube.com/embed/${currentMovie.trailer.key}?autoplay=1&mute=${
+    //         isMuted ? 1 : 0
+    //     }&controls=0&showinfo=0&rel=0&loop=1&playlist=${currentMovie.trailer.key}${isPlaying ? "" : "&pause=1"}`;
+    // };
+
     return (
         <MoveDetailWrap>
             <MovieVideo $expanded={expanded}>
                 <div className="video">
+                    {currentMovie?.trailer?.key && (
+                        <iframe
+                            id="youtube-player"
+                            src={getVideoUrl()}
+                            title={currentMovie.title}
+                            style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                width: "100%",
+                                height: "100%",
+                                border: "none",
+                            }}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        />
+                    )}
                     <div className="video-item">
                         <div className="item_left">
                             <div className="playGroup">
-                                <PlySquareLg />
+                                <div onClick={handlePlayPause}>{isPlaying ? <StopSquareLg /> : <PlySquareLg />}</div>
                                 <HeartToggle />
                             </div>
                             <div className="tag">
                                 <div className="tag_age">19</div>
                                 <div className="tag_year">
-                                    {isMovie
-                                        ? currentMovie?.release_date?.substring(0, 4)
-                                        : currentMovie?.first_air_date?.substring(0, 4) || ""}
+                                    {currentMovie?.release_date?.substring(0, 4) ||
+                                        currentMovie?.first_air_date?.substring(0, 4) ||
+                                        ""}
                                 </div>
                                 <div className="tag_genre">
                                     {currentMovie?.genres?.map((genre) => genre.name).join(", ") || ""}
                                 </div>
                                 <div className="tag_time">
-                                    {isMovie
-                                        ? currentMovie?.runtime
-                                            ? `${currentMovie.runtime}분`
-                                            : ""
+                                    {currentMovie?.runtime
+                                        ? `${currentMovie.runtime}분`
                                         : currentMovie?.episode_run_time?.[0]
                                         ? `${currentMovie.episode_run_time[0]}분`
                                         : ""}
@@ -161,12 +244,13 @@ const ServePage = () => {
                         </div>
                         <div className="playItem">
                             <RestartLg />
-                            <SpeakerOffLg />
+                            <div onClick={handleMuteToggle} style={{ cursor: "pointer" }}>
+                                {isMuted ? <SpeakerOffLg /> : <SpeakerOnLg />}
+                            </div>
                         </div>
                     </div>
                 </div>
             </MovieVideo>
-
             <ProductDetail>
                 <div className="title">출연 및 제작진</div>
                 <div className="pd_sec">
@@ -202,36 +286,33 @@ const ServePage = () => {
                 </div>
             </ProductDetail>
             <Inner>
-                {seasonContent && (
+                {(seasonContent || currentMovie?.seriesMovies?.length > 0) && (
                     <SeasonVideo>
                         <div className="season-title-wrapper">
-                            <div className="season-title">{seasonContent?.title}</div>
-                            
+                            <div className="season-title">
+                                {currentMovie?.seriesMovies?.length > 0
+                                    ? `${currentMovie.title} 시리즈`
+                                    : seasonContent?.title}
+                            </div>
+
                             <img
                                 src={isSeries ? "/icon/Iconex/Glass/Right.png" : "/icon/Iconex/Glass/Off.png"}
                                 alt=""
                                 className="glass-icon"
                             />
-                            <div className="season-selector-wrap">
-                                {isSeries && currentMovie.seasons?.length > 1 && (
-                                    <div className="season-selector">
-                                        {currentMovie.seasons.map((season) => (
-                                            <button
-                                                key={season.season_number}
-                                                onClick={() => setSelectedSeason(season.season_number)}
-                                                className={selectedSeason === season.season_number ? "active" : ""}
-                                            >
-                                                시즌 {season.season_number}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
                         </div>
-                        <EpisodeList episodes={seasonContent?.content || []} />
+
+                        <StyledEpisodeList>
+                            <EpisodeList
+                                episodes={seasonContent?.content || []}
+                                seriesMovies={currentMovie?.seriesMovies || []}
+                            />
+                        </StyledEpisodeList>
+
                         <div className="under-line"></div>
                     </SeasonVideo>
                 )}
+
                 <SimilarCont>
                     <div className="con-title">비슷한 컨텐츠</div>
                     <SimilarList movieId={movieId} mediaType={currentMovie?.media_type} />

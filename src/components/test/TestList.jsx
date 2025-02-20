@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -8,6 +8,7 @@ const ListContainer = styled.div`
     flex-wrap: wrap;
     gap: 20px;
     margin-top: 20px;
+    min-height: 100vh;
 `;
 
 const MovieCard = styled.div`
@@ -24,46 +25,64 @@ const MovieCard = styled.div`
         height: 300px;
         border-radius: 8px;
         overflow: hidden;
+        background-color: #1a1a1a;
 
         img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: opacity 0.3s ease;
+
+            &.loading {
+                opacity: 0;
+            }
         }
     }
 
     .title {
         margin-top: 8px;
         font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 `;
 
-const TestList = () => {
-    const { movieData, loading } = useSelector((state) => state.movieR);
-
-    if (loading) {
-        return <div>로딩 중...</div>;
-    }
+const MemoizedMovieCard = memo(({ movie }) => {
+    const [imageLoaded, setImageLoaded] = React.useState(false);
 
     return (
+        <Link to={`/serve/${movie.id}?type=${movie.media_type}`}>
+            <MovieCard>
+                <div className="poster">
+                    <img
+                        className={!imageLoaded ? "loading" : ""}
+                        src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
+                        alt={movie.title}
+                        onLoad={() => setImageLoaded(true)}
+                        onError={(e) => {
+                            e.target.src = "/images/noImage.png";
+                            setImageLoaded(true);
+                        }}
+                    />
+                </div>
+                <div className="title">{movie.title}</div>
+            </MovieCard>
+        </Link>
+    );
+});
+
+MemoizedMovieCard.displayName = "MemoizedMovieCard";
+
+const TestList = () => {
+    const { movieData} = useSelector((state) => state.movieR);
+
+    // 로딩 상태일 때도 기존 데이터를 계속 표시
+    return (
         <ListContainer>
-            {movieData &&
-                movieData.map((movie) => (
-                    <Link to={`/serve/${movie.id}?type=${movie.media_type}`} key={movie.id}>
-                        <MovieCard>
-                            <div className="poster">
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
-                                    alt={movie.title}
-                                    onError={(e) => {
-                                        e.target.src = "/placeholder-poster.jpg"; // You can add a placeholder image
-                                    }}
-                                />
-                            </div>
-                            <div className="title">{movie.title}</div>
-                        </MovieCard>
-                    </Link>
-                ))}
+            {movieData?.map((movie) => (
+                <MemoizedMovieCard key={movie.id} movie={movie} />
+            ))}
         </ListContainer>
     );
 };

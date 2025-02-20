@@ -1,10 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-
 const ButtonInner = styled.button`
     display: flex;
-    width: ${({ width }) => width || 'auto'};
+    width: ${({ width }) => width || "auto"};
     height: 56px;
     padding: 19px 0px;
     justify-content: center;
@@ -84,12 +83,12 @@ export const RestartMd = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
-                borderRadius: '50%',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
+                borderRadius: "50%",
             }}
         >
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -136,12 +135,12 @@ export const RestartS = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
-                borderRadius: '50%',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
+                borderRadius: "50%",
             }}
         >
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -195,12 +194,12 @@ export const StartLg = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
-                borderRadius: '50%',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
+                borderRadius: "50%",
             }}
         >
             <svg width="98" height="100" viewBox="0 0 98 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -237,12 +236,12 @@ export const StartMd = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
-                borderRadius: '50%',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
+                borderRadius: "50%",
             }}
         >
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -289,12 +288,12 @@ export const StartS = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
-                borderRadius: '50%',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
+                borderRadius: "50%",
             }}
         >
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -346,12 +345,12 @@ export const StopLg = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
-                borderRadius: '50%',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
+                borderRadius: "50%",
             }}
         >
             <svg width="98" height="100" viewBox="0 0 98 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -389,12 +388,12 @@ export const StopMd = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
-                borderRadius: '50%',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
+                borderRadius: "50%",
             }}
         >
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -427,12 +426,12 @@ export const StopS = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
-                borderRadius: '50%',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
+                borderRadius: "50%",
             }}
         >
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -472,13 +471,13 @@ export const SpeakerOffLg = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                borderRadius: '50%',
-                overflow: 'hidden',
-                cursor: 'pointer',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                borderRadius: "50%",
+                overflow: "hidden",
+                cursor: "pointer",
             }}
         >
             <svg width="98" height="100" viewBox="0 0 98 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -522,12 +521,12 @@ export const SpeakerOnLg = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
-                borderRadius: '50%',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
+                borderRadius: "50%",
             }}
         >
             <svg width="98" height="100" viewBox="0 0 98 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -736,12 +735,12 @@ export const SpeakerOnMd = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
-                borderRadius: '50%',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
+                borderRadius: "50%",
             }}
         >
             <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -849,12 +848,12 @@ export const SpeakerOnS = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
-                borderRadius: '50%',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
+                borderRadius: "50%",
             }}
         >
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -915,11 +914,11 @@ export const HeartToggle = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
             }}
             onClick={handleHeartClick}
         >
@@ -996,11 +995,11 @@ export const HeartOnS = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
             }}
         >
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1021,11 +1020,11 @@ export const HeartOffS = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
             }}
         >
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1044,12 +1043,12 @@ export const PlySquareLg = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                borderRadius: '50px',
-                cursor: 'pointer',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                borderRadius: "50px",
+                cursor: "pointer",
             }}
         >
             <svg width="142" height="54" viewBox="0 0 142 54" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1085,11 +1084,11 @@ export const PlySquareMd = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
             }}
         >
             <svg width="80" height="32" viewBox="0 0 80 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1132,43 +1131,36 @@ export const StopSquareMd = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
             }}
         >
-            <svg width="80" height="32" viewBox="0 0 80 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g filter="url(#filter0_b_495_8553)">
-                    <rect y="0.561523" width="79.7193" height="30.3158" rx="6" fill="#DBDBDB" fill-opacity="0.25098" />
-                </g>
+            <svg width="142" height="54" viewBox="0 0 142 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <foreignObject x="-4" y="-4" width="150" height="62">
+                    <div
+                        style={{
+                            backdropFilter: "blur(2px)",
+                            WebkitBackdropFilter: "blur(2px)", 
+                            clipPath: "url(#bgblur_clip)",
+                            height: "100%",
+                            width: "100%",
+                        }}
+                    />
+                </foreignObject>
+                <rect width="142" height="54" rx="6" fill="#DBDBDB" fillOpacity="0.25098" />
                 <path
-                    d="M46.8662 17.0073H45.8633V14.1382H43.2227V16.3091H38.043V11.3198H43.2227V13.313H45.8633V10.52H46.8662V17.0073ZM39.0332 15.5093H42.2451V12.1323H39.0332V15.5093ZM46.8662 21.6538H39.4902V17.5913H46.8662V21.6538ZM40.4805 20.8413H45.8887V18.4038H40.4805V20.8413ZM59.0283 16.9185H54.3691V18.1626H57.7715V21.6538H50.002V18.1626H53.3916V16.9185H48.7451V16.106H59.0283V16.9185ZM54.3691 11.5864H57.9873V12.3862H54.4326C54.4538 12.7925 54.6442 13.1585 55.0039 13.4844C55.3678 13.806 55.8481 14.0705 56.4448 14.2778C57.0415 14.481 57.6995 14.6164 58.4189 14.6841L58.127 15.4331C57.141 15.3315 56.2692 15.1136 55.5117 14.7793C54.7585 14.445 54.2168 14.007 53.8867 13.4653C53.5524 14.007 53.0065 14.445 52.249 14.7793C51.4958 15.1136 50.6283 15.3315 49.6465 15.4331L49.3418 14.6841C50.0654 14.6164 50.7256 14.481 51.3223 14.2778C51.9189 14.0705 52.3971 13.806 52.7568 13.4844C53.1208 13.1585 53.3154 12.7925 53.3408 12.3862H49.8115V11.5864H53.3916V10.4565H54.3691V11.5864ZM50.9922 20.8413H56.7939V18.9624H50.9922V20.8413Z"
+                    d="M73.514 30.904V35.896H84.512V30.904H73.514ZM71.434 37.612V29.214H86.592V37.612H71.434ZM76.998 24.846V17.956H70.55V24.846H76.998ZM84.434 14.628H86.592V28.018H84.434V22.09H79.078V26.562H68.444V16.24H79.078V20.348H84.434V14.628ZM93.168 24.768L92.544 23.13C96.912 22.74 100.5 21.024 100.682 18.476H93.48V16.786H100.786V14.446H102.918V16.786H110.224V18.476H102.996C103.178 21.024 106.766 22.74 111.16 23.13L110.51 24.768C106.662 24.378 103.256 23.026 101.852 20.764C100.422 23.026 97.016 24.378 93.168 24.768ZM107.728 35.896V32.1H95.976V35.896H107.728ZM112.382 27.862H102.918V30.41H109.808V37.612H93.896V30.41H100.786V27.862H91.296V26.12H112.382V27.862Z"
                     fill="black"
                 />
-                <path d="M17.4036 8.98242V22.4561" stroke="black" stroke-width="2" />
-                <path d="M24.1404 8.98242V22.4561" stroke="black" stroke-width="2" />
+                <path d="M31 15V39" stroke="black" strokeWidth="4" />
+                <path d="M43 15V39" stroke="black" strokeWidth="4" />
                 <defs>
-                    <filter
-                        id="filter0_b_495_8553"
-                        x="-4"
-                        y="-3.43848"
-                        width="87.7192"
-                        height="38.3157"
-                        filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
-                    >
-                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                        <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
-                        <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_495_8553" />
-                        <feBlend
-                            mode="normal"
-                            in="SourceGraphic"
-                            in2="effect1_backgroundBlur_495_8553"
-                            result="shape"
-                        />
-                    </filter>
+                    <clipPath id="bgblur_clip">
+                        <rect transform="translate(4 4)" width="142" height="54" rx="6" />
+                    </clipPath>
                 </defs>
             </svg>
         </div>
@@ -1178,43 +1170,36 @@ export const StopSquareLg = () => {
     return (
         <div
             style={{
-                position: 'relative',
-                width: 'fit-content',
-                height: 'fit-content',
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
+                position: "relative",
+                width: "fit-content",
+                height: "fit-content",
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
             }}
         >
-            <svg width="80" height="32" viewBox="0 0 80 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g filter="url(#filter0_b_495_8553)">
-                    <rect y="0.561523" width="79.7193" height="30.3158" rx="6" fill="#DBDBDB" fill-opacity="0.25098" />
-                </g>
+            <svg width="142" height="54" viewBox="0 0 142 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <foreignObject x="-4" y="-4" width="150" height="62">
+                    <div
+                        style={{
+                            backdropFilter: "blur(2px)",
+                            WebkitBackdropFilter: "blur(2px)",
+                            clipPath: "url(#bgblur_clip)",
+                            height: "100%",
+                            width: "100%",
+                        }}
+                    />
+                </foreignObject>
+                <rect width="142" height="54" rx="6" fill="#DBDBDB" fillOpacity="0.25098" />
                 <path
-                    d="M46.8662 17.0073H45.8633V14.1382H43.2227V16.3091H38.043V11.3198H43.2227V13.313H45.8633V10.52H46.8662V17.0073ZM39.0332 15.5093H42.2451V12.1323H39.0332V15.5093ZM46.8662 21.6538H39.4902V17.5913H46.8662V21.6538ZM40.4805 20.8413H45.8887V18.4038H40.4805V20.8413ZM59.0283 16.9185H54.3691V18.1626H57.7715V21.6538H50.002V18.1626H53.3916V16.9185H48.7451V16.106H59.0283V16.9185ZM54.3691 11.5864H57.9873V12.3862H54.4326C54.4538 12.7925 54.6442 13.1585 55.0039 13.4844C55.3678 13.806 55.8481 14.0705 56.4448 14.2778C57.0415 14.481 57.6995 14.6164 58.4189 14.6841L58.127 15.4331C57.141 15.3315 56.2692 15.1136 55.5117 14.7793C54.7585 14.445 54.2168 14.007 53.8867 13.4653C53.5524 14.007 53.0065 14.445 52.249 14.7793C51.4958 15.1136 50.6283 15.3315 49.6465 15.4331L49.3418 14.6841C50.0654 14.6164 50.7256 14.481 51.3223 14.2778C51.9189 14.0705 52.3971 13.806 52.7568 13.4844C53.1208 13.1585 53.3154 12.7925 53.3408 12.3862H49.8115V11.5864H53.3916V10.4565H54.3691V11.5864ZM50.9922 20.8413H56.7939V18.9624H50.9922V20.8413Z"
+                    d="M73.514 30.904V35.896H84.512V30.904H73.514ZM71.434 37.612V29.214H86.592V37.612H71.434ZM76.998 24.846V17.956H70.55V24.846H76.998ZM84.434 14.628H86.592V28.018H84.434V22.09H79.078V26.562H68.444V16.24H79.078V20.348H84.434V14.628ZM93.168 24.768L92.544 23.13C96.912 22.74 100.5 21.024 100.682 18.476H93.48V16.786H100.786V14.446H102.918V16.786H110.224V18.476H102.996C103.178 21.024 106.766 22.74 111.16 23.13L110.51 24.768C106.662 24.378 103.256 23.026 101.852 20.764C100.422 23.026 97.016 24.378 93.168 24.768ZM107.728 35.896V32.1H95.976V35.896H107.728ZM112.382 27.862H102.918V30.41H109.808V37.612H93.896V30.41H100.786V27.862H91.296V26.12H112.382V27.862Z"
                     fill="black"
                 />
-                <path d="M17.4036 8.98242V22.4561" stroke="black" stroke-width="2" />
-                <path d="M24.1404 8.98242V22.4561" stroke="black" stroke-width="2" />
+                <path d="M31 15V39" stroke="black" strokeWidth="4" />
+                <path d="M43 15V39" stroke="black" strokeWidth="4" />
                 <defs>
-                    <filter
-                        id="filter0_b_495_8553"
-                        x="-4"
-                        y="-3.43848"
-                        width="87.7192"
-                        height="38.3157"
-                        filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
-                    >
-                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                        <feGaussianBlur in="BackgroundImageFix" stdDeviation="2" />
-                        <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_495_8553" />
-                        <feBlend
-                            mode="normal"
-                            in="SourceGraphic"
-                            in2="effect1_backgroundBlur_495_8553"
-                            result="shape"
-                        />
-                    </filter>
+                    <clipPath id="bgblur_clip">
+                        <rect transform="translate(4 4)" width="142" height="54" rx="6" />
+                    </clipPath>
                 </defs>
             </svg>
         </div>
@@ -1223,16 +1208,16 @@ export const StopSquareLg = () => {
 
 export const SquareYellowPreveBtn = () => {
     return (
-        <div style={{ cursor: 'pointer' }}>
+        <div style={{ cursor: "pointer" }}>
             <input
                 type="button"
                 style={{
-                    width: 'fit-content',
-                    height: 'fit-contnet',
-                    all: 'unset',
-                    position: 'absolute',
+                    width: "fit-content",
+                    height: "fit-contnet",
+                    all: "unset",
+                    position: "absolute",
 
-                    cursor: 'pointer',
+                    cursor: "pointer",
                 }}
             />
             <svg width="92" height="92" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg">
