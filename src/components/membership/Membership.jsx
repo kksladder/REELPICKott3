@@ -169,14 +169,29 @@ const Membership = () => {
         localStorage.setItem("selectedMembership", JSON.stringify(membershipInfo));
     };
 
+    // inner 클릭 시 체크박스 상태 변경
+    const handleInnerClick = (membershipType) => {
+        setCheckedMemberships({
+            AD_standard: membershipType === "AD_standard" ? !checkedMemberships.AD_standard : false,
+            standard: membershipType === "standard" ? !checkedMemberships.standard : false,
+            premium: membershipType === "premium" ? !checkedMemberships.premium : false,
+        });
+
+        setSelectedMembership(membershipType); // 클릭된 멤버십을 선택된 상태로 설정
+        setErrorMessage(""); // 선택 시 에러 메시지 초기화
+    };
+
     return (
         <Wrap>
             <LogoWrapper />
             <FormContainer>
                 <h1>멤버십</h1>
                 <div>
-                    <div className={`inner ${checkedMemberships.AD_standard ? "aa" : "bb"}`}>
-                        <div className="bg_gradient1" isChecked={selectedMembership === "AD_standard"}>
+                    <div
+                        className={`inner ${checkedMemberships.AD_standard ? "aa" : "bb"}`}
+                        onClick={() => handleInnerClick("AD_standard")}
+                    >
+                        <div className="bg_gradient1">
                             <h3>광고형스탠다드</h3>
                             <p>1080p</p>
                             <form>
@@ -213,8 +228,11 @@ const Membership = () => {
                             </li>
                         </ul>
                     </div>
-                    <div className={`inner ${checkedMemberships.standard ? "aa" : "bb"}`}>
-                        <div className="bg_gradient2" isChecked={selectedMembership === "standard"}>
+                    <div
+                        className={`inner ${checkedMemberships.standard ? "aa" : "bb"}`}
+                        onClick={() => handleInnerClick("standard")}
+                    >
+                        <div className="bg_gradient2">
                             <h3>스탠다드</h3>
                             <p>1080p</p>
                             <form>
@@ -251,8 +269,11 @@ const Membership = () => {
                             </li>
                         </ul>
                     </div>
-                    <div className={`inner ${checkedMemberships.premium ? "aa" : "bb"}`}>
-                        <div className="bg_gradient3" isChecked={selectedMembership === "premium"}>
+                    <div
+                        className={`inner ${checkedMemberships.premium ? "aa" : "bb"}`}
+                        onClick={() => handleInnerClick("premium")}
+                    >
+                        <div className="bg_gradient3">
                             <h3>프리미엄</h3>
                             <p>4K + HDR</p>
                             <form>

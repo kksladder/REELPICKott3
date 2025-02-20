@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import styled from "styled-components";
@@ -37,6 +37,9 @@ export const FormContainer = styled.div`
     div {
         display: flex;
         gap: 48px;
+        @media (max-width: 768px) {
+            flex-direction: column;
+        }
     }
     .bb {
         background: linear-gradient(
@@ -183,6 +186,83 @@ const HeaderRight = styled.div`
     }
 `;
 const AccountMembership = () => {
+    const [selectedMembership, setSelectedMembership] = useState("");
+    const [checkedMemberships, setCheckedMemberships] = useState({
+        AD_standard: false,
+        standard: false,
+        premium: false,
+    });
+    const [originmembership, setOriginMembership] = useState(""); // originmembership 상태 추가
+
+    useEffect(() => {
+        // 컴포넌트가 로드될 때 로컬 스토리지에서 멤버십 정보를 불러옵니다.
+        const storedMembership = localStorage.getItem("selectedMembership");
+        if (storedMembership) {
+            const membership = JSON.parse(storedMembership);
+            setOriginMembership(membership.type); // originmembership 상태 업데이트
+            setSelectedMembership(membership.type);
+            setCheckedMemberships({
+                AD_standard: membership.type === "AD_standard",
+                standard: membership.type === "standard",
+                premium: membership.type === "premium",
+            });
+        }
+    }, []); // 컴포넌트가 마운트될 때 한 번만 실행
+
+    useEffect(() => {
+        // originmembership이 변경되었을 때 실행되는 코드
+        console.log(`originmembership이 변경되었습니다: ${originmembership}`);
+    }, [selectedMembership]); // originmembership이 변경될 때마다 실행
+
+    const handleMembershipChange = (e) => {
+        const { value, checked } = e.target;
+
+        // 다른 멤버십을 모두 해제하고 선택한 멤버십만 체크합니다.
+        setCheckedMemberships({
+            AD_standard: value === "AD_standard" && checked,
+            standard: value === "standard" && checked,
+            premium: value === "premium" && checked,
+        });
+    };
+
+    const handleInnerClick = (membershipType) => {
+        // 멤버십을 클릭하면 해당 멤버십만 선택하도록 설정
+        setCheckedMemberships({
+            AD_standard: membershipType === "AD_standard",
+            standard: membershipType === "standard",
+            premium: membershipType === "premium",
+        });
+
+        setSelectedMembership(membershipType); // 상태 업데이트
+    };
+
+    const handleSave = () => {
+        if (selectedMembership) {
+            // selectedMembership을 사용
+            const membershipInfo = {
+                type: selectedMembership,
+                price:
+                    selectedMembership === "AD_standard"
+                        ? "5,500"
+                        : selectedMembership === "standard"
+                        ? "9,500"
+                        : "13,900",
+                quality: selectedMembership === "premium" ? "4K + HDR" : "1080p",
+                devices: selectedMembership === "premium" ? "4" : "2",
+                profiles: selectedMembership === "AD_standard" ? "2" : selectedMembership === "standard" ? "4" : "6",
+                downloads: selectedMembership === "premium" ? "400" : "200",
+                hasAds: selectedMembership === "AD_standard",
+                date: new Date().toISOString(),
+            };
+
+            // 선택된 멤버십 정보를 localStorage에 저장
+            localStorage.setItem("selectedMembership", JSON.stringify(membershipInfo));
+            alert(`선택한 멤버십: ${selectedMembership}으로 변경되었습니다.`);
+        } else {
+            alert("먼저 멤버십을 선택하세요.");
+        }
+    };
+
     return (
         <Wrapper>
             <H1>멤버십 관리</H1>
@@ -195,10 +275,24 @@ const AccountMembership = () => {
             <Wrap>
                 <FormContainer>
                     <HeaderRight>
-                        <span style={{ cursor: "pointer" }}>현재멤버십</span>
+                        <span style={{ cursor: "pointer" }}>
+                            현재 멤버십:
+                            {
+                                originmembership === "AD_standard"
+                                    ? "광고형스탠다드" // originmembership이 "AD_standard"일 경우 반환
+                                    : originmembership === "standard"
+                                    ? "스탠다드" // originmembership이 "standard"일 경우 반환
+                                    : originmembership === "premium"
+                                    ? "프리미엄" // originmembership이 "premium"일 경우 반환
+                                    : null // 그 외의 경우 null 반환 (옵션)
+                            }{" "}
+                        </span>
                     </HeaderRight>
                     <div>
-                        <div className={`inner `}>
+                        <div
+                            className={`inner ${checkedMemberships.AD_standard ? "aa" : "bb"}`}
+                            onClick={() => handleInnerClick("AD_standard")}
+                        >
                             <div className="bg_gradient1">
                                 <h3>광고형스탠다드</h3>
                                 <p>1080p</p>
@@ -207,8 +301,8 @@ const AccountMembership = () => {
                                         type="checkbox"
                                         name="membership"
                                         value="AD_standard"
-                                        /*    checked={checkedMemberships.AD_standard}
-                                        onChange={handleMembershipChange} */
+                                        checked={checkedMemberships.AD_standard}
+                                        onChange={handleMembershipChange}
                                     />
                                 </form>
                             </div>
@@ -236,7 +330,10 @@ const AccountMembership = () => {
                                 </li>
                             </ul>
                         </div>
-                        <div className={`inner `}>
+                        <div
+                            className={`inner ${checkedMemberships.standard ? "aa" : "bb"}`}
+                            onClick={() => handleInnerClick("standard")}
+                        >
                             <div className="bg_gradient2">
                                 <h3>스탠다드</h3>
                                 <p>1080p</p>
@@ -245,8 +342,8 @@ const AccountMembership = () => {
                                         type="checkbox"
                                         name="membership"
                                         value="standard"
-                                        /*   checked={checkedMemberships.standard}
-                                        onChange={handleMembershipChange} */
+                                        checked={checkedMemberships.standard}
+                                        onChange={handleMembershipChange}
                                     />
                                 </form>
                             </div>
@@ -274,7 +371,10 @@ const AccountMembership = () => {
                                 </li>
                             </ul>
                         </div>
-                        <div className={`inner `}>
+                        <div
+                            className={`inner ${checkedMemberships.premium ? "aa" : "bb"}`}
+                            onClick={() => handleInnerClick("premium")}
+                        >
                             <div className="bg_gradient3">
                                 <h3>프리미엄</h3>
                                 <p>4K + HDR</p>
@@ -283,8 +383,8 @@ const AccountMembership = () => {
                                         type="checkbox"
                                         name="membership"
                                         value="premium"
-                                        /*      checked={checkedMemberships.premium}
-                                        onChange={handleMembershipChange} */
+                                        checked={checkedMemberships.premium}
+                                        onChange={handleMembershipChange}
                                     />
                                 </form>
                             </div>
@@ -356,7 +456,7 @@ const AccountMembership = () => {
                 </ul>
             </Service>
             <ButtonGroup>
-                <Button>저장</Button>
+                <Button onClick={handleSave}>저장</Button>
                 <Button secondary>취소</Button>
             </ButtonGroup>
         </Wrapper>

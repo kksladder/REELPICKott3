@@ -2,36 +2,36 @@ import {
     BottomMainTitleWrapper,
     CenteredImageWrapper,
     DeviceImageWrapper,
-    HeaderWrapper,
-    MainTitle,
     VideoFrame1,
     VideoFrame2,
     VideoFrame3,
+    HeaderWrapper,
+    MainTitle,
     LandingBackground,
-} from './style';
-import AccordionComponent from '../../components/accordion/Accordion';
-import { useNavigate } from 'react-router-dom';
-import Landing from '../../components/landing/Landing';
+} from "./style";
+import AccordionComponent from "../../components/accordion/Accordion";
+import { useNavigate } from "react-router-dom";
+import Landing from "../../components/landing/Landing";
 
 const MainPage = () => {
-    const videoId = 'eblQHvJTHcc'; // 영상 ID
+    const videoId = "eblQHvJTHcc"; // 영상 ID
     const opts = [
-        'autoplay=1',
-        'mute=1',
-        'showinfo=0',
-        'modestbranding=1',
-        'rel=0',
-        'controls=0',
-        'playlist=' + videoId,
-        'loop=1',
-        'disablekb=1',
-        'iv_load_policy=3',
-        'fs=0',
-    ].join('&');
+        "autoplay=1",
+        "mute=1",
+        "showinfo=0",
+        "modestbranding=1",
+        "rel=0",
+        "controls=0",
+        "playlist=" + videoId,
+        "loop=1",
+        "disablekb=1",
+        "iv_load_policy=3",
+        "fs=0",
+    ].join("&");
     const navigate = useNavigate(); // navigate 훅을 사용하여 라우팅
 
     const handleSignUpClick = () => {
-        navigate('/signUp'); // '/login' 경로로 이동
+        navigate("/signUp"); // '/login' 경로로 이동
     };
     return (
         <>
@@ -59,7 +59,7 @@ const MainPage = () => {
                     frameBorder="0"
                     allow="autoplay; encrypted-media;"
                     allowFullScreen
-                    style={{ pointerEvents: 'none' }}
+                    style={{ pointerEvents: "none" }}
                 />
 
                 <img src="./images/desktop_device.png" alt="desktop_device" width={1120} className="desktop" />
@@ -70,7 +70,7 @@ const MainPage = () => {
                     allow="autoplay; encrypted-media;"
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
-                    style={{ pointerEvents: 'none' }}
+                    style={{ pointerEvents: "none" }}
                 />
 
                 <img src="./images/iPadPro_device.png" alt="iPadPro_device" width={1120} className="ipad" />
@@ -81,7 +81,7 @@ const MainPage = () => {
                     allow="autoplay; encrypted-media;"
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
-                    style={{ pointerEvents: 'none' }}
+                    style={{ pointerEvents: "none" }}
                 />
             </DeviceImageWrapper>
 
