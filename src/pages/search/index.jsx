@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
-import { getMovieRecommendations, searchMovies } from "../../api/movieService";
+import { getMovieRecommendations, searchMovies } from "../../store/modules/tmdbApi";
 
 import {
     SearchContainer,

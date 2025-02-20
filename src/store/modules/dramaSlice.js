@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getContent, getFilteredContent } from "./getThunk";
+import { getContent, getFilteredContent } from "./getThunk2";
 
 const initialState = {
     data: [],

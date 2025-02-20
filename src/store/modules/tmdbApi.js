@@ -5,7 +5,7 @@ const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
 // API 인스턴스 생성 - API_KEY를 params에 포함하는 방식으로 변경
-const tmdbApi = axios.create({
+export const tmdbApi = axios.create({
     baseURL: BASE_URL,
     params: {
         api_key: API_KEY,
@@ -16,7 +16,7 @@ const tmdbApi = axios.create({
 });
 
 // 영화 데이터 가공 함수
-const processMovieData = (movie) => ({
+export const processMovieData = (movie) => ({
     id: movie.id,
     title: movie.title,
     poster_path: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null,
