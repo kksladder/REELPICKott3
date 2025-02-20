@@ -35,6 +35,8 @@ const Reelpick = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedMovies, setSelectedMovies] = useState([]);
     const [showCart, setShowCart] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [loadingMore, setLoadingMore] = useState(false);
 
     const maxItems = 10;
 
@@ -42,8 +44,18 @@ const Reelpick = () => {
         const fetchMovies = async () => {
             try {
                 setIsLoading(true);
-                const movieData = await getMovieRecommendations();
-                setMovies(movieData);
+                // 한글 검색 최적화가 적용된 영화 데이터 가져오기
+                // sortBy 파라미터는 'popularity', 'rating', 'releaseDate' 중 선택 가능
+                const movieData = await getMovieRecommendations(10, "ko-KR", "popularity");
+
+                // API 응답 데이터를 컴포넌트에서 사용하는 형태로 변환
+                const formattedMovies = movieData.map((movie) => ({
+                    id: movie.id,
+                    title: movie.title,
+                    poster: movie.poster_path, // API에서 받아온 포스터 경로 사용
+                    isKorean: movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null,
+                }));
+                setMovies(formattedMovies);
             } catch (err) {
                 setError(err.message);
                 console.error("Failed to fetch movies:", err);
@@ -55,6 +67,35 @@ const Reelpick = () => {
         fetchMovies();
         setIsModalOpen(true);
     }, []);
+
+    // 추가 영화 로드 함수
+    const loadMoreMovies = async () => {
+        if (loadingMore) return;
+
+        try {
+            setLoadingMore(true);
+            const nextPage = currentPage + 1;
+            const moreMovies = await getMovieRecommendations(1, "ko-KR", "popularity");
+
+            const formattedMoreMovies = moreMovies.map((movie) => ({
+                id: movie.id,
+                title: movie.title,
+                poster: movie.poster_path,
+                isKorean: movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null,
+            }));
+
+            // 중복 영화 필터링 (이미 있는 ID는 제외)
+            const existingIds = new Set(movies.map((movie) => movie.id));
+            const uniqueNewMovies = formattedMoreMovies.filter((movie) => !existingIds.has(movie.id));
+
+            setMovies((prev) => [...prev, ...uniqueNewMovies]);
+            setCurrentPage(nextPage);
+        } catch (err) {
+            console.error("Failed to load more movies:", err);
+        } finally {
+            setLoadingMore(false);
+        }
+    };
 
     useEffect(() => {
         const checkScrollTop = () => {
@@ -68,6 +109,24 @@ const Reelpick = () => {
         window.addEventListener("scroll", checkScrollTop);
         return () => window.removeEventListener("scroll", checkScrollTop);
     }, [showScroll]);
+
+    // 무한 스크롤 구현
+    useEffect(() => {
+        const handleScroll = () => {
+            // 페이지 끝에 도달했는지 확인
+            if (
+                window.innerHeight + document.documentElement.scrollTop >=
+                    document.documentElement.scrollHeight - 500 &&
+                !isLoading &&
+                !loadingMore
+            ) {
+                loadMoreMovies();
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [isLoading, loadingMore]);
 
     const scrollToTop = () => {
         window.scrollTo({
@@ -113,7 +172,32 @@ const Reelpick = () => {
         });
     };
 
-    if (isLoading) {
+    // 영화 필터링 함수 (필요시 활성화)
+    const filterMovies = (filterType) => {
+        setIsLoading(true);
+
+        // 필터 타입에 따라 다른 정렬 방식 적용
+        getMovieRecommendations(10, "ko-KR", filterType)
+            .then((movieData) => {
+                const formattedMovies = movieData.map((movie) => ({
+                    id: movie.id,
+                    title: movie.title,
+                    poster: movie.poster_path,
+                    isKorean: movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null,
+                }));
+                setMovies(formattedMovies);
+                setCurrentPage(1);
+            })
+            .catch((err) => {
+                console.error("영화 필터링 오류:", err);
+                setError(err.message);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
+
+    if (isLoading && movies.length === 0) {
         return (
             <LoadingWrapper>
                 <div></div>
@@ -121,7 +205,7 @@ const Reelpick = () => {
         );
     }
 
-    if (error) {
+    if (error && movies.length === 0) {
         return <div>Error: {error}</div>;
     }
 
@@ -145,6 +229,12 @@ const Reelpick = () => {
                     </MovieCard>
                 ))}
             </MoviesGrid>
+
+            {loadingMore && (
+                <div style={{ textAlign: "center", padding: "20px 0" }}>
+                    <div>더 많은 영화 불러오는 중...</div>
+                </div>
+            )}
 
             {showCart && (
                 <CartWrapper>

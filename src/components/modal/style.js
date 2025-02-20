@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const ModalWrapper = styled.div`
     position: fixed;
@@ -16,7 +16,7 @@ export const ModalWrapper = styled.div`
 export const ModalContent = styled.div`
     width: 640px;
     height: 500px;
-    background-color: black;
+    background-color: var(--black);
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -34,18 +34,18 @@ export const SmallLogo = styled.img`
 `;
 
 export const ModalTitle = styled.h2`
-    font-size: 20px;
-    font-weight: 600;
-    color: white;
+    font-size: var(--font-W-Content-M);
+    font-weight: var(--font-weight-SemiBold);
+    color: var(--white);
     margin-bottom: 33px;
 `;
 
 export const ModalText = styled.p`
-    font-size: 16px;
-    font-weight: 300;
-    color: white;
+    font-size: var(--font-W-Content-S);
+    font-weight: var(--font-weight-Light);
+    color: var(--white);
     text-align: center;
-    line-height: 1.5;
+    line-height: var(--line-height-base);
     margin-bottom: 20px;
 `;
 
@@ -60,15 +60,15 @@ export const ModalButton = styled.button`
     width: 250px;
     height: 50px;
     border-radius: 4px;
-    font-size: 16px;
-    font-weight: 400;
+    font-size: var(--font-W-Content-S);
+    font-weight: var(--font-weight-Regular);
     cursor: pointer;
-    background-color: ${(props) => (props.isSkip ? 'transparent' : '#F59C04')};
-    color: white;
-    border: ${(props) => (props.isSkip ? '1px solid white' : 'none')};
+    background-color: ${(props) => (props.isSkip ? "transparent" : "var(--primary-40)")};
+    color: var(--white);
+    border: ${(props) => (props.isSkip ? "1px solid var(--white)" : "none")};
     transition: all 0.2s ease;
 
     &:hover {
-        background-color: ${(props) => (props.isSkip ? 'rgba(255, 255, 255, 0.1)' : '#d88a00')};
+        background-color: ${(props) => (props.isSkip ? "rgba(255, 255, 255, 0.1)" : "var(--primary-50)")};
     }
 `;

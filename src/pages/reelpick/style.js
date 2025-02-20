@@ -5,26 +5,27 @@ export const LoadingWrapper = styled.div`
     justify-content: center;
     align-items: center;
     height: 100vh;
-    color: white;
-    font-size: 1.5rem;
+    color: var(--white);
+    font-size: var(--font-content-Small);
 `;
 
 export const ReelpickWrapper = styled.div`
-    padding: 0 68px;
+    padding: var(--paddingWeb);
     background-color: var(--background-color);
     min-height: 100vh;
     margin-bottom: 75px;
+
     @media screen and (max-width: 1024px) {
         padding: 0 40px;
     }
 
     @media screen and (max-width: 768px) {
-        padding: 0 20px;
+        padding: var(--paddingMobile);
     }
 `;
 
 export const ReelpickTitle = styled.h2`
-    font-size: var(--font-T-MainHeader);
+    font-size: var(--font-W-MainHeader);
     font-weight: var(--font-weight-Bold);
     color: var(--primary-40);
     margin-bottom: 20px;
@@ -200,21 +201,21 @@ export const CartHeader = styled.div`
     display: flex;
     justify-content: space-between;
     border-radius: 5px 5px 0 0;
-    font-weight: 500;
+    font-weight: var(--font-weight-Medium);
 
     span {
         display: flex;
         align-items: center;
-        color: var(--secondary-00);
+        color: var(--white);
         gap: 8px;
-        font-weight: var(--font-weight-medium);
-        font-size: large;
+        font-weight: var(--font-weight-Medium);
+        font-size: var(--font-body-Large);
     }
 
     button {
         background: none;
         border: none;
-        color: var(--secondary-00);
+        color: var(--white);
         cursor: pointer;
         padding: 0;
         display: flex;
@@ -261,7 +262,7 @@ export const CartItemImage = styled.img`
 
 export const RemoveButton = styled.button`
     position: absolute;
-    background: var(--secondary-900);
+    background: var(--black);
     color: var(--secondary-100);
     top: -10px;
     right: -8px;
@@ -271,9 +272,8 @@ export const RemoveButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: var(--font-W-Content-S);
     border: 1px solid var(--secondary-100);
-    /* border: none; */
     cursor: pointer;
 
     &:hover {

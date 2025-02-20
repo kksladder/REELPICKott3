@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
-import { getMovieRecommendations } from "../../api/movieService";
+import { getMovieRecommendations, searchMovies } from "../../api/movieService";
 
 import {
     SearchContainer,
@@ -214,8 +214,8 @@ const SearchPage = () => {
         return shuffled.slice(0, count);
     };
 
-    // 새 검색어 추가 함수
-    const addRecentSearch = (searchText) => {
+    // 새 검색어 추가 함수 (업데이트됨: 새로운 searchMovies 함수 활용)
+    const addRecentSearch = async (searchText) => {
         if (!searchText.trim()) return;
 
         const newSearch = { id: Date.now(), text: searchText.trim() };
@@ -225,41 +225,41 @@ const SearchPage = () => {
             (item) => item.text.toLowerCase() !== searchText.trim().toLowerCase()
         );
 
-        //** 데이터 처리 추가 - map 함수 사용하여 필요한 데이터 추출 */
-        const filteredData = movies
-            .filter((item) => item.title.toLowerCase().includes(searchText.trim().toLowerCase()))
-            .map((movie) => ({
-                id: movie.id,
-                title: movie.title,
-                poster_path: movie.poster_path,
-                releaseDate: movie.releaseDate,
-                rating: movie.rating,
-            }));
+        try {
+            // 새로운 searchMovies 함수 사용 (한글 최적화 적용)
+            const searchResult = await searchMovies(searchText.trim());
+            const filteredData = searchResult.data || [];
 
-        // 유사 영화 추천 생성
-        const recommendations = findSimilarMovies(filteredData);
-        setSimilarMovies(recommendations);
+            // 디버깅 로그 추가
+            console.log("검색 텍스트:", searchText);
+            console.log("검색 결과 수:", filteredData.length);
 
-        // 디버깅 로그 추가
-        console.log("검색 텍스트:", searchText);
-        console.log("검색 결과 수:", filteredData.length);
-        console.log("추천 영화 수:", recommendations.length);
+            // 유사 영화 추천 생성
+            const recommendations = findSimilarMovies(filteredData);
+            setSimilarMovies(recommendations);
+            console.log("추천 영화 수:", recommendations.length);
 
-        if (filteredData.length > 0) {
-            console.log("첫 번째 검색 결과:", filteredData[0]);
-            console.log("포스터 경로:", filteredData[0].poster_path);
+            if (filteredData.length > 0) {
+                console.log("첫 번째 검색 결과:", filteredData[0]);
+                console.log("포스터 경로:", filteredData[0].poster_path);
+            }
+
+            setMovieResult(filteredData);
+
+            // 최대 개수 제한하여 새 검색어 추가 (최신 검색어가 맨 앞에 위치)
+            const updatedSearches = [newSearch, ...filteredSearches].slice(0, MAX_RECENT_SEARCHES);
+            setRecentSearches(updatedSearches);
+            saveRecentSearchesToLocalStorage(updatedSearches);
+        } catch (error) {
+            console.error("검색 실패:", error);
+            setMovieResult([]);
+            setSimilarMovies([]);
+
+            // 에러가 있어도 검색어는 저장
+            const updatedSearches = [newSearch, ...filteredSearches].slice(0, MAX_RECENT_SEARCHES);
+            setRecentSearches(updatedSearches);
+            saveRecentSearchesToLocalStorage(updatedSearches);
         }
-
-        setMovieResult(filteredData);
-
-        //** 추가
-        setRecentSearches(filteredSearches);
-
-        // 최대 개수 제한하여 새 검색어 추가 (최신 검색어가 맨 앞에 위치)
-        const updatedSearches = [newSearch, ...filteredSearches].slice(0, MAX_RECENT_SEARCHES);
-
-        setRecentSearches(updatedSearches);
-        saveRecentSearchesToLocalStorage(updatedSearches);
     };
 
     const handleSearch = (e) => {
@@ -276,10 +276,10 @@ const SearchPage = () => {
     // 검색 실행 함수 (Enter 키 누를 때 또는 검색 버튼 클릭 시)
     const executeSearch = () => {
         if (searchQuery.trim()) {
-            // 검색어 로컬스토리지에 저장
+            // 검색어 로컬스토리지에 저장 및 검색 수행
             addRecentSearch(searchQuery);
 
-            // 실제 검색 로직은 여기에 구현
+            // 실제 검색 로직은 addRecentSearch 내에서 수행됨
             console.log("검색 실행:", searchQuery);
 
             // 필요하다면 검색 후 드롭다운 닫기
@@ -337,11 +337,32 @@ const SearchPage = () => {
     };
 
     // Mock data for thumbnails (5 identical thumbnails as shown in the image)
-    const thumbnails = Array(5).fill({
-        id: 1,
-        imageUrl: "/images/casino.jpg",
-        title: "카지노",
-    });
+    const thumbnails = [
+        {
+            id: 1,
+            imageUrl: "/images/casino.jpg",
+        },
+        {
+            id: 2,
+            imageUrl: "/images/breakinbad.jpg",
+        },
+        {
+            id: 3,
+            imageUrl: "/images/ozak.jpg",
+        },
+        {
+            id: 4,
+            imageUrl: "/images/crimecity.jpg",
+        },
+        {
+            id: 5,
+            imageUrl: "/images/slowhorses.jpg",
+        },
+        {
+            id: 6,
+            imageUrl: "/images/parasite.jpg",
+        },
+    ];
 
     // 기본 이미지 경로 설정 (영화 포스터 이미지가 없을 경우 사용)
     const defaultImageUrl = "/images/default-poster.jpg";
@@ -426,7 +447,7 @@ const SearchPage = () => {
                 )}
             </SearchBarContainer>
 
-            {/* 검색 결과가 있을 때 영화 포스터 리스트 표시 */}
+            {/* 검색 결과가 있을 때 영화 포스터 리스트 표시 - title 완전히 제거 */}
             {showResults && movieResult.length > 0 ? (
                 <>
                     <SearchResultsSection>
@@ -435,7 +456,7 @@ const SearchPage = () => {
                         </SearchResultsHeader>
                         <SearchResultsGrid>
                             {movieResult.map((movie) => (
-                                <ThumbnailItem key={movie.id}>
+                                <div key={movie.id} className="thumbnail-wrapper" style={{ marginBottom: "0" }}>
                                     <ThumbnailImage
                                         src={movie.poster_path || defaultImageUrl}
                                         alt={movie.title}
@@ -445,19 +466,18 @@ const SearchPage = () => {
                                             e.target.src = defaultImageUrl;
                                         }}
                                     />
-                                    <ThumbnailTitle>{movie.title}</ThumbnailTitle>
-                                </ThumbnailItem>
+                                </div>
                             ))}
                         </SearchResultsGrid>
                     </SearchResultsSection>
 
-                    {/* 유사 영화 추천 섹션 */}
+                    {/* 유사 영화 추천 섹션 - title 완전히 제거, 컨테이너도 변경 */}
                     {similarMovies.length > 0 && (
                         <RecommendationsSection>
                             <RecommendationsHeader>이런 영화는 어떠세요?</RecommendationsHeader>
                             <ThumbnailsGrid>
                                 {similarMovies.map((movie) => (
-                                    <ThumbnailItem key={movie.id}>
+                                    <div key={movie.id} className="thumbnail-wrapper" style={{ marginBottom: "0" }}>
                                         <ThumbnailImage
                                             src={movie.poster_path || defaultImageUrl}
                                             alt={movie.title}
@@ -466,8 +486,7 @@ const SearchPage = () => {
                                                 e.target.src = defaultImageUrl;
                                             }}
                                         />
-                                        <ThumbnailTitle>{movie.title}</ThumbnailTitle>
-                                    </ThumbnailItem>
+                                    </div>
                                 ))}
                             </ThumbnailsGrid>
                         </RecommendationsSection>
@@ -480,7 +499,7 @@ const SearchPage = () => {
                         <NoResultsText>검색 결과가 없습니다!</NoResultsText>
                     </NoResultsContainer>
 
-                    {/* 검색 결과가 없을 때도 추천 영화 표시 */}
+                    {/* 검색 결과가 없을 때도 추천 영화 표시 - 여기는 title 유지 (추천에서는 제목 표시) */}
                     {similarMovies.length > 0 && (
                         <RecommendationsSection>
                             <RecommendationsHeader>이런 영화는 어떠세요?</RecommendationsHeader>
@@ -495,7 +514,6 @@ const SearchPage = () => {
                                                 e.target.src = defaultImageUrl;
                                             }}
                                         />
-                                        <ThumbnailTitle>{movie.title}</ThumbnailTitle>
                                     </ThumbnailItem>
                                 ))}
                             </ThumbnailsGrid>

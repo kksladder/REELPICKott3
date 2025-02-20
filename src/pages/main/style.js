@@ -30,12 +30,11 @@ export const MainTitle = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     strong {
         color: var(--white);
         text-align: center;
-        font-size: 5rem;
-        font-weight: 700;
+        font-size: var(--font-body-XXXlarge);
+        font-weight: var(--font-weight-ExtraBold);
         line-height: 135px;
         display: block;
         white-space: nowrap;
@@ -64,9 +63,9 @@ export const CenteredImageWrapper = styled.div`
     }
     p {
         position: absolute;
-        color: #fff;
-        font-size: 61px;
-        font-weight: 600;
+        color: var(--white);
+        font-size: var(--font-body-XXlarge);
+        font-weight: var(--font-weight-SemiBold);
         z-index: 1;
     }
     img {
@@ -82,6 +81,7 @@ export const VideoFrame2 = styled.iframe`
     height: 51%;
     z-index: -3;
 `;
+
 export const VideoFrame3 = styled.iframe`
     position: absolute;
     top: 220px;
@@ -89,6 +89,7 @@ export const VideoFrame3 = styled.iframe`
     width: 25.2%;
     height: 40%;
 `;
+
 export const VideoFrame1 = styled.iframe`
     top: 335px;
     left: 0.1%;
@@ -135,30 +136,29 @@ export const BottomMainTitleWrapper = styled.div`
     justify-content: center;
     text-align: center;
     p {
-        color: #fff;
-        font-size: 60px;
-        font-weight: 400;
+        color: var(--white);
+        font-size: var(--font-D-Medium);
+        font-weight: var(--font-weight-Regular);
         margin-bottom: 88px;
     }
     ul {
         margin-bottom: 150px;
         li {
-            color: #fff;
-            font-size: 32px;
-            font-weight: 400;
+            color: var(--white);
+            font-size: var(--font-header-Large);
+            font-weight: var(--font-weight-Regular);
             line-height: 56px;
         }
     }
     button {
-        color: white;
-        font-weight: 400;
-        font-size: 24px;
+        color: var(--white);
+        font-weight: var(--font-weight-Regular);
+        font-size: var(--font-W-Header);
         width: 713px;
         height: 72px;
-        align-item: center;
-
+        align-items: center;
         padding: 17px 169px;
         border-radius: 5px;
-        background: var(--bg-color-primary-color-normal-main, #f59c04);
+        background: var(--primary-40);
     }
 `;
