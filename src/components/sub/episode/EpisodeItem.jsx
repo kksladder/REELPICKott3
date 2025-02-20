@@ -10,10 +10,10 @@ const EpisodeItem = ({ episode }) => {
             <div className="season_vid">
                 <Link>
                     <img
-                        src={still_path ? `${bgurl}${still_path}` : "/images/episodeNo.png"}
+                        src={still_path ? `${bgurl}${still_path}` : "/images/profileNo.png"}
                         alt={title}
                         onError={(e) => {
-                            e.target.src = "/images/episodeNo.png";
+                            e.target.src = "/images/profileNo.png";
                         }}
                     />
                 </Link>

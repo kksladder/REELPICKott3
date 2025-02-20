@@ -5,9 +5,10 @@ display: flex;
 .movie-img img{
     width: 190px;
     height: 260px;
+    margin-right: 104px;
+
 }
 .movie-info{
-    margin-left: 24px;
     .info_title{
         font-size: var(--font-body-Xlarge);
         margin-bottom: 22px;

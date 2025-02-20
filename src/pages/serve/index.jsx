@@ -13,7 +13,7 @@ import SimilarList from "../../components/sub/similar/SimilarList";
 const ServePage = () => {
     const { movieId } = useParams();
     const dispatch = useDispatch();
-    const { currentMovie, movieData, error } = useSelector((state) => state.movieR);
+    const { currentMovie, movieData } = useSelector((state) => state.movieR);
     const [expanded, setExpanded] = useState(false);
     const [selectedSeason, setSelectedSeason] = useState(1);
     const location = useLocation();
@@ -101,6 +101,24 @@ const ServePage = () => {
             }
         }
     };
+    const handleReStart = () => {
+        if (playerRef.current) {
+            try {
+                // 현재 URL 가져오기
+                const currentUrl = getVideoUrl();
+                // iframe의 src 속성을 새로운 URL로 업데이트
+                const iframe = document.getElementById("youtube-player");
+                if (iframe) {
+                    const timestamp = new Date().getTime();
+                    iframe.src = `${currentUrl}&timestamp=${timestamp}`;
+                }
+                // 플레이어 상태 초기화
+                setIsPlaying(true);
+            } catch (error) {
+                console.error("Failed to restart video:", error);
+            }
+        }
+    };
 
     // 음소거 핸들러 수정
     const handleMuteToggle = () => {
@@ -117,15 +135,11 @@ const ServePage = () => {
             }
         }
     };
-    // if (!movieData) return <div>데이터를 불러오는 중입니다...</div>;
-    // if (!currentMovie) return <div>영화 정보를 불러오는 중입니다...</div>;
 
     const cast = currentMovie?.credits?.cast || [];
     const director = currentMovie?.credits?.crew?.find((person) => person.job === "Director");
     const isMovie = currentMovie?.media_type === "movie";
     const isSeries = currentMovie?.media_type === "tv" || currentMovie?.media_type === "animation";
-
-    // const hasSeasons = currentMovie?.seasons?.length > 0;
 
     const renderSeasonContent = () => {
         if (isMovie && currentMovie.belongs_to_collection) {
@@ -168,20 +182,11 @@ const ServePage = () => {
 
     const seasonContent = renderSeasonContent();
 
-    //비디오 재생버튼 item
-
-    // const getVideoUrl = () => {
-    //     if (!currentMovie?.trailer?.key) return null;
-    //     return `https://www.youtube.com/embed/${currentMovie.trailer.key}?autoplay=1&mute=${
-    //         isMuted ? 1 : 0
-    //     }&controls=0&showinfo=0&rel=0&loop=1&playlist=${currentMovie.trailer.key}${isPlaying ? "" : "&pause=1"}`;
-    // };
-
     return (
         <MoveDetailWrap>
             <MovieVideo $expanded={expanded}>
                 <div className="video">
-                    {currentMovie?.trailer?.key && (
+                    {currentMovie?.trailer?.key ? (
                         <iframe
                             id="youtube-player"
                             src={getVideoUrl()}
@@ -194,7 +199,25 @@ const ServePage = () => {
                                 height: "100%",
                                 border: "none",
                             }}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        />
+                    ) : (
+                        <img
+                            src={`https://image.tmdb.org/t/p/original${
+                                currentMovie?.backdrop_path || currentMovie?.poster_path
+                            }`}
+                            alt={currentMovie?.title}
+                            style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                            }}
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = "/images/test.jpg"; // 기본 대체 이미지
+                            }}
                         />
                     )}
                     <div className="video-item">
@@ -243,7 +266,9 @@ const ServePage = () => {
                             </div>
                         </div>
                         <div className="playItem">
-                            <RestartLg />
+                            <div onClick={handleReStart}>
+                                <RestartLg />
+                            </div>
                             <div onClick={handleMuteToggle} style={{ cursor: "pointer" }}>
                                 {isMuted ? <SpeakerOffLg /> : <SpeakerOnLg />}
                             </div>
@@ -295,11 +320,11 @@ const ServePage = () => {
                                     : seasonContent?.title}
                             </div>
 
-                            <img
+                            {/* <img
                                 src={isSeries ? "/icon/Iconex/Glass/Right.png" : "/icon/Iconex/Glass/Off.png"}
                                 alt=""
                                 className="glass-icon"
-                            />
+                            /> */}
                         </div>
 
                         <StyledEpisodeList>

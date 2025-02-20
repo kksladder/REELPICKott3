@@ -10,10 +10,10 @@ const MovieSeriesItem = ({ movie }) => {
             <div className="season_vid">
                 <Link to={`/serve/movie_${id}?type=movie`}>
                     <img
-                        src={poster_path ? `${bgurl}${poster_path}` : "/images/noImage.png"}
+                        src={poster_path ? `${bgurl}${poster_path}` : "/images/profileNo.png"}
                         alt={title}
                         onError={(e) => {
-                            e.target.src = "/images/noImage.png";
+                            e.target.src = "/images/profileNo.png";
                         }}
                     />
                 </Link>
