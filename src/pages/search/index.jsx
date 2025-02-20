@@ -446,7 +446,6 @@ const SearchPage = () => {
                 )}
             </SearchBarContainer>
 
-            {/* 검색 결과가 있을 때 릴픽추천 스타일의 포스터 그리드로 표시 */}
             {showResults && movieResult.length > 0 ? (
                 <>
                     <SearchResultsSection>
@@ -502,9 +501,8 @@ const SearchPage = () => {
                         <NoResultsText>검색 결과가 없습니다!</NoResultsText>
                     </NoResultsContainer>
 
-                    {/* 검색 결과가 없을 때 추천 영화 표시 - 릴픽추천 스타일 적용 */}
                     {similarMovies.length > 0 && (
-                        <RecommendationsSection>
+                        <div className="recommendations-wrapper" style={{ marginTop: "400px" }}>
                             <RecommendationsHeader>이런 영화는 어떠세요?</RecommendationsHeader>
                             <MoviesGrid>
                                 {similarMovies.map((movie) => (
@@ -524,14 +522,30 @@ const SearchPage = () => {
                                     </MovieCard>
                                 ))}
                             </MoviesGrid>
-                        </RecommendationsSection>
+                        </div>
                     )}
                 </>
             ) : (
-                <NoResultsContainer>
-                    <img src="/icon/noserch.svg" alt="검색 결과 없음" width="80" height="80" />
-                    <NoResultsText>검색 내용이 없습니다!</NoResultsText>
-                </NoResultsContainer>
+                <>
+                    <div className="empty-search-wrapper">
+                        <NoResultsContainer>
+                            <img src="/icon/noserch.svg" alt="검색 결과 없음" width="80" height="80" />
+                            <NoResultsText>검색 내용이 없습니다!</NoResultsText>
+                        </NoResultsContainer>
+
+                        {/* 검색어가 없을 때 첫 번째 이미지처럼 포스터 그리드만 표시 */}
+                        <div className="default-thumbnails" style={{ marginTop: "400px" }}>
+                            <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
+                            <MoviesGrid>
+                                {thumbnails.map((thumbnail) => (
+                                    <MovieCard key={thumbnail.id}>
+                                        <img src={thumbnail.imageUrl} alt="" loading="lazy" />
+                                    </MovieCard>
+                                ))}
+                            </MoviesGrid>
+                        </div>
+                    </div>
+                </>
             )}
 
             {/* 추천 섹션: 검색 결과가 없고 유사 영화 추천도 없을 때 기본 추천 표시 */}

@@ -112,14 +112,15 @@ export const MovieCard = styled.div`
 
 export const ThumbnailsSection = styled.div`
     width: 90%;
-    margin: 30px auto;
-    padding-top: 350px;
+    margin: 250px auto 30px auto;
 `;
 
 export const ThumbnailsHeader = styled.h2`
     font-size: var(--font-W-Header);
     color: var(--secondary-40);
     margin-bottom: 40px;
+    padding-top: 40px;
+    margin-left: 95px;
 `;
 
 export const ThumbnailsGrid = styled.div`
@@ -360,8 +361,10 @@ export const CheckIcon = styled.div`
 export const RecommendationsSection = styled.div`
     width: 90%;
     margin: 70px auto 30px auto;
-    border-top: 1px solid var(--secondary-500);
+
     padding-top: 40px;
+    position: relative;
+    z-index: 0;
 `;
 
 export const RecommendationsHeader = styled.h2`
@@ -370,6 +373,9 @@ export const RecommendationsHeader = styled.h2`
     color: var(--secondary-40);
     margin-bottom: 40px;
     position: relative;
+    padding-top: 40px;
+    border-top: 1px solid var(--secondary-500);
+    margin-left: 30px;
 
     &:before {
         content: "";
