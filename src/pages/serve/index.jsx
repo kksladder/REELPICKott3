@@ -1,7 +1,7 @@
 import { Inner, MoveDetailWrap, MovieVideo, ProductDetail, SeasonVideo, SimilarCont, StyledEpisodeList } from "./style";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { HeartToggle, PlySquareLg, RestartLg, SpeakerOffLg, SpeakerOnLg, StopSquareLg, } from "../../ui/Button/Button";
+import { HeartToggle, PlySquareLg, RestartLg, SpeakerOffLg, SpeakerOnLg, StopSquareLg } from "../../ui/Button/Button";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getMovieDetails } from "../../store/modules/getThunk";
@@ -13,33 +13,14 @@ import SimilarList from "../../components/sub/similar/SimilarList";
 const ServePage = () => {
     const { movieId } = useParams();
     const dispatch = useDispatch();
-    const { currentMovie, movieData, loading, error } = useSelector((state) => state.movieR);
+    const { currentMovie, movieData, error } = useSelector((state) => state.movieR);
     const [expanded, setExpanded] = useState(false);
     const [selectedSeason, setSelectedSeason] = useState(1);
     const location = useLocation();
     const mediaType = new URLSearchParams(location.search).get("type") || "movie";
     const [isPlaying, setIsPlaying] = useState(true);
     const [isMuted, setIsMuted] = useState(true);
-
-    const handlePlayPause = () => {
-        setIsPlaying(!isPlaying);
-    };
-
-    const handleMuteToggle = () => {
-        setIsMuted(!isMuted);
-    };
-
-    const getVideoUrl = () => {
-        if (!currentMovie?.trailer?.key) return null;
-        return `https://www.youtube.com/embed/${currentMovie.trailer.key}?autoplay=1&mute=${
-            isMuted ? 1 : 0
-        }&controls=0&showinfo=0&rel=0&loop=1&playlist=${currentMovie.trailer.key}&playing=${isPlaying ? 1 : 0}`;
-    };
-
-    // 슬라이드 관련 상태
-    // const [isDragging, setIsDragging] = useState(false);
-    // const [startX, setStartX] = useState(0);
-    // const [scrollLeft, setScrollLeft] = useState(0);
+    const playerRef = useRef(null);
 
     useEffect(() => {
         if (movieId && movieData) {
@@ -56,38 +37,94 @@ const ServePage = () => {
         }
     }, [dispatch, movieId, mediaType, selectedSeason]);
 
-    // const handleMouseDown = (e) => {
-    //     setIsDragging(true);
-    //     setStartX(e.pageX - e.currentTarget.offsetLeft);
-    //     setScrollLeft(e.currentTarget.scrollLeft);
-    // };
+    // YouTube API 초기화와 컨트롤 관련 코드
+    useEffect(() => {
+        // YouTube IFrame API 로드
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName("script")[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    // const handleMouseUp = () => {
-    //     setIsDragging(false);
-    // };
+        // API 준비되면 플레이어 초기화
+        window.onYouTubeIframeAPIReady = () => {
+            if (currentMovie?.trailer?.key) {
+                const player = new window.YT.Player("youtube-player", {
+                    events: {
+                        onReady: (event) => {
+                            playerRef.current = event.target;
+                            if (isMuted) {
+                                event.target.mute();
+                            }
+                        },
+                        onStateChange: (event) => {
+                            // 동영상 상태 변경 시 재생/정지 상태 업데이트
+                            if (event.data === window.YT.PlayerState.PLAYING) {
+                                setIsPlaying(true);
+                            } else if (event.data === window.YT.PlayerState.PAUSED) {
+                                setIsPlaying(false);
+                            }
+                        },
+                    },
+                });
+            }
+        };
 
-    // const handleMouseMove = (e) => {
-    //     if (!isDragging) return;
-    //     e.preventDefault();
-    //     const x = e.pageX - e.currentTarget.offsetLeft;
-    //     const walk = (x - startX) * 2;
-    //     e.currentTarget.scrollLeft = scrollLeft - walk;
-    // };
+        // 컴포넌트 언마운트 시 정리
+        return () => {
+            window.onYouTubeIframeAPIReady = null;
+            if (playerRef.current) {
+                playerRef.current = null;
+            }
+        };
+    }, [currentMovie?.trailer?.key]);
 
-    if (error)
-        return (
-            <div className="error-container">
-                <h2>오류가 발생했습니다</h2>
-                <p>{error}</p>
-            </div>
-        );
-    if (!movieData) return <div>데이터를 불러오는 중입니다...</div>;
-    if (!currentMovie) return <div>영화 정보를 불러오는 중입니다...</div>;
+    // 비디오 URL 생성 함수 수정
+    const getVideoUrl = () => {
+        if (!currentMovie?.trailer?.key) return null;
+        return `https://www.youtube.com/embed/${currentMovie.trailer.key}?enablejsapi=1&autoplay=1&mute=${
+            isMuted ? 1 : 0
+        }&controls=0&showinfo=0&rel=0&loop=1&playlist=${currentMovie.trailer.key}&origin=${window.location.origin}`;
+    };
+
+    // 재생/정지 핸들러 수정
+    const handlePlayPause = () => {
+        if (playerRef.current) {
+            try {
+                if (isPlaying) {
+                    playerRef.current.pauseVideo();
+                } else {
+                    playerRef.current.playVideo();
+                }
+                setIsPlaying(!isPlaying);
+            } catch (error) {
+                console.error("Failed to control video:", error);
+            }
+        }
+    };
+
+    // 음소거 핸들러 수정
+    const handleMuteToggle = () => {
+        if (playerRef.current) {
+            try {
+                if (isMuted) {
+                    playerRef.current.unMute();
+                } else {
+                    playerRef.current.mute();
+                }
+                setIsMuted(!isMuted);
+            } catch (error) {
+                console.error("Failed to toggle mute:", error);
+            }
+        }
+    };
+    // if (!movieData) return <div>데이터를 불러오는 중입니다...</div>;
+    // if (!currentMovie) return <div>영화 정보를 불러오는 중입니다...</div>;
 
     const cast = currentMovie?.credits?.cast || [];
     const director = currentMovie?.credits?.crew?.find((person) => person.job === "Director");
     const isMovie = currentMovie?.media_type === "movie";
     const isSeries = currentMovie?.media_type === "tv" || currentMovie?.media_type === "animation";
+
     // const hasSeasons = currentMovie?.seasons?.length > 0;
 
     const renderSeasonContent = () => {
@@ -146,6 +183,7 @@ const ServePage = () => {
                 <div className="video">
                     {currentMovie?.trailer?.key && (
                         <iframe
+                            id="youtube-player"
                             src={getVideoUrl()}
                             title={currentMovie.title}
                             style={{
@@ -162,9 +200,7 @@ const ServePage = () => {
                     <div className="video-item">
                         <div className="item_left">
                             <div className="playGroup">
-                                <div onClick={handlePlayPause} >
-                                    {isPlaying ? <StopSquareLg /> : <PlySquareLg />}
-                                </div>
+                                <div onClick={handlePlayPause}>{isPlaying ? <StopSquareLg /> : <PlySquareLg />}</div>
                                 <HeartToggle />
                             </div>
                             <div className="tag">
