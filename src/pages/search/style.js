@@ -74,11 +74,11 @@ export const NoResultsText = styled.p`
 
 export const ThumbnailsSection = styled.div`
     position: absolute;
-    top: 480px;
+    top: 390px;
     right: 85px;
-    margin: 0 auto;
-    padding: 0 30px;
+    margin: auto;
     width: 1837px;
+    overflow: hidden;
 `;
 
 export const ThumbnailsHeader = styled.h2`
@@ -92,16 +92,18 @@ export const ThumbnailsHeader = styled.h2`
 `;
 
 export const ThumbnailsGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: 100%;
+    overflow: hidden;
 `;
 
 export const ThumbnailItem = styled.div`
-    width: 100%;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    border-radius: 4px;
+    flex: 0 0 auto; /* 크기 고정 */
+    width: 300px; /* 원하는 고정 너비 */
+    margin: 0;
+    padding: 0;
 
     &:hover {
         opacity: 0.8;
@@ -292,17 +294,18 @@ export const SearchResultsCount = styled.h3`
 
 // 가로 스크롤을 위한 SearchResultsGrid 수정
 export const SearchResultsGrid = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 24px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px; /* 이미지 간 간격 */
     width: 100%;
-    padding-bottom: 16px;
+    padding-right: 140px;
+    padding-bottom: 24px; /* 섹션 아래 여백 */
+    overflow-x: hidden;
 
-    /* 스크롤바 스타일링 (선택사항) */
+    /* 기존 스크롤바 스타일은 세로 스크롤에만 적용 */
     &::-webkit-scrollbar {
-        height: 8px;
+        width: 8px; /* 세로 스크롤바 폭 */
+        height: 0; /* 가로 스크롤바 제거 */
     }
 
     &::-webkit-scrollbar-track {
@@ -318,12 +321,19 @@ export const SearchResultsGrid = styled.div`
     &::-webkit-scrollbar-thumb:hover {
         background: var(--secondary-400);
     }
-`;
 
-export const SearchResultsContainer = styled.div`
-    width: 1778px;
-    margin: 40px auto;
-    padding: 0 30px;
+    /* 반응형 그리드 */
+    @media (max-width: 1600px) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (max-width: 1200px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 `;
 
 export const SearchResultItem = styled.div`
@@ -459,7 +469,7 @@ export const PaginationButton = styled.button`
 export const RecommendationsSection = styled.div`
     margin-top: 30px;
     width: 100%;
-    padding-right: 70px;
+    padding-left: 45px;
 `;
 
 export const RecommendationsHeader = styled.h2`
@@ -481,11 +491,6 @@ export const RecommendationsHeader = styled.h2`
         height: 24px;
         border-radius: 2px;
     }
-`;
-
-// 추천 영화 그리드도 가로 스크롤 적용
-export const RecommendationsGrid = styled(SearchResultsGrid)`
-    /* SearchResultsGrid와 동일한 스타일 상속 */
 `;
 
 // ThumbnailItem을 가로 스크롤에 맞게 수정

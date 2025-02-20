@@ -6,7 +6,6 @@ import Login from "./pages/login/Login";
 import SignUpPage from "./pages/signUp";
 import ServePage from "./pages/serve";
 import Membership from "./components/membership/Membership";
-import DramaPage from "./pages/drama";
 import IdFind from "./components/IdFind";
 import PWFind from "./components/PWFind";
 import Basket from "./pages/basket";
@@ -42,7 +41,6 @@ function App() {
                         <Route path="/signUp" element={<SignUpPage />} />
                         <Route path="/serve" element={<ServePage />} />
                         <Route path="/membership" element={<Membership />} />
-                        <Route path="/drama" element={<DramaPage />} />
                         <Route path="/idfind" element={<IdFind />} />
                         <Route path="/pwfind" element={<PWFind />} />
                         <Route path="/search" element={<SearchPage />} />
@@ -52,7 +50,6 @@ function App() {
                         <Route path="/membership" element={<Membership />} />
                         <Route path="/reelpick" element={<Reelpick />} />
                         <Route path="/basket" element={<Basket />} />
-                        <Route path="/drama" element={<DramaPage />} />
                         <Route path="/movie" element={<MoviePage />} />
                         <Route path="/idfind" element={<IdFind />} />
                         <Route path="/landing" element={<Landing />} />
