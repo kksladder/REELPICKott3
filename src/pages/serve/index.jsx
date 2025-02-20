@@ -320,11 +320,11 @@ const ServePage = () => {
                                     : seasonContent?.title}
                             </div>
 
-                            <img
+                            {/* <img
                                 src={isSeries ? "/icon/Iconex/Glass/Right.png" : "/icon/Iconex/Glass/Off.png"}
                                 alt=""
                                 className="glass-icon"
-                            />
+                            /> */}
                         </div>
 
                         <StyledEpisodeList>
