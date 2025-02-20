@@ -20,7 +20,8 @@ export const CardItem = styled.div`
 `;
 
 export const PosterImage = styled.img`
-    width: 100%;
+    width: 200px;
+    height: 400px;
     aspect-ratio: 2/3;
     object-fit: cover;
 `;

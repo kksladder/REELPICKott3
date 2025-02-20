@@ -1,8 +1,85 @@
 import axios from "axios";
 
+// 장르 상수 정의 (TMDB 기준 장르 코드)
+const GENRES = {
+    DRAMA: 18,
+    COMEDY: 35,
+    ANIMATION: 16,
+    KIDS: 10762,
+    FAMILY: 10751,
+};
+
 // API 설정
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
+
+// 카테고리 설정
+const CATEGORY_CONFIG = {
+    movie: {
+        type: "movie",
+        endpoint: "discover/movie",
+        params: {
+            include_adult: false,
+            include_video: false,
+            sort_by: "popularity.desc",
+            "vote_average.gte": 7.0,
+            "vote_count.gte": 100,
+            with_original_language: "ko",
+            region: "KR",
+            "primary_release_date.gte": "1800-01-01",
+            "primary_release_date.lte": "2025-12-31",
+        },
+    },
+    drama: {
+        type: "tv",
+        endpoint: "discover/tv",
+        params: {
+            with_genres: GENRES.DRAMA,
+            sort_by: "popularity.desc",
+            "vote_average.gte": 5.0,
+            "vote_count.gte": 20,
+            with_original_language: "ko",
+            origin_country: "KR",
+        },
+    },
+    comedy: {
+        type: "tv",
+        endpoint: "discover/tv",
+        params: {
+            with_genres: GENRES.COMEDY,
+            sort_by: "popularity.desc",
+            "vote_average.gte": 5.0,
+            "vote_count.gte": 20,
+            with_original_language: "ko",
+            origin_country: "KR",
+        },
+    },
+    animation: {
+        type: "movie",
+        endpoint: "discover/movie",
+        params: {
+            with_genres: GENRES.ANIMATION,
+            include_adult: false,
+            "vote_average.gte": 5.0,
+            "vote_count.gte": 20,
+            with_original_language: "ko",
+            region: "KR",
+            sort_by: "release_date.desc",
+        },
+    },
+    kids: {
+        type: "tv",
+        endpoint: "discover/tv",
+        params: {
+            with_genres: `${GENRES.KIDS},${GENRES.FAMILY}`,
+            "vote_average.gte": 5.0,
+            "vote_count.gte": 10,
+            with_original_language: "ko",
+            origin_country: "KR",
+            sort_by: "first_air_date.desc",
+        },
+    },
+};
 
 // API 인스턴스 생성 - API_KEY를 params에 포함하는 방식으로 변경
 export const tmdbApi = axios.create({
@@ -18,10 +95,10 @@ export const tmdbApi = axios.create({
 // 영화 데이터 가공 함수
 export const processMovieData = (movie) => ({
     id: movie.id,
-    title: movie.title,
+    title: movie.title || movie.name,
     poster_path: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null,
-    poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null, // 추가: Reelpick 컴포넌트와 호환되도록
-    releaseDate: movie.release_date,
+    poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null,
+    releaseDate: movie.release_date || movie.first_air_date,
     rating: movie.vote_average,
     overview: movie.overview,
     popularity: movie.popularity,
@@ -40,19 +117,61 @@ const addSpaceToKorean = (query) => {
 };
 
 /**
+ * 카테고리별 콘텐츠를 가져오는 함수
+ * @param {string} category - 카테고리 (movie, drama, comedy, animation, kids)
+ * @param {number} page - 페이지 번호 (기본값: 1)
+ * @param {string} language - 언어 설정 (기본값: 'ko-KR')
+ * @returns {Promise<Object>} - 필터링된 콘텐츠 데이터
+ */
+export const getContentByCategory = async (category, page = 1, language = "ko-KR") => {
+    const categoryConfig = CATEGORY_CONFIG[category];
+
+    if (!categoryConfig) {
+        throw new Error("유효하지 않은 카테고리입니다.");
+    }
+
+    try {
+        const response = await tmdbApi.get(categoryConfig.endpoint, {
+            params: {
+                ...categoryConfig.params,
+                language,
+                page,
+            },
+        });
+
+        const processFunction = categoryConfig.type === "movie" ? processMovieData : processMovieData;
+
+        return {
+            data: response.data.results.map(processFunction),
+            totalPages: response.data.total_pages,
+            currentPage: response.data.page,
+        };
+    } catch (error) {
+        console.error(`Error fetching ${category} content:`, error);
+        throw new Error(`${category} 콘텐츠를 불러오는데 실패했습니다.`);
+    }
+};
+
+/**
  * 인기 영화 추천 데이터를 가져오는 함수
  * @param {number} totalPages - 가져올 페이지 수 (기본값: 10)
  * @param {string} language - 언어 설정 (기본값: 'ko-KR')
  * @param {string} sortBy - 정렬 기준 (기본값: 'popularity')
+ * @param {number} startPage - 시작 페이지 (기본값: 1)
  * @returns {Promise<Array>} - 가공된 영화 데이터 배열
  */
-export const getMovieRecommendations = async (totalPages = 10, language = "ko-KR", sortBy = "popularity") => {
+export const getMovieRecommendations = async (
+    totalPages = 10,
+    language = "ko-KR",
+    sortBy = "popularity",
+    startPage = 1
+) => {
     try {
         const requests = Array.from({ length: totalPages }, (_, i) =>
             tmdbApi.get("/movie/popular", {
                 params: {
                     language,
-                    page: i + 1,
+                    page: startPage + i,
                 },
             })
         );

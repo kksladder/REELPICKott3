@@ -3,6 +3,7 @@ import axios from "axios";
 import { getMovieRecommendations, searchMovies, searchMultiContent, processMovieData, tmdbApi } from "./tmdbApi"; // 기존 API 함수 임포트
 
 // 데이터 처리 함수
+
 const processData = (item, mediaType) => {
     if (mediaType === "movie") {
         return processMovieData(item); // 기존 함수 재활용
@@ -43,44 +44,41 @@ const mediaTypeSettings = {
 };
 
 // 콘텐츠 가져오기 (기본 인기 콘텐츠)
-export const getContent = createAsyncThunk(
-    "content/getContent",
-    async ({ mediaType, page = 1 }, { rejectWithValue }) => {
-        try {
-            // 기존 릴픽 추천 함수 호환성 유지
-            if (mediaType === "movie" && page === 1) {
-                // getMovieRecommendations를 사용해 릴픽 추천 기능 유지
-                const recommendedMovies = await getMovieRecommendations();
-                return {
-                    data: recommendedMovies,
-                    currentPage: 1,
-                    totalPages: 1,
-                };
-            }
-
-            const settings = mediaTypeSettings[mediaType];
-            if (!settings) {
-                return rejectWithValue(`Unsupported media type: ${mediaType}`);
-            }
-
-            const response = await tmdbApi.get(settings.endpoint, {
-                params: {
-                    language: "ko-KR",
-                    page,
-                    ...settings.defaultParams,
-                },
-            });
-
+export const getContent = createAsyncThunk("movis/getContent", async ({ mediaType, page = 1 }, { rejectWithValue }) => {
+    try {
+        // 기존 릴픽 추천 함수 호환성 유지
+        if (mediaType === "movie" && page === 1) {
+            // getMovieRecommendations를 사용해 릴픽 추천 기능 유지
+            const recommendedMovies = await getMovieRecommendations();
             return {
-                data: response.data.results.map(settings.processor),
-                currentPage: response.data.page,
-                totalPages: response.data.total_pages,
+                data: recommendedMovies,
+                currentPage: 1,
+                totalPages: 1,
             };
-        } catch (error) {
-            return rejectWithValue(error.message);
         }
+
+        const settings = mediaTypeSettings[mediaType];
+        if (!settings) {
+            return rejectWithValue(`Unsupported media type: ${mediaType}`);
+        }
+
+        const response = await tmdbApi.get(settings.endpoint, {
+            params: {
+                language: "ko-KR",
+                page,
+                ...settings.defaultParams,
+            },
+        });
+
+        return {
+            data: response.data.results.map(settings.processor),
+            currentPage: response.data.page,
+            totalPages: response.data.total_pages,
+        };
+    } catch (error) {
+        return rejectWithValue(error.message);
     }
-);
+});
 
 // 필터링된 콘텐츠 가져오기
 export const getFilteredContent = createAsyncThunk(
