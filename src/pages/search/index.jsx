@@ -445,7 +445,6 @@ const SearchPage = () => {
                     </DropdownContainer>
                 )}
             </SearchBarContainer>
-
             {showResults && movieResult.length > 0 ? (
                 <>
                     <SearchResultsSection>
@@ -533,7 +532,6 @@ const SearchPage = () => {
                             <NoResultsText>검색 내용이 없습니다!</NoResultsText>
                         </NoResultsContainer>
 
-                        {/* 검색어가 없을 때 첫 번째 이미지처럼 포스터 그리드만 표시 */}
                         <div className="default-thumbnails" style={{ marginTop: "400px" }}>
                             <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
                             <MoviesGrid>
@@ -548,8 +546,7 @@ const SearchPage = () => {
                 </>
             )}
 
-            {/* 추천 섹션: 검색 결과가 없고 유사 영화 추천도 없을 때 기본 추천 표시 */}
-            {(!showResults || (showResults && movieResult.length === 0 && similarMovies.length === 0)) && (
+            {/* {(!showResults || (showResults && movieResult.length === 0 && similarMovies.length === 0)) && (
                 <ThumbnailsSection>
                     <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
                     <MoviesGrid>
@@ -560,7 +557,7 @@ const SearchPage = () => {
                         ))}
                     </MoviesGrid>
                 </ThumbnailsSection>
-            )}
+            )} */}
         </SearchContainer>
     );
 };
