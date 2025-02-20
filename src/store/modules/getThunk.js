@@ -113,25 +113,22 @@ export const getMovieDetails = createAsyncThunk(
             const response = await axios.get(url, {
                 params: {
                     ...options,
-                    append_to_response: "credits,similar,belongs_to_collection"
+                    append_to_response: "credits,similar,belongs_to_collection,videos"
                 }
             });
 
-            // 영화 시리즈인 경우 컬렉션 정보 가져오기
-            let seriesMovies = [];
-            if (mediaType !== 'tv' && response.data.belongs_to_collection) {
-                const collectionResponse = await axios.get(
-                    `https://api.themoviedb.org/3/collection/${response.data.belongs_to_collection.id}`,
-                    { params: options }
-                );
-                seriesMovies = collectionResponse.data.parts.sort(
-                    (a, b) => new Date(a.release_date) - new Date(b.release_date)
-                );
-            }
+            // 비디오 정보 찾기 (한국어 트레일러 우선, 없으면 영어 트레일러)
+            const videos = response.data.videos?.results || [];
+            const trailer = videos.find(video =>
+                video.type === "Trailer" &&
+                video.site === "YouTube" &&
+                video.iso_639_1 === "ko"
+            ) || videos.find(video =>
+                video.type === "Trailer" &&
+                video.site === "YouTube"
+            ) || videos[0];
 
-            const director = response.data.credits.crew.find(person => person.job === "Director");
-            const cast = response.data.credits.cast;
-
+            // 기존 코드 유지하면서 trailer 정보만 추가
             if (mediaType === 'tv') {
                 const seasonNumber = params.season || 1;
                 const seasonResponse = await axios.get(
@@ -146,18 +143,25 @@ export const getMovieDetails = createAsyncThunk(
                     runtime: response.data.episode_run_time?.[0],
                     media_type: 'tv',
                     episodes: seasonResponse.data.episodes || [],
-                    director,
-                    cast,
-                    seriesMovies: []
+                    director: response.data.credits.crew.find(person => person.job === "Director"),
+                    cast: response.data.credits.cast,
+                    seriesMovies: [],
+                    trailer
                 };
             }
 
             return {
                 ...response.data,
                 media_type: mediaType,
-                director,
-                cast,
-                seriesMovies
+                director: response.data.credits.crew.find(person => person.job === "Director"),
+                cast: response.data.credits.cast,
+                seriesMovies: response.data.belongs_to_collection ?
+                    (await axios.get(
+                        `https://api.themoviedb.org/3/collection/${response.data.belongs_to_collection.id}`,
+                        { params: options }
+                    )).data.parts.sort((a, b) => new Date(a.release_date) - new Date(b.release_date))
+                    : [],
+                trailer
             };
         } catch (error) {
             console.error("API Error:", error);

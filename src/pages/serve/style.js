@@ -19,9 +19,18 @@ export const MovieVideo = styled.section`
         position: relative;
         width: 100%;
         height: 100%;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 60.95%, rgba(12, 12, 12, 0.61) 87.65%, #141414 100%),
-            url("/images/test.jpg") lightgray 50% / cover no-repeat;
-        background-size: cover;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 60.95%, rgba(12, 12, 12, 0.61) 87.65%, #141414 100%);
+        
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 60.95%, rgba(12, 12, 12, 0.61) 87.65%, #141414 100%);
+            pointer-events: none;
+        }
     }
 
     .video > img {
@@ -42,6 +51,7 @@ export const MovieVideo = styled.section`
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
+        z-index: 1;
         .desc {
             flex: 1;
             margin-left: 35px;

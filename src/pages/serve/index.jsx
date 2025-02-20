@@ -1,7 +1,7 @@
 import { Inner, MoveDetailWrap, MovieVideo, ProductDetail, SeasonVideo, SimilarCont, StyledEpisodeList } from "./style";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { HeartToggle, PlySquareLg, RestartLg, SpeakerOffLg } from "../../ui/Button/Button";
+import { HeartToggle, PlySquareLg, RestartLg, SpeakerOffLg, SpeakerOnLg, StopSquareLg, } from "../../ui/Button/Button";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getMovieDetails } from "../../store/modules/getThunk";
@@ -18,11 +18,28 @@ const ServePage = () => {
     const [selectedSeason, setSelectedSeason] = useState(1);
     const location = useLocation();
     const mediaType = new URLSearchParams(location.search).get("type") || "movie";
+    const [isPlaying, setIsPlaying] = useState(true);
+    const [isMuted, setIsMuted] = useState(true);
+
+    const handlePlayPause = () => {
+        setIsPlaying(!isPlaying);
+    };
+
+    const handleMuteToggle = () => {
+        setIsMuted(!isMuted);
+    };
+
+    const getVideoUrl = () => {
+        if (!currentMovie?.trailer?.key) return null;
+        return `https://www.youtube.com/embed/${currentMovie.trailer.key}?autoplay=1&mute=${
+            isMuted ? 1 : 0
+        }&controls=0&showinfo=0&rel=0&loop=1&playlist=${currentMovie.trailer.key}&playing=${isPlaying ? 1 : 0}`;
+    };
 
     // 슬라이드 관련 상태
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
+    // const [isDragging, setIsDragging] = useState(false);
+    // const [startX, setStartX] = useState(0);
+    // const [scrollLeft, setScrollLeft] = useState(0);
 
     useEffect(() => {
         if (movieId && movieData) {
@@ -39,25 +56,24 @@ const ServePage = () => {
         }
     }, [dispatch, movieId, mediaType, selectedSeason]);
 
-    const handleMouseDown = (e) => {
-        setIsDragging(true);
-        setStartX(e.pageX - e.currentTarget.offsetLeft);
-        setScrollLeft(e.currentTarget.scrollLeft);
-    };
+    // const handleMouseDown = (e) => {
+    //     setIsDragging(true);
+    //     setStartX(e.pageX - e.currentTarget.offsetLeft);
+    //     setScrollLeft(e.currentTarget.scrollLeft);
+    // };
 
-    const handleMouseUp = () => {
-        setIsDragging(false);
-    };
+    // const handleMouseUp = () => {
+    //     setIsDragging(false);
+    // };
 
-    const handleMouseMove = (e) => {
-        if (!isDragging) return;
-        e.preventDefault();
-        const x = e.pageX - e.currentTarget.offsetLeft;
-        const walk = (x - startX) * 2;
-        e.currentTarget.scrollLeft = scrollLeft - walk;
-    };
+    // const handleMouseMove = (e) => {
+    //     if (!isDragging) return;
+    //     e.preventDefault();
+    //     const x = e.pageX - e.currentTarget.offsetLeft;
+    //     const walk = (x - startX) * 2;
+    //     e.currentTarget.scrollLeft = scrollLeft - walk;
+    // };
 
-    if (loading) return <div>데이터를 불러오는 중입니다...</div>;
     if (error)
         return (
             <div className="error-container">
@@ -72,7 +88,7 @@ const ServePage = () => {
     const director = currentMovie?.credits?.crew?.find((person) => person.job === "Director");
     const isMovie = currentMovie?.media_type === "movie";
     const isSeries = currentMovie?.media_type === "tv" || currentMovie?.media_type === "animation";
-    const hasSeasons = currentMovie?.seasons?.length > 0;
+    // const hasSeasons = currentMovie?.seasons?.length > 0;
 
     const renderSeasonContent = () => {
         if (isMovie && currentMovie.belongs_to_collection) {
@@ -115,31 +131,55 @@ const ServePage = () => {
 
     const seasonContent = renderSeasonContent();
 
+    //비디오 재생버튼 item
+
+    // const getVideoUrl = () => {
+    //     if (!currentMovie?.trailer?.key) return null;
+    //     return `https://www.youtube.com/embed/${currentMovie.trailer.key}?autoplay=1&mute=${
+    //         isMuted ? 1 : 0
+    //     }&controls=0&showinfo=0&rel=0&loop=1&playlist=${currentMovie.trailer.key}${isPlaying ? "" : "&pause=1"}`;
+    // };
+
     return (
         <MoveDetailWrap>
             <MovieVideo $expanded={expanded}>
                 <div className="video">
+                    {currentMovie?.trailer?.key && (
+                        <iframe
+                            src={getVideoUrl()}
+                            title={currentMovie.title}
+                            style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                width: "100%",
+                                height: "100%",
+                                border: "none",
+                            }}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        />
+                    )}
                     <div className="video-item">
                         <div className="item_left">
                             <div className="playGroup">
-                                <PlySquareLg />
+                                <div onClick={handlePlayPause} >
+                                    {isPlaying ? <StopSquareLg /> : <PlySquareLg />}
+                                </div>
                                 <HeartToggle />
                             </div>
                             <div className="tag">
                                 <div className="tag_age">19</div>
                                 <div className="tag_year">
-                                    {isMovie
-                                        ? currentMovie?.release_date?.substring(0, 4)
-                                        : currentMovie?.first_air_date?.substring(0, 4) || ""}
+                                    {currentMovie?.release_date?.substring(0, 4) ||
+                                        currentMovie?.first_air_date?.substring(0, 4) ||
+                                        ""}
                                 </div>
                                 <div className="tag_genre">
                                     {currentMovie?.genres?.map((genre) => genre.name).join(", ") || ""}
                                 </div>
                                 <div className="tag_time">
-                                    {isMovie
-                                        ? currentMovie?.runtime
-                                            ? `${currentMovie.runtime}분`
-                                            : ""
+                                    {currentMovie?.runtime
+                                        ? `${currentMovie.runtime}분`
                                         : currentMovie?.episode_run_time?.[0]
                                         ? `${currentMovie.episode_run_time[0]}분`
                                         : ""}
@@ -168,12 +208,13 @@ const ServePage = () => {
                         </div>
                         <div className="playItem">
                             <RestartLg />
-                            <SpeakerOffLg />
+                            <div onClick={handleMuteToggle} style={{ cursor: "pointer" }}>
+                                {isMuted ? <SpeakerOffLg /> : <SpeakerOnLg />}
+                            </div>
                         </div>
                     </div>
                 </div>
             </MovieVideo>
-
             <ProductDetail>
                 <div className="title">출연 및 제작진</div>
                 <div className="pd_sec">
@@ -208,7 +249,6 @@ const ServePage = () => {
                     </div>
                 </div>
             </ProductDetail>
-
             <Inner>
                 {(seasonContent || currentMovie?.seriesMovies?.length > 0) && (
                     <SeasonVideo>
