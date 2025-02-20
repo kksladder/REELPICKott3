@@ -72,23 +72,54 @@ export const NoResultsText = styled.p`
     color: var(--secondary-60);
 `;
 
-export const ThumbnailsSection = styled.div`
-    position: absolute;
-    top: 390px;
-    right: 85px;
-    margin: auto;
-    width: 1837px;
+// 릴픽 스타일 그리드 적용
+export const MoviesGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 30px;
+    width: 90%;
+    margin: 0 auto;
+
+    @media screen and (max-width: 1024px) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+`;
+
+// 릴픽 스타일 무비카드 적용
+export const MovieCard = styled.div`
+    position: relative;
+    aspect-ratio: 2/3;
+    border-radius: 4px;
     overflow: hidden;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+`;
+
+export const ThumbnailsSection = styled.div`
+    width: 90%;
+    margin: 30px auto;
+    padding-top: 350px;
 `;
 
 export const ThumbnailsHeader = styled.h2`
     font-size: var(--font-W-Header);
     color: var(--secondary-40);
-    width: 1765px;
-    margin-top: 156px;
-    margin-bottom: 50px;
-    padding-top: 50px;
-    margin-left: 100px;
+    margin-bottom: 40px;
 `;
 
 export const ThumbnailsGrid = styled.div`
@@ -274,8 +305,8 @@ export const UpdateTime = styled.div`
 
 // 검색 결과 관련 스타일
 export const SearchResultsSection = styled.div`
-    width: 100%;
-    margin-top: 30px;
+    width: 90%;
+    margin: 30px auto;
 `;
 
 export const SearchResultsHeader = styled.h2`
@@ -289,222 +320,65 @@ export const SearchResultsCount = styled.h3`
     font-size: 30px;
     font-weight: semi-bold;
     color: var(--white);
-    margin-left: 100px;
+    margin-bottom: 30px;
 `;
 
-// 가로 스크롤을 위한 SearchResultsGrid 수정
-export const SearchResultsGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px; /* 이미지 간 간격 */
-    width: 100%;
-    padding-right: 140px;
-    padding-bottom: 24px; /* 섹션 아래 여백 */
-    overflow-x: hidden;
-
-    /* 기존 스크롤바 스타일은 세로 스크롤에만 적용 */
-    &::-webkit-scrollbar {
-        width: 8px; /* 세로 스크롤바 폭 */
-        height: 0; /* 가로 스크롤바 제거 */
-    }
-
-    &::-webkit-scrollbar-track {
-        background: var(--secondary-30);
-        border-radius: 4px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: var(--secondary-90);
-        border-radius: 4px;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-        background: var(--secondary-400);
-    }
-
-    /* 반응형 그리드 */
-    @media (max-width: 1600px) {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    @media (max-width: 1200px) {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    @media (max-width: 768px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-`;
-
-export const SearchResultItem = styled.div`
-    display: flex;
-    padding: 20px 0;
-    border-bottom: 1px solid var(--secondary-500);
-    cursor: pointer;
-    transition: background-color 0.2s;
-
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-    }
-`;
-
-export const SearchResultImage = styled.img`
-    width: 100px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-right: 20px;
-    flex-shrink: 0;
-`;
-
-export const SearchResultInfo = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-`;
-
-export const SearchResultTitle = styled.h3`
-    font-size: var(--font-W-Content-M);
-    color: var(--white);
-    margin-bottom: 10px;
-
-    span {
-        color: var(--secondary-50);
-        font-weight: var(--font-weight-Regular);
-    }
-`;
-
-export const SearchResultMeta = styled.div`
+// 체크 아이콘 스타일 (릴픽추천 페이지에서 가져옴)
+export const CheckIcon = styled.div`
+    position: absolute;
+    top: 165px;
+    left: 77px;
+    width: 123px;
+    height: 123px;
+    background: linear-gradient(135deg, var(--primary-10) 0%, var(--primary-30) 33%, var(--primary-90) 100%);
+    border-radius: 30.63px;
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
-`;
-
-export const SearchResultReleaseDate = styled.span`
-    font-size: var(--font-W-Content-S);
-    color: var(--secondary-50);
-    margin-right: 20px;
-`;
-
-export const SearchResultRating = styled.span`
-    font-size: var(--font-W-Content-S);
-    color: var(--primary-40);
-    display: flex;
-    align-items: center;
-
-    &::before {
-        content: "★";
-        margin-right: 4px;
-    }
-`;
-
-export const SearchResultOverview = styled.p`
-    font-size: var(--font-W-Content-S);
-    color: var(--secondary-40);
-    line-height: 1.5;
-    max-height: 80px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-`;
-
-export const SearchResultContent = styled.p`
-    font-size: var(--font-W-Content-S);
-    color: var(--secondary-50);
-    line-height: 1.5;
-`;
-
-// 로딩 스피너
-export const LoadingSpinner = styled.div`
-    width: 50px;
-    height: 50px;
-    border: 5px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    border-top-color: var(--white);
-    margin: 50px auto;
-    animation: spin 1s linear infinite;
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-`;
-
-// 페이지네이션
-export const PaginationContainer = styled.div`
-    display: flex;
     justify-content: center;
-    align-items: center;
-    margin-top: 40px;
-    padding: 20px 0;
-`;
+    color: var(--primary-40);
+    font-size: 70px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-export const PaginationButton = styled.button`
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--white);
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    margin: 0 10px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-
-    &:hover:not(:disabled) {
-        background-color: rgba(255, 255, 255, 0.2);
+    @media screen and (max-width: 1024px) {
+        top: 140px;
+        left: 65px;
+        width: 100px;
+        height: 100px;
+        font-size: 50px;
     }
 
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
+    @media screen and (max-width: 768px) {
+        top: 120px;
+        left: 55px;
+        width: 80px;
+        height: 80px;
+        font-size: 40px;
     }
 `;
 
 // 추천 영화 관련 스타일
 export const RecommendationsSection = styled.div`
-    margin-top: 430px;
-    width: 100%;
-    padding-left: 45px;
+    width: 90%;
+    margin: 70px auto 30px auto;
+    border-top: 1px solid var(--secondary-500);
+    padding-top: 40px;
 `;
 
 export const RecommendationsHeader = styled.h2`
     font-size: 30px;
     font-weight: semi-bold;
-    border-top: 1px solid var(--secondary-500);
     color: var(--secondary-40);
     margin-bottom: 40px;
     position: relative;
-    padding-left: 100px;
-    padding-top: 40px;
-    width: 96%;
 
     &:before {
         content: "";
         position: absolute;
-        left: 0;
+        left: -20px;
         top: 50%;
         transform: translateY(-50%);
         width: 4px;
         height: 24px;
         border-radius: 2px;
     }
-`;
-
-// ThumbnailItem을 가로 스크롤에 맞게 수정
-export const HorizontalThumbnailItem = styled(ThumbnailItem)`
-    flex: 0 0 auto;
-    width: 180px;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 16px;
-`;
-
-export const PageInfo = styled.span`
-    color: var(--secondary-50);
-    font-size: var(--font-W-Content-S);
 `;

@@ -13,10 +13,6 @@ import {
     NoResultsText,
     ThumbnailsSection,
     ThumbnailsHeader,
-    ThumbnailsGrid,
-    ThumbnailItem,
-    ThumbnailImage,
-    ThumbnailTitle,
 
     // 드롭다운 관련 스타일
     DropdownContainer,
@@ -40,9 +36,12 @@ import {
     SearchResultsSection,
     SearchResultsHeader,
     SearchResultsCount,
-    SearchResultsGrid,
 
-    // 추천 영화 관련 스타일 (style.js에 추가 필요)
+    // 릴픽 스타일 그리드로 변경
+    MoviesGrid,
+    MovieCard,
+
+    // 추천 영화 관련 스타일
     RecommendationsSection,
     RecommendationsHeader,
 } from "./style";
@@ -54,7 +53,7 @@ const RECENT_SEARCHES_KEY = "recentSearches";
 const MAX_RECENT_SEARCHES = 15;
 
 // 유사 영화 추천 수
-const SIMILAR_MOVIES_COUNT = 5;
+const SIMILAR_MOVIES_COUNT = 6;
 
 const SearchPage = () => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -336,7 +335,10 @@ const SearchPage = () => {
         localStorage.removeItem(RECENT_SEARCHES_KEY);
     };
 
-    // Mock data for thumbnails (5 identical thumbnails as shown in the image)
+    // 기본 이미지 경로 설정 (영화 포스터 이미지가 없을 경우 사용)
+    const defaultImageUrl = "/images/profileNo.png";
+
+    // 썸네일 데이터
     const thumbnails = [
         {
             id: 1,
@@ -363,9 +365,6 @@ const SearchPage = () => {
             imageUrl: "/images/parasite.jpg",
         },
     ];
-
-    // 기본 이미지 경로 설정 (영화 포스터 이미지가 없을 경우 사용)
-    const defaultImageUrl = "/images/default-poster.jpg";
 
     return (
         <SearchContainer ref={searchContainerRef}>
@@ -447,48 +446,52 @@ const SearchPage = () => {
                 )}
             </SearchBarContainer>
 
-            {/* 검색 결과가 있을 때 영화 포스터 리스트 표시 - title 완전히 제거 */}
+            {/* 검색 결과가 있을 때 릴픽추천 스타일의 포스터 그리드로 표시 */}
             {showResults && movieResult.length > 0 ? (
                 <>
                     <SearchResultsSection>
                         <SearchResultsHeader>
                             <SearchResultsCount>검색 결과: {movieResult.length}개</SearchResultsCount>
                         </SearchResultsHeader>
-                        <SearchResultsGrid>
+                        <MoviesGrid>
                             {movieResult.map((movie) => (
-                                <div key={movie.id} className="thumbnail-wrapper" style={{ marginBottom: "0" }}>
-                                    <ThumbnailImage
+                                <MovieCard key={movie.id} $isKorean={movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null}>
+                                    <img
                                         src={movie.poster_path || defaultImageUrl}
                                         alt={movie.title}
+                                        loading="lazy"
                                         onError={(e) => {
-                                            console.log("이미지 로딩 실패:", movie.poster_path);
                                             e.target.onerror = null;
                                             e.target.src = defaultImageUrl;
                                         }}
                                     />
-                                </div>
+                                </MovieCard>
                             ))}
-                        </SearchResultsGrid>
+                        </MoviesGrid>
                     </SearchResultsSection>
 
-                    {/* 유사 영화 추천 섹션 - title 완전히 제거, 컨테이너도 변경 */}
+                    {/* 유사 영화 추천 섹션 - 릴픽추천 스타일 적용 */}
                     {similarMovies.length > 0 && (
                         <RecommendationsSection>
                             <RecommendationsHeader>이런 영화는 어떠세요?</RecommendationsHeader>
-                            <ThumbnailsGrid>
+                            <MoviesGrid>
                                 {similarMovies.map((movie) => (
-                                    <div key={movie.id} className="thumbnail-wrapper" style={{ marginBottom: "0" }}>
-                                        <ThumbnailImage
+                                    <MovieCard
+                                        key={movie.id}
+                                        $isKorean={movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null}
+                                    >
+                                        <img
                                             src={movie.poster_path || defaultImageUrl}
                                             alt={movie.title}
+                                            loading="lazy"
                                             onError={(e) => {
                                                 e.target.onerror = null;
                                                 e.target.src = defaultImageUrl;
                                             }}
                                         />
-                                    </div>
+                                    </MovieCard>
                                 ))}
-                            </ThumbnailsGrid>
+                            </MoviesGrid>
                         </RecommendationsSection>
                     )}
                 </>
@@ -499,24 +502,28 @@ const SearchPage = () => {
                         <NoResultsText>검색 결과가 없습니다!</NoResultsText>
                     </NoResultsContainer>
 
-                    {/* 검색 결과가 없을 때도 추천 영화 표시 - 여기는 title 유지 (추천에서는 제목 표시) */}
+                    {/* 검색 결과가 없을 때 추천 영화 표시 - 릴픽추천 스타일 적용 */}
                     {similarMovies.length > 0 && (
                         <RecommendationsSection>
                             <RecommendationsHeader>이런 영화는 어떠세요?</RecommendationsHeader>
-                            <ThumbnailsGrid>
+                            <MoviesGrid>
                                 {similarMovies.map((movie) => (
-                                    <ThumbnailItem key={movie.id}>
-                                        <ThumbnailImage
+                                    <MovieCard
+                                        key={movie.id}
+                                        $isKorean={movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null}
+                                    >
+                                        <img
                                             src={movie.poster_path || defaultImageUrl}
                                             alt={movie.title}
+                                            loading="lazy"
                                             onError={(e) => {
                                                 e.target.onerror = null;
                                                 e.target.src = defaultImageUrl;
                                             }}
                                         />
-                                    </ThumbnailItem>
+                                    </MovieCard>
                                 ))}
-                            </ThumbnailsGrid>
+                            </MoviesGrid>
                         </RecommendationsSection>
                     )}
                 </>
@@ -527,18 +534,17 @@ const SearchPage = () => {
                 </NoResultsContainer>
             )}
 
-            {/* 추천 섹션: 검색 결과가 없고 유사 영화 추천도 없을 때만 표시 */}
+            {/* 추천 섹션: 검색 결과가 없고 유사 영화 추천도 없을 때 기본 추천 표시 */}
             {(!showResults || (showResults && movieResult.length === 0 && similarMovies.length === 0)) && (
                 <ThumbnailsSection>
                     <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
-                    <ThumbnailsGrid>
-                        {thumbnails.map((thumbnail, index) => (
-                            <ThumbnailItem key={index}>
-                                <ThumbnailImage src={thumbnail.imageUrl} alt={thumbnail.title} />
-                                <ThumbnailTitle>{thumbnail.title}</ThumbnailTitle>
-                            </ThumbnailItem>
+                    <MoviesGrid>
+                        {thumbnails.map((thumbnail) => (
+                            <MovieCard key={thumbnail.id}>
+                                <img src={thumbnail.imageUrl} alt="" loading="lazy" />
+                            </MovieCard>
                         ))}
-                    </ThumbnailsGrid>
+                    </MoviesGrid>
                 </ThumbnailsSection>
             )}
         </SearchContainer>
