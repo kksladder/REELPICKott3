@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const SearchContainer = styled.div`
-    width: 1920px;
-    height: 1900px;
+    width: 100%;
+    height: 100%;
     background-color: var(--background-color);
     color: var(--white);
     display: flex;
@@ -53,7 +53,7 @@ export const CloseButton = styled.button`
 
 export const NoResultsContainer = styled.div`
     position: absolute;
-    top: 200px;
+    top: 250px;
     width: 1836px;
     left: 0;
     right: 0;
@@ -286,8 +286,8 @@ export const SearchResultsHeader = styled.h2`
 `;
 
 export const SearchResultsCount = styled.h3`
-    font-size: var(--font-W-Header);
-    font-weight: var(--font-weight-Medium);
+    font-size: 30px;
+    font-weight: semi-bold;
     color: var(--white);
     margin-left: 100px;
 `;
@@ -467,19 +467,21 @@ export const PaginationButton = styled.button`
 
 // 추천 영화 관련 스타일
 export const RecommendationsSection = styled.div`
-    margin-top: 30px;
+    margin-top: 430px;
     width: 100%;
     padding-left: 45px;
 `;
 
 export const RecommendationsHeader = styled.h2`
-    font-size: var(--font-W-Header);
-    font-weight: var(--font-weight-Medium);
+    font-size: 30px;
+    font-weight: semi-bold;
+    border-top: 1px solid var(--secondary-500);
     color: var(--secondary-40);
     margin-bottom: 40px;
-    gap: 5px;
     position: relative;
     padding-left: 100px;
+    padding-top: 40px;
+    width: 96%;
 
     &:before {
         content: "";
