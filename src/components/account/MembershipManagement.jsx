@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { useSelector } from "react-redux";

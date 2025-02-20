@@ -361,7 +361,6 @@ export const CheckIcon = styled.div`
 export const RecommendationsSection = styled.div`
     width: 90%;
     margin: 70px auto 30px auto;
-
     padding-top: 40px;
     position: relative;
     z-index: 0;

@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { MdKeyboardArrowDown } from "react-icons/md";
+
 // Styled Components
 export const Wrapper = styled.div`
-    background: #141414;
+    background: var(--background-color);
     min-height: 100vh;
     padding: 20px;
-    color: white;
+    color: var(--white);
 `;
 
 export const ProfileHeader = styled.div`
@@ -13,13 +14,13 @@ export const ProfileHeader = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background: #2f2f2f;
+    background: var(--secondary-600);
     border-radius: 5px;
     margin-bottom: 20px;
 `;
 
 export const ProfileForm = styled.div`
-    background: #2f2f2f;
+    background: var(--secondary-600);
     padding: 20px;
     border-radius: 5px;
     margin-top: 20px;
@@ -28,26 +29,26 @@ export const ProfileForm = styled.div`
 export const Input = styled.input`
     width: 100%;
     padding: 12px;
-    background: #3f3f3f;
-    border: 1px solid #555;
+    background: var(--secondary-400);
+    border: 1px solid var(--secondary-200);
     border-radius: 4px;
-    color: white;
+    color: var(--white);
     margin-top: 8px;
 `;
-757575;
+
 export const Button = styled.button`
     width: 100%;
     height: 64px;
-    font-size: 15px;
+    font-size: var(--font-body-Small);
     border-radius: 5px;
-    background: #3b3b3b;
-    border: 1px solid #757575;
-    color: #757575;
+    background: var(--secondary-500);
+    border: 1px solid var(--secondary-100);
+    color: var(--secondary-100);
     margin-top: 30px;
     &:hover {
-        background: #757575;
-        color: white;
-        font-weight: bold;
+        background: var(--secondary-100);
+        color: var(--white);
+        font-weight: var(--font-weight-Bold);
     }
 `;
 
@@ -72,7 +73,7 @@ export const ButtonGroup = styled.div`
 `;
 
 export const HelpText = styled.p`
-    color: #888;
+    color: var(--secondary-90);
     font-size: 0.9rem;
     margin-top: 5px;
 `;
@@ -82,51 +83,56 @@ export const Title = styled.h2`
     margin-bottom: 20px;
     font-size: 1.5rem;
 `;
+
 export const H1 = styled.h1`
-    font-size: 40px;
-    font-weight: 700;
+    font-size: var(--font-header-Xlarge);
+    font-weight: var(--font-weight-Bold);
     margin-top: 50px;
     margin-bottom: 30px;
 `;
+
 export const P = styled.p`
     margin-bottom: 22px;
 `;
+
 export const Container = styled.div`
     position: relative;
     max-width: 70.1875rem;
-    color: white;
+    color: var(--white);
 `;
+
 export const Header = styled.div`
     display: flex;
     align-items: center;
     padding: 1.5rem;
     justify-content: space-between;
     border-radius: 5px 5px 0px 0px;
-    background: #2e2e2e;
+    background: var(--secondary-600);
     span {
-        font-size: 19px;
+        font-size: var(--font-header-Small);
         font-style: normal;
-        font-weight: 400;
+        font-weight: var(--font-weight-Regular);
         color: var(--white);
     }
     .span {
-        font-size: 13px;
+        font-size: var(--font-body-Xsmall);
         font-style: normal;
-        font-weight: 400;
+        font-weight: var(--font-weight-Regular);
         color: var(--white);
         border-radius: 33px;
         padding: 10px 20px;
-        border: 1px solid var(--main-orange-normal-default, #f59c04);
+        border: 1px solid var(--primary-40);
     }
 `;
+
 export const ProfileInfo = styled.div`
     display: flex;
     align-items: center;
     gap: 2rem;
-    font-size: 19px;
-
-    font-weight: 400;
+    font-size: var(--font-header-Small);
+    font-weight: var(--font-weight-Regular);
 `;
+
 export const ProfileImageInner = styled.div`
     width: 50px;
     height: 50px;
@@ -137,15 +143,16 @@ export const ProfileImageInner = styled.div`
         object-fit: cover;
     }
 `;
+
 export const ProfileSection = styled.div`
     text-align: center;
 
     span {
         display: block;
         margin-top: 10px;
-        color: white;
-        font-size: 19px;
-        font-weight: 400;
+        color: var(--white);
+        font-size: var(--font-header-Small);
+        font-weight: var(--font-weight-Regular);
     }
 `;
 
@@ -155,28 +162,23 @@ export const EditSection = styled.div`
     align-items: center;
     margin-bottom: 30px;
 `;
+
 export const Stroke = styled.div`
     width: 100%;
     height: 1px;
-    background: #4a4a4a;
+    background: var(--secondary-400);
     margin: 33px 0;
 `;
+
 export const ImageItem = styled.div`
     aspect-ratio: 1;
-    background: #d9d9d9;
+    background: var(--secondary-50);
     border-radius: 5px;
     cursor: pointer;
     overflow: hidden;
-    position: relative; // 아이콘을 이미지 위에 올리기 위해
-
-   /*  img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover; /* 이미지 비율을 유지하며 크기에 맞게 자르기 */
-    } */
-
-   
+    position: relative;
 `;
+
 export const ProfileImageInner2 = styled.div`
     margin-bottom: 5px;
     display: flex;
@@ -189,7 +191,7 @@ export const ProfileImageInner2 = styled.div`
 `;
 
 export const ADD = styled.div`
-    background: var(--black-black-b-500-notice-hover-bg, #3b3b3b);
+    background: var(--secondary-500);
     padding: 50px 30px;
     box-shadow: 0px 7px 10.7px 0px rgba(0, 0, 0, 0.38) inset;
     .inner {
@@ -199,15 +201,14 @@ export const ADD = styled.div`
 `;
 
 export const HeaderText = styled.span``;
+
 export const MainTitle = styled.p`
     margin-top: 60px;
     margin-bottom: 20px;
 `;
 
 export const EditContainer = styled.div`
-    background: var(--black-black-b-500-notice-hover-bg, #3b3b3b);
-    /*   padding: 50px 30px; */
-    /* 프로필 수정 inner */
+    background: var(--secondary-500);
     box-shadow: 0px 7px 10.7px 0px rgba(0, 0, 0, 0.38) inset;
     height: ${(props) => (props.isOpen ? "auto" : "0")};
     overflow: hidden;
@@ -237,9 +238,9 @@ export const InputSection = styled.div`
     align-items: center;
     label {
         width: 61px;
-        font-weight: 400;
+        font-weight: var(--font-weight-Regular);
         margin-bottom: 24px;
-        font-size: 19px;
+        font-size: var(--font-header-Small);
     }
     .inputWrap {
         width: 100%;
@@ -251,30 +252,30 @@ export const InputSection = styled.div`
 export const Button2 = styled.button`
     width: 100%;
     height: 64px;
-    font-size: 15px;
+    font-size: var(--font-body-Small);
     border-radius: 5px;
-
-    border: 1px solid #757575;
-    color: #f59c04;
+    border: 1px solid var(--secondary-100);
+    color: var(--primary-40);
     margin-top: 30px;
-    background: ${(props) => (props.secondary ? "#3B3B3B" : "#141414")};
+    background: ${(props) => (props.secondary ? "var(--secondary-500)" : "var(--background-color)")};
     &:hover {
-        background: #f59c04;
-        color: white;
-        font-weight: bold;
+        background: var(--primary-40);
+        color: var(--white);
+        font-weight: var(--font-weight-Bold);
     }
 `;
+
 export const Button3 = styled.button`
     width: 80px;
     height: 50px;
-    font-size: 15px;
+    font-size: var(--font-body-Small);
     border-radius: 5px;
-    border: 1px solid #757575;
-    color: #f59c04;
-    background: ${(props) => (props.secondary ? "#3B3B3B" : "#141414")};
+    border: 1px solid var(--secondary-100);
+    color: var(--primary-40);
+    background: ${(props) => (props.secondary ? "var(--secondary-500)" : "var(--background-color)")};
     &:hover {
-        background: #f59c04;
-        color: white;
-        font-weight: bold;
+        background: var(--primary-40);
+        color: var(--white);
+        font-weight: var(--font-weight-Bold);
     }
 `;
