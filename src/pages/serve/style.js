@@ -13,8 +13,8 @@ export const MoveDetailWrap = styled.section`
 export const MovieVideo = styled.section`
     position: relative;
     width: 100%;
-    height: 858px;
-
+    height: 900px;
+    
     .video {
         position: relative;
         width: 100%;
@@ -31,6 +31,7 @@ export const MovieVideo = styled.section`
             background: linear-gradient(180deg, rgba(0, 0, 0, 0) 60.95%, rgba(12, 12, 12, 0.61) 87.65%, #141414 100%);
             pointer-events: none;
         }
+        
     }
 
     .video > img {
@@ -286,11 +287,11 @@ export const SeasonVideo = styled.section`
     }
     
     .season-selector-wrap {
-        display: none; /* 기본적으로 숨김 */
-        position: absolute; /*절대 위치로 변경*/
-        left: 0; /* 위치 조정 */
-        top: 0; /* title-wrapper 바로 아래에 위치 */
-        z-index: 10; /* 다른 요소들 위에 표시 */
+        display: none; 
+        position: absolute; 
+        left: 0; 
+        top: 0; 
+        z-index: 10;
         
         .season-selector {
             display: flex;
@@ -316,9 +317,9 @@ export const SeasonVideo = styled.section`
         }
     }
     
-    /* hover 시 season-selector-wrap 표시 */
+   
     .glass-icon:hover + .season-selector-wrap,
-    .season-selector-wrap:hover { /* season-selector-wrap에 마우스가 있을 때도 유지 */
+    .season-selector-wrap:hover { 
         display: flex;
     }
 }
@@ -328,7 +329,7 @@ export const SeasonVideo = styled.section`
         border-bottom: 2px solid var(--secondary-600);
     }
 
-    /* Hover effect for season-slide */
+    
     .season-slide {
         position: relative;
         &:hover .season_slide-button {
@@ -344,15 +345,15 @@ export const SeasonVideo = styled.section`
     .season_slide-button {
         position: absolute;
         top: 38%;
-        left: -40px; /* Adjusted positioning */
-        right: -40px; /* Adjusted positioning */
+        left: -40px; 
+        right: -40px; 
         transform: translateY(-50%);
         display: flex;
         justify-content: space-between;
         z-index: 1;
 
-        opacity: 0; /* Initially hidden */
-        transition: opacity 0.3s ease; /* Smooth fade-in */
+        opacity: 0; 
+        transition: opacity 0.3s ease; 
     }
 `;
 
@@ -367,7 +368,7 @@ margin-bottom: 70px;
         margin-bottom: 20px;
     }
     &:hover .con-slide .con_slide-button {
-        opacity: 1; /* Show buttons when hovering over SimilarCont */
+        opacity: 1; 
     }
     ::-webkit-scrollbar {
         display: none;
