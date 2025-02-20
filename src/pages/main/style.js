@@ -74,7 +74,6 @@ export const CenteredImageWrapper = styled.div`
         z-index: -8; // 이미지가 오버레이 위에 오지 않도록 z-index를 2로 설정
     }
 `;
-
 export const VideoFrame2 = styled.iframe`
     position: absolute;
     top: 114px;
