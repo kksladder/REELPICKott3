@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { getMovieRecommendations } from "../../api/movieService";
+import { getMovieRecommendations } from "../../store/modules/tmdbApi";
 import Modal from "../../components/modal/Modal";
 import { IoClose } from "react-icons/io5";
 import {
