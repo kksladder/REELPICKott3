@@ -9,9 +9,10 @@ const spin = keyframes`
 
 // 페이지 컨테이너
 export const MoviePageContainer = styled.div`
-    max-width: 1200px;
+    max-width: 100%x;
     margin: 0 auto;
     padding: 20px;
+    margin-top: 200px;
 `;
 
 // 헤더 영역
@@ -20,24 +21,28 @@ export const PageHeader = styled.div`
 `;
 
 export const PageTitle = styled.h1`
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 700;
     margin: 0;
 `;
 
-// 영화 그리드
+// 그리드 레이아웃
 export const MovieGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 20px;
 
+    @media (max-width: 1200px) {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+
     @media (max-width: 768px) {
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 16px;
     }
 
     @media (max-width: 480px) {
-        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
         gap: 12px;
     }
 `;
@@ -46,13 +51,14 @@ export const MovieGrid = styled.div`
 export const MovieCard = styled.div`
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     background-color: #fff;
-    transition: transform 0.2s ease;
+    transition: all 0.3s ease;
+    height: 100%;
 
     &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
     }
 `;
 
@@ -62,6 +68,12 @@ export const PosterImage = styled.img`
     aspect-ratio: 2/3;
     object-fit: cover;
     display: block;
+    border-radius: 8px 8px 0 0;
+    transition: transform 0.3s ease;
+
+    ${MovieCard}:hover & {
+        transform: scale(1.05);
+    }
 `;
 
 // 영화 정보 컨테이너
@@ -103,4 +115,36 @@ export const LoadingSpinner = styled.div`
     border-top: 4px solid #3498db;
     border-radius: 50%;
     animation: ${spin} 1s linear infinite;
+`;
+
+export const ScrollTopButton = styled.button`
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 82px;
+    height: 82px;
+    border-radius: 30.63px;
+    background: linear-gradient(135deg, var(--primary-10) 0%, var(--primary-30) 33%, var(--primary-90) 100%);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-40);
+    opacity: ${(props) => (props.visible ? "1" : "0")};
+    visibility: ${(props) => (props.visible ? "visible" : "hidden")};
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+
+    @media screen and (max-width: 768px) {
+        width: 60px;
+        height: 60px;
+        bottom: 20px;
+        right: 20px;
+    }
 `;

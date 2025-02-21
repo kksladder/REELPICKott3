@@ -37,6 +37,7 @@ const Reelpick = () => {
     const [showCart, setShowCart] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [loadingMore, setLoadingMore] = useState(false);
+    const [hasMoreMovies, setHasMoreMovies] = useState(true);
 
     const maxItems = 10;
 
@@ -68,9 +69,9 @@ const Reelpick = () => {
         setIsModalOpen(true);
     }, []);
 
-    // 추가 영화 로드 함수
+    // 추가 영화 로드 함수 (개선됨)
     const loadMoreMovies = async () => {
-        if (loadingMore) return;
+        if (loadingMore || !hasMoreMovies) return;
 
         try {
             setLoadingMore(true);
@@ -88,8 +89,13 @@ const Reelpick = () => {
             const existingIds = new Set(movies.map((movie) => movie.id));
             const uniqueNewMovies = formattedMoreMovies.filter((movie) => !existingIds.has(movie.id));
 
-            setMovies((prev) => [...prev, ...uniqueNewMovies]);
-            setCurrentPage(nextPage);
+            // 더 이상 불러올 영화가 없는 경우 체크
+            if (uniqueNewMovies.length === 0) {
+                setHasMoreMovies(false);
+            } else {
+                setMovies((prev) => [...prev, ...uniqueNewMovies]);
+                setCurrentPage(nextPage);
+            }
         } catch (err) {
             console.error("Failed to load more movies:", err);
         } finally {
@@ -110,7 +116,7 @@ const Reelpick = () => {
         return () => window.removeEventListener("scroll", checkScrollTop);
     }, [showScroll]);
 
-    // 무한 스크롤 구현
+    // 무한 스크롤 구현 (개선됨)
     useEffect(() => {
         const handleScroll = () => {
             // 페이지 끝에 도달했는지 확인
@@ -118,7 +124,8 @@ const Reelpick = () => {
                 window.innerHeight + document.documentElement.scrollTop >=
                     document.documentElement.scrollHeight - 500 &&
                 !isLoading &&
-                !loadingMore
+                !loadingMore &&
+                hasMoreMovies
             ) {
                 loadMoreMovies();
             }
@@ -126,7 +133,7 @@ const Reelpick = () => {
 
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-    }, [isLoading, loadingMore]);
+    }, [isLoading, loadingMore, hasMoreMovies, currentPage]);
 
     const scrollToTop = () => {
         window.scrollTo({
@@ -187,6 +194,7 @@ const Reelpick = () => {
                 }));
                 setMovies(formattedMovies);
                 setCurrentPage(1);
+                setHasMoreMovies(true); // 필터링 후 다시 무한 스크롤 활성화
             })
             .catch((err) => {
                 console.error("영화 필터링 오류:", err);
@@ -232,8 +240,14 @@ const Reelpick = () => {
 
             {loadingMore && (
                 <div style={{ textAlign: "center", padding: "20px 0" }}>
-                    <div>더 많은 영화 불러오는 중...</div>
+                    <LoadingWrapper style={{ height: "40px", margin: "0 auto" }}>
+                        <div></div>
+                    </LoadingWrapper>
                 </div>
+            )}
+
+            {!loadingMore && !hasMoreMovies && movies.length > 0 && (
+                <div style={{ textAlign: "center", padding: "20px 0", color: "#888" }}>모든 영화를 불러왔습니다.</div>
             )}
 
             {showCart && (

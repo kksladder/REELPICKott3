@@ -1,64 +1,65 @@
-// pages/Movie/index.jsx
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { getContent } from "../../store/modules/getThunk2";
-import { movieActions } from "../../store/modules/movieSlice2";
+import { Link } from "react-router-dom";
+import { FaArrowUp } from "react-icons/fa";
+import { getContentByCategory } from "../../store/modules/tmdbApi";
 import {
     MoviePageContainer,
     MovieGrid,
     MovieCard,
     PosterImage,
-    MovieInfo,
-    MovieTitle,
-    ReleaseYear,
-    MovieRating,
     PageHeader,
     PageTitle,
     LoadingSpinner,
+    ScrollTopButton,
 } from "./style";
-import { Link } from "react-router-dom";
 
 const MoviePage = () => {
-    const dispatch = useDispatch();
-    const [searchParams] = useSearchParams();
-    const searchQuery = searchParams.get("search");
-
-    const {
-        data = [],
-        loading = false,
-        error,
-        currentPage = 1,
-        totalPages = 999,
-    } = useSelector((state) => state.movieR) || {};
-
-    const observerRef = useRef(null);
-    const lastMovieRef = useRef(null);
+    const [movies, setMovies] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
     const [isEnd, setIsEnd] = useState(false);
+    const [showScrollButton, setShowScrollButton] = useState(false);
+
+    // 최대 1000개의 포스터를 위해 최대 50페이지까지 로드 (각 페이지당 20개 기준)
+    const MAX_PAGES = 50;
 
     useEffect(() => {
-        // 초기 데이터 로드
-        dispatch(movieActions.clearData());
-        dispatch(getContent({ mediaType: "movie", page: 1 }));
-        setIsEnd(false);
-    }, [dispatch]);
+        const fetchKoreanMovies = async () => {
+            try {
+                setLoading(true);
+                const response = await getContentByCategory("movie", currentPage);
+
+                if (!response.data || response.data.length === 0 || currentPage > MAX_PAGES) {
+                    setIsEnd(true);
+                } else {
+                    // 중복 제거를 위해 Set 사용
+                    const uniqueMovies = Array.from(
+                        new Map([...movies, ...response.data].map((movie) => [movie.id, movie])).values()
+                    );
+
+                    setMovies(uniqueMovies);
+                }
+            } catch (err) {
+                console.error("Error fetching Korean movies:", err);
+                setError(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (!isEnd) {
+            fetchKoreanMovies();
+        }
+    }, [currentPage, isEnd]);
 
     useEffect(() => {
         // 무한 스크롤 설정
-        if (observerRef.current) observerRef.current.disconnect();
-
-        observerRef.current = new IntersectionObserver(
+        const observerRef = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting && !loading && !isEnd) {
                     // 다음 페이지 로드
-                    dispatch(getContent({ mediaType: "movie", page: currentPage + 1 }))
-                        .unwrap()
-                        .then((result) => {
-                            // 만약 결과 데이터가 없거나 비어있다면 더 이상 로드하지 않음
-                            if (!result || !result.data || result.data.length === 0) {
-                                setIsEnd(true);
-                            }
-                        });
+                    setCurrentPage((prevPage) => prevPage + 1);
                 }
             },
             {
@@ -66,19 +67,40 @@ const MoviePage = () => {
             }
         );
 
-        if (lastMovieRef.current) {
-            observerRef.current.observe(lastMovieRef.current);
+        const lastMovieElement = document.querySelector(`#movie-${movies.length - 1}`);
+        if (lastMovieElement) {
+            observerRef.observe(lastMovieElement);
         }
 
         return () => {
-            if (observerRef.current) {
-                observerRef.current.disconnect();
+            observerRef.disconnect();
+        };
+    }, [movies, loading, isEnd]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.pageYOffset > 300) {
+                setShowScrollButton(true);
+            } else {
+                setShowScrollButton(false);
             }
         };
-    }, [data, loading, currentPage, isEnd, dispatch]);
+
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    };
 
     if (error) {
-        return <div>오류가 발생했습니다: {error}</div>;
+        return <div>오류가 발생했습니다: {error.message}</div>;
     }
 
     return (
@@ -88,21 +110,14 @@ const MoviePage = () => {
             </PageHeader>
 
             <MovieGrid>
-                {data.map((movie, index) => (
-                    <MovieCard key={`${movie.id}-${index}`} ref={index === data.length - 1 ? lastMovieRef : null}>
+                {movies.map((movie, index) => (
+                    <MovieCard key={`${movie.id}-${index}`} id={`movie-${index}`}>
                         <Link to={`/movie/${movie.id}`}>
                             <PosterImage
                                 src={movie.poster || "/images/no-poster.png"}
                                 alt={movie.title}
-                                loading="lazy" // 이미지 지연 로딩 추가
+                                loading="lazy"
                             />
-                            <MovieInfo>
-                                <MovieTitle>{movie.title}</MovieTitle>
-                                {movie.releaseDate && (
-                                    <ReleaseYear>{new Date(movie.releaseDate).getFullYear()}</ReleaseYear>
-                                )}
-                                <MovieRating>★ {movie.rating ? movie.rating.toFixed(1) : "N/A"}</MovieRating>
-                            </MovieInfo>
                         </Link>
                     </MovieCard>
                 ))}
@@ -112,9 +127,13 @@ const MoviePage = () => {
 
             {!loading && isEnd && (
                 <div style={{ textAlign: "center", padding: "20px", color: "#666" }}>
-                    더 이상 표시할 영화가 없습니다.
+                    더 이상 표시할 한국 영화가 없습니다.
                 </div>
             )}
+
+            <ScrollTopButton onClick={scrollToTop} visible={showScrollButton}>
+                <FaArrowUp size={30} />
+            </ScrollTopButton>
         </MoviePageContainer>
     );
 };
