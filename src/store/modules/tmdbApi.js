@@ -42,29 +42,18 @@ const CATEGORY_CONFIG = {
             origin_country: "KR",
         },
     },
-    comedy: {
-        type: "tv",
-        endpoint: "discover/tv",
-        params: {
-            with_genres: GENRES.COMEDY,
-            sort_by: "popularity.desc",
-            "vote_average.gte": 5.0,
-            "vote_count.gte": 20,
-            with_original_language: "ko",
-            origin_country: "KR",
-        },
-    },
-    animation: {
+    japanAnimation: {
         type: "movie",
         endpoint: "discover/movie",
         params: {
             with_genres: GENRES.ANIMATION,
-            include_adult: false,
-            "vote_average.gte": 5.0,
-            "vote_count.gte": 20,
-            with_original_language: "ko",
-            region: "KR",
-            sort_by: "release_date.desc",
+            include_adult: true, // 성인 콘텐츠 포함
+            "vote_count.gte": 5, // 최소 평점 수 낮춤
+            with_original_language: "ja", // 일본어 원어
+            region: "JP",
+            sort_by: "popularity.desc", // 인기도순 정렬
+            "primary_release_date.gte": "1980-01-01",
+            "primary_release_date.lte": "2025-12-31",
         },
     },
     kids: {

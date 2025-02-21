@@ -28,6 +28,8 @@ import MembershipManagement from "./components/account/MembershipManagement";
 import Cancelmembership from "./components/account/Cancelmembership";
 import NoticeContents from "./components/account/NoticeContents";
 import MyPageLayout from "./common/myPageLayout/MyPageLayout";
+import AnimePage from "./pages/ani";
+import DramaPage from "./pages/drama";
 
 function App() {
     return (
@@ -51,6 +53,8 @@ function App() {
                         <Route path="/reelpick" element={<Reelpick />} />
                         <Route path="/basket" element={<Basket />} />
                         <Route path="/movie" element={<MoviePage />} />
+                        <Route path="/drama" element={<DramaPage />} />
+                        <Route path="/ani" element={<AnimePage />} />
                         <Route path="/idfind" element={<IdFind />} />
                         <Route path="/landing" element={<Landing />} />
                         <Route path="/pwfind" element={<PWFind />} />
