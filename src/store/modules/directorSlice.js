@@ -1,4 +1,3 @@
-// store/modules/directorSlice.js 수정
 import { createSlice } from "@reduxjs/toolkit";
 import { getDirectorDetails } from "./getThunk";
 import { getDirectorsByCountry } from "./getThunk3";
@@ -30,7 +29,7 @@ const directorSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            // 기존 getDirectorDetails 유지
+            // getDirectorDetails 처리
             .addCase(getDirectorDetails.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -44,14 +43,19 @@ const directorSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
             })
-            // 새로운 getDirectorsByCountry 처리 추가
+
+            // getDirectorsByCountry 처리
             .addCase(getDirectorsByCountry.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
             .addCase(getDirectorsByCountry.fulfilled, (state, action) => {
                 state.loading = false;
-                state.filteredDirectors = action.payload.filteredDirectors;
+                // 첫 페이지면 새로운 데이터로 대체, 아니면 기존 데이터에 추가
+                state.filteredDirectors =
+                    action.payload.currentPage === 1
+                        ? action.payload.filteredDirectors
+                        : [...state.filteredDirectors, ...action.payload.filteredDirectors];
                 state.hasMore = action.payload.hasMore;
                 state.currentPage = action.payload.currentPage;
             })

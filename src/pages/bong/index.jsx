@@ -1,4 +1,3 @@
-// pages/Director/index.jsx
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -19,15 +18,13 @@ import {
 
 const DirectorPage2 = () => {
     const dispatch = useDispatch();
-    const { filteredDirectors, loading, error, selectedCountry } = useSelector((state) => state.directorR);
+    const { filteredDirectors, loading, error, selectedCountry, hasMore } = useSelector((state) => state.directorR);
     const [currentPage, setCurrentPage] = useState(1);
-    const [isEnd, setIsEnd] = useState(false);
     const [showScrollButton, setShowScrollButton] = useState(false);
 
     const handleCountryChange = (e) => {
         dispatch(setSelectedCountry(e.target.value));
         setCurrentPage(1);
-        setIsEnd(false);
     };
 
     // 초기 데이터 로드
@@ -46,7 +43,7 @@ const DirectorPage2 = () => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting && !loading && !isEnd) {
+                if (entries[0].isIntersecting && !loading && hasMore) {
                     setCurrentPage((prev) => prev + 1);
                 }
             },
@@ -59,7 +56,7 @@ const DirectorPage2 = () => {
         }
 
         return () => observer.disconnect();
-    }, [filteredDirectors, loading, isEnd]);
+    }, [filteredDirectors, loading, hasMore]);
 
     // 스크롤 버튼
     useEffect(() => {
@@ -86,12 +83,6 @@ const DirectorPage2 = () => {
         <DirectorPageContainer>
             <PageHeader>
                 <PageTitle>감독</PageTitle>
-                <CountrySelect value={selectedCountry} onChange={handleCountryChange}>
-                    <option value="all">전체</option>
-                    <option value="KR">한국</option>
-                    <option value="US">미국</option>
-                    <option value="JP">일본</option>
-                </CountrySelect>
             </PageHeader>
 
             <DirectorGrid>
@@ -114,13 +105,13 @@ const DirectorPage2 = () => {
 
             {loading && <LoadingSpinner />}
 
-            {!loading && isEnd && filteredDirectors.length > 0 && (
+            {!loading && !hasMore && filteredDirectors.length > 0 && (
                 <div style={{ textAlign: "center", padding: "20px", color: "#666" }}>
                     더 이상 표시할 감독이 없습니다.
                 </div>
             )}
 
-            <ScrollTopButton onClick={scrollToTop} visible={showScrollButton}>
+            <ScrollTopButton onClick={scrollToTop} visible={showScrollButton ? true : undefined}>
                 <FaArrowUp size={30} />
             </ScrollTopButton>
         </DirectorPageContainer>
