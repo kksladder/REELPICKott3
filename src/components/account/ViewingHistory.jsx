@@ -56,12 +56,12 @@ const SelectAllButton = styled.button`
     display: flex;
     align-items: center;
     color: white;
-    background-color: #2563eb;
+    background-color: var(--primary-40);
     padding: 0.25rem 0.75rem;
     border-radius: 0.25rem;
     font-size: 0.875rem;
     &:hover {
-        background-color: #1d4ed8;
+        background-color: var(--primary-50);
     }
 `;
 
@@ -71,7 +71,7 @@ const DeleteButton = styled.button`
     color: white;
     cursor: pointer;
     &:hover {
-        color: #ef4444;
+        color: var(--red);
     }
     transition: color 0.2s;
 `;
@@ -276,9 +276,9 @@ const ViewingHistory = () => {
     };
 
     return (
-        <Container id ="viewing-seciton">
+        <Container id="viewing-seciton">
             {/* <H1>계정</H1> */}
-           
+
             <Header onClick={toggleOpen}>
                 <Title>시청 기록</Title>
                 <FaChevronUp isOpen={isOpen} />

@@ -85,6 +85,10 @@ export const FormContainer = styled.div`
             form {
                 display: flex;
                 justify-content: flex-end;
+
+                input[type="checkbox"] {
+                    display: none;
+                }
             }
         }
 

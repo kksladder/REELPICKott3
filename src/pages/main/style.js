@@ -30,6 +30,7 @@ export const MainTitle = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     strong {
         color: var(--white);
         text-align: center;
@@ -135,23 +136,34 @@ export const BottomMainTitleWrapper = styled.div`
     align-items: center;
     justify-content: center;
     text-align: center;
+    @media (max-width: 768px) {
+        padding: 2rem;
+    }
     p {
         color: var(--white);
         font-size: var(--font-D-Medium);
         font-weight: var(--font-weight-Regular);
         margin-bottom: 88px;
+        @media (max-width: 768px) {
+            font-size: 17px;
+        }
     }
     ul {
         margin-bottom: 150px;
+
         li {
             color: var(--white);
             font-size: var(--font-header-Large);
             font-weight: var(--font-weight-Regular);
             line-height: 56px;
+            @media (max-width: 768px) {
+                font-size: 17px;
+            }
         }
     }
     button {
         color: var(--white);
+        font-family: "Pretendard-Regular";
         font-weight: var(--font-weight-Regular);
         font-size: var(--font-W-Header);
         width: 713px;
@@ -160,5 +172,11 @@ export const BottomMainTitleWrapper = styled.div`
         padding: 17px 169px;
         border-radius: 5px;
         background: var(--primary-40);
+        @media (max-width: 768px) {
+            margin-bottom: 150px;
+            width: 291px;
+            padding: 0px;
+            font-size: 16px;
+        }
     }
 `;
