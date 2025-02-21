@@ -73,7 +73,7 @@ const TableHeader = styled.div`
     display: grid;
     height: 74px;
 
-    grid-template-columns: 86px 667px 64px 27px auto;
+    grid-template-columns: 86px 559px 63px 27px auto;
 
     font-size: var(--font-header-Small);
     color: var(--secondary-50);
@@ -93,7 +93,7 @@ const TableRow = styled.div`
     display: grid;
     height: 73px;
     width: 100%;
-    grid-template-columns: 86px 631px 79px 45px auto;
+    grid-template-columns: 86px 538px 23px 45px auto;
     font-size: var(--font-header-Small);
     color: var(--secondary-50);
     border-bottom: 1px solid var(--secondary-400);
