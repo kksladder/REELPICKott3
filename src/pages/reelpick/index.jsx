@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { getMovieRecommendations } from "../../store/modules/tmdbApi";
+import { getContentByCategory } from "../../store/modules/tmdbApi";
 import Modal from "../../components/modal/Modal";
 import { IoClose } from "react-icons/io5";
 import {
@@ -45,17 +45,28 @@ const Reelpick = () => {
         const fetchMovies = async () => {
             try {
                 setIsLoading(true);
-                // 한글 검색 최적화가 적용된 영화 데이터 가져오기
-                // sortBy 파라미터는 'popularity', 'rating', 'releaseDate' 중 선택 가능
-                const movieData = await getMovieRecommendations(10, "ko-KR", "popularity");
+
+                // 한국, 미국, 일본 영화 데이터를 동시에 가져오기
+                const [krResponse, usResponse, jpResponse] = await Promise.all([
+                    getContentByCategory("movieKR", currentPage),
+                    getContentByCategory("movieUS", currentPage),
+                    getContentByCategory("movieJP", currentPage),
+                ]);
+
+                // 모든 영화 데이터 합치기
+                const allMovies = [...(krResponse.data || []), ...(usResponse.data || []), ...(jpResponse.data || [])];
+
+                // 인기도순 정렬
+                const sortedMovies = allMovies.sort((a, b) => b.popularity - a.popularity);
 
                 // API 응답 데이터를 컴포넌트에서 사용하는 형태로 변환
-                const formattedMovies = movieData.map((movie) => ({
+                const formattedMovies = sortedMovies.map((movie) => ({
                     id: movie.id,
                     title: movie.title,
-                    poster: movie.poster_path, // API에서 받아온 포스터 경로 사용
+                    poster: movie.poster_path,
                     isKorean: movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null,
                 }));
+
                 setMovies(formattedMovies);
             } catch (err) {
                 setError(err.message);
@@ -69,14 +80,26 @@ const Reelpick = () => {
         setIsModalOpen(true);
     }, []);
 
-    // 추가 영화 로드 함수 (개선됨)
+    // 추가 영화 로드 함수
     const loadMoreMovies = async () => {
         if (loadingMore || !hasMoreMovies) return;
 
         try {
             setLoadingMore(true);
             const nextPage = currentPage + 1;
-            const moreMovies = await getMovieRecommendations(1, "ko-KR", "popularity");
+
+            // 추가 데이터 가져오기
+            const [krResponse, usResponse, jpResponse] = await Promise.all([
+                getContentByCategory("movieKR", nextPage),
+                getContentByCategory("movieUS", nextPage),
+                getContentByCategory("movieJP", nextPage),
+            ]);
+
+            const moreMovies = [
+                ...(krResponse.data || []),
+                ...(usResponse.data || []),
+                ...(jpResponse.data || []),
+            ].sort((a, b) => b.popularity - a.popularity);
 
             const formattedMoreMovies = moreMovies.map((movie) => ({
                 id: movie.id,
@@ -85,11 +108,10 @@ const Reelpick = () => {
                 isKorean: movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null,
             }));
 
-            // 중복 영화 필터링 (이미 있는 ID는 제외)
+            // 중복 영화 필터링
             const existingIds = new Set(movies.map((movie) => movie.id));
             const uniqueNewMovies = formattedMoreMovies.filter((movie) => !existingIds.has(movie.id));
 
-            // 더 이상 불러올 영화가 없는 경우 체크
             if (uniqueNewMovies.length === 0) {
                 setHasMoreMovies(false);
             } else {
@@ -116,10 +138,9 @@ const Reelpick = () => {
         return () => window.removeEventListener("scroll", checkScrollTop);
     }, [showScroll]);
 
-    // 무한 스크롤 구현 (개선됨)
+    // 무한 스크롤 구현
     useEffect(() => {
         const handleScroll = () => {
-            // 페이지 끝에 도달했는지 확인
             if (
                 window.innerHeight + document.documentElement.scrollTop >=
                     document.documentElement.scrollHeight - 500 &&
@@ -179,30 +200,45 @@ const Reelpick = () => {
         });
     };
 
-    // 영화 필터링 함수 (필요시 활성화)
-    const filterMovies = (filterType) => {
+    // 영화 필터링 함수
+    const filterMovies = async (filterType) => {
         setIsLoading(true);
 
-        // 필터 타입에 따라 다른 정렬 방식 적용
-        getMovieRecommendations(10, "ko-KR", filterType)
-            .then((movieData) => {
-                const formattedMovies = movieData.map((movie) => ({
-                    id: movie.id,
-                    title: movie.title,
-                    poster: movie.poster_path,
-                    isKorean: movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null,
-                }));
-                setMovies(formattedMovies);
-                setCurrentPage(1);
-                setHasMoreMovies(true); // 필터링 후 다시 무한 스크롤 활성화
-            })
-            .catch((err) => {
-                console.error("영화 필터링 오류:", err);
-                setError(err.message);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        try {
+            // 각 국가별로 필터링된 데이터 가져오기
+            const [krResponse, usResponse, jpResponse] = await Promise.all([
+                getContentByCategory("movieKR", 1),
+                getContentByCategory("movieUS", 1),
+                getContentByCategory("movieJP", 1),
+            ]);
+
+            let allMovies = [...(krResponse.data || []), ...(usResponse.data || []), ...(jpResponse.data || [])];
+
+            // 필터 타입에 따라 정렬
+            if (filterType === "popularity") {
+                allMovies.sort((a, b) => b.popularity - a.popularity);
+            } else if (filterType === "rating") {
+                allMovies.sort((a, b) => b.rating - a.rating);
+            } else if (filterType === "releaseDate") {
+                allMovies.sort((a, b) => new Date(b.releaseDate) - new Date(a.releaseDate));
+            }
+
+            const formattedMovies = allMovies.map((movie) => ({
+                id: movie.id,
+                title: movie.title,
+                poster: movie.poster_path,
+                isKorean: movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null,
+            }));
+
+            setMovies(formattedMovies);
+            setCurrentPage(1);
+            setHasMoreMovies(true);
+        } catch (err) {
+            console.error("영화 필터링 오류:", err);
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     if (isLoading && movies.length === 0) {

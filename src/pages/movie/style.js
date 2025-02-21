@@ -11,7 +11,7 @@ const spin = keyframes`
 export const MoviePageContainer = styled.div`
     max-width: 100%x;
     margin: 0 auto;
-    padding: 20px;
+    padding: 64px;
     margin-top: 200px;
 `;
 

@@ -184,6 +184,7 @@ export const CartWrapper = styled.div`
     right: 0;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    opacity: 98%;
 `;
 
 export const CartContainer = styled.div`
