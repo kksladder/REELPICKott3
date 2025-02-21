@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
 import { getContentByCategory } from "../../store/modules/tmdbApi";
@@ -21,75 +21,97 @@ const MoviePage = () => {
     const [isEnd, setIsEnd] = useState(false);
     const [showScrollButton, setShowScrollButton] = useState(false);
 
-    // 최대 1000개의 포스터를 위해 최대 50페이지까지 로드 (각 페이지당 20개 기준)
+    // 최대 1000개의 포스터를 위해 최대 50페이지까지 로드
     const MAX_PAGES = 50;
 
-    useEffect(() => {
-        const fetchKoreanMovies = async () => {
-            try {
-                setLoading(true);
-                const response = await getContentByCategory("movie", currentPage);
+    const fetchMovies = async (page) => {
+        try {
+            setLoading(true);
 
-                if (!response.data || response.data.length === 0 || currentPage > MAX_PAGES) {
-                    setIsEnd(true);
-                } else {
-                    // 중복 제거를 위해 Set 사용
+            // 한국, 미국, 일본 영화 데이터를 동시에 가져오기
+            const [krResponse, usResponse, jpResponse] = await Promise.all([
+                getContentByCategory("movieKR", page),
+                getContentByCategory("movieUS", page),
+                getContentByCategory("movieJP", page),
+            ]);
+
+            // 각 국가의 데이터가 없거나 최대 페이지 도달 시 종료
+            if (
+                ((!krResponse.data || krResponse.data.length === 0) &&
+                    (!usResponse.data || usResponse.data.length === 0) &&
+                    (!jpResponse.data || jpResponse.data.length === 0)) ||
+                page > MAX_PAGES
+            ) {
+                setIsEnd(true);
+            } else {
+                // 모든 영화 데이터 합치기
+                const allMovies = [...(krResponse.data || []), ...(usResponse.data || []), ...(jpResponse.data || [])];
+
+                // 인기도 기준으로 정렬
+                const sortedMovies = allMovies.sort((a, b) => b.popularity - a.popularity);
+
+                setMovies((prevMovies) => {
                     const uniqueMovies = Array.from(
-                        new Map([...movies, ...response.data].map((movie) => [movie.id, movie])).values()
+                        new Map([...prevMovies, ...sortedMovies].map((movie) => [movie.id, movie])).values()
                     );
-
-                    setMovies(uniqueMovies);
-                }
-            } catch (err) {
-                console.error("Error fetching Korean movies:", err);
-                setError(err);
-            } finally {
-                setLoading(false);
+                    return uniqueMovies;
+                });
             }
-        };
-
-        if (!isEnd) {
-            fetchKoreanMovies();
+        } catch (err) {
+            console.error("Error fetching movies:", err);
+            setError(err.message || "영화를 불러오는데 실패했습니다.");
+        } finally {
+            setLoading(false);
         }
-    }, [currentPage, isEnd]);
+    };
 
+    // 초기 데이터 로드
     useEffect(() => {
-        // 무한 스크롤 설정
-        const observerRef = new IntersectionObserver(
+        setMovies([]); // 목록 초기화
+        setCurrentPage(1);
+        setIsEnd(false);
+        fetchMovies(1);
+
+        return () => {
+            setMovies([]);
+            setCurrentPage(1);
+        };
+    }, []);
+
+    // 추가 데이터 로드
+    useEffect(() => {
+        if (currentPage > 1) {
+            fetchMovies(currentPage);
+        }
+    }, [currentPage]);
+
+    // 무한 스크롤
+    useEffect(() => {
+        const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting && !loading && !isEnd) {
-                    // 다음 페이지 로드
-                    setCurrentPage((prevPage) => prevPage + 1);
+                    setCurrentPage((prev) => prev + 1);
                 }
             },
-            {
-                rootMargin: "200px", // 화면 아래 200px 지점에서 미리 로딩 시작
-            }
+            { rootMargin: "200px" }
         );
 
         const lastMovieElement = document.querySelector(`#movie-${movies.length - 1}`);
         if (lastMovieElement) {
-            observerRef.observe(lastMovieElement);
+            observer.observe(lastMovieElement);
         }
 
-        return () => {
-            observerRef.disconnect();
-        };
+        return () => observer.disconnect();
     }, [movies, loading, isEnd]);
 
+    // 스크롤 버튼
     useEffect(() => {
         const handleScroll = () => {
-            if (window.pageYOffset > 300) {
-                setShowScrollButton(true);
-            } else {
-                setShowScrollButton(false);
-            }
+            setShowScrollButton(window.pageYOffset > 300);
         };
 
         window.addEventListener("scroll", handleScroll);
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
+        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
     const scrollToTop = () => {
@@ -100,7 +122,7 @@ const MoviePage = () => {
     };
 
     if (error) {
-        return <div>오류가 발생했습니다: {error.message}</div>;
+        return <div>오류가 발생했습니다: {error}</div>;
     }
 
     return (
@@ -113,11 +135,7 @@ const MoviePage = () => {
                 {movies.map((movie, index) => (
                     <MovieCard key={`${movie.id}-${index}`} id={`movie-${index}`}>
                         <Link to={`/movie/${movie.id}`}>
-                            <PosterImage
-                                src={movie.poster || "/images/no-poster.png"}
-                                alt={movie.title}
-                                loading="lazy"
-                            />
+                            <PosterImage src={movie.poster || "/image/profileNo.png"} loading="lazy" />
                         </Link>
                     </MovieCard>
                 ))}
@@ -125,9 +143,9 @@ const MoviePage = () => {
 
             {loading && <LoadingSpinner />}
 
-            {!loading && isEnd && (
+            {!loading && isEnd && movies.length > 0 && (
                 <div style={{ textAlign: "center", padding: "20px", color: "#666" }}>
-                    더 이상 표시할 한국 영화가 없습니다.
+                    더 이상 표시할 영화가 없습니다.
                 </div>
             )}
 

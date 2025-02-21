@@ -15,7 +15,7 @@ const BASE_URL = "https://api.themoviedb.org/3";
 
 // 카테고리 설정
 const CATEGORY_CONFIG = {
-    movie: {
+    movieKR: {
         type: "movie",
         endpoint: "discover/movie",
         params: {
@@ -30,6 +30,37 @@ const CATEGORY_CONFIG = {
             "primary_release_date.lte": "2025-12-31",
         },
     },
+    movieUS: {
+        type: "movie",
+        endpoint: "discover/movie",
+        params: {
+            include_adult: false,
+            include_video: false,
+            sort_by: "popularity.desc",
+            "vote_average.gte": 7.0,
+            "vote_count.gte": 100,
+            with_original_language: "en",
+            region: "US",
+            "primary_release_date.gte": "1800-01-01",
+            "primary_release_date.lte": "2025-12-31",
+        },
+    },
+    movieJP: {
+        type: "movie",
+        endpoint: "discover/movie",
+        params: {
+            include_adult: false,
+            include_video: false,
+            sort_by: "popularity.desc",
+            "vote_average.gte": 7.0,
+            "vote_count.gte": 50,
+            with_original_language: "ja",
+            region: "JP",
+            "primary_release_date.gte": "1800-01-01",
+            "primary_release_date.lte": "2025-12-31",
+        },
+    },
+
     dramaKR: {
         type: "tv",
         endpoint: "discover/tv",
