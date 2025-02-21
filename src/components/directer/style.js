@@ -56,48 +56,66 @@ export const DirecMovItemWrap = styled.section`
     }
 `;
 export const MovListWrap = styled.section`
-.list-wrap{
-display: flex;
-gap: 104px;
-    .mov-poster {
-        width: 190px;
-        height: 260px;
-        overflow: hidden;
-        img {
-            width: 100%;
-            height: auto;
-        }
-    }
-    .mov-info-wrap {
-        width: fit-content;
+    .list-wrap {
         display: flex;
-        flex-direction: column;
-        .info-title {
-            display: flex;
-            width: fit-content;
-            .mov_title{
-            font-size: var(--font-content-Xlarge);
-width: 100%;
-            }
-            .mov_tag {
-                display: flex;
-                align-items: flex-start;
+        width: 100%;
+        .mov-poster {
+            width: 190px;
+            height: 260px;
+            overflow: hidden;
+            margin-right: 94px;
+            img {
                 width: 100%;
-                gap: 10px;
-                .mov-age{
-                    width: 28px;
-                    height: 28px;
-                    background-color: #D92B35;
+                height: auto;
+            }
+        }
+        .mov-info-wrap {
+            width: fit-content;
+            display: flex;
+            flex-direction: column;
+            .info-title {
+                display: flex;
+                width: 100%;
+                margin-bottom: 22px;
+                .mov_title {
+                    font-size: var(--font-content-Xlarge);
+                    width: fit-content;
+                    margin-right: 34px;
+                }
+                .mov_tag {
                     display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 3px;
-                    font-size: var(--font-content-Xsmall);
-                    font-weight: var(--font-weight-Bold);
-                    padding: 2px;
+                    /* align-items: flex-start;
+                width: 100%;
+                 */gap: 10px;
+                    .mov-birt,
+                    .mov-cate,
+                    .mov-time {
+                        border: 1px solid #c7c7cc;
+                        border-radius: 3px;
+                        width: fit-content;
+                        /* height: 100%; */
+                        padding: 7px;
+                        color: #c7c7cc;
+                    }
+                    .mov-age {
+                        width: 32px;
+                        height: 32px;
+                        background-color: #d92b35;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 3px;
+                        font-size: var(--font-content-Xsmall);
+                        font-weight: var(--font-weight-Bold);
+                        padding: 2px;
+                    }
                 }
             }
+            .info-desc{
+                color: #c7c7cc;
+                font-size: var(--font-content-Small);
+                line-height: 30px;
+            }
         }
     }
-}
 `;

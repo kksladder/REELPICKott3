@@ -10,7 +10,7 @@ const MovList = ({ className }) => {
                         <img src="/images/miki.jpg" alt="봉준호" />
                     </div>
                     <div className="mov-info-wrap">
-                        <div className="info-title">
+                        <div className="info-title">    
                             <div className="mov_title">미키17</div>
                             <div className="mov_tag">
                                 <div className="mov-age">19</div>
