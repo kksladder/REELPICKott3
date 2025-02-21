@@ -8,7 +8,7 @@ import { SquareNextBtn, SquarePreveBtn } from "../../ui/Button/SlideButton";
 
 const WatchingContent = () => {
     const dispatch = useDispatch();
-    const watchingHistory = useSelector((state) => state.watchingHistory);
+    const watchingHistory = useSelector((state) => state.watchingHistoryR);
     const history = watchingHistory?.history || [];
 
     useEffect(() => {
