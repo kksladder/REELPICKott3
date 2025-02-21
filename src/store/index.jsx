@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authR from "./modules/authSlice";
-import movieR from "./modules/movieSlice2";
+import movieR from "./modules/movieSlice";
 import searchR from "./modules/searchSlice";
 import similarR from "./modules/similarSlice";
 import aniR from "./modules/aniSlice";
 import dramaR from "./modules/dramaSlice";
+import movieR1 from "./modules/movieSlice2";
 
 export const store = configureStore({
     reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
         similarR,
         aniR,
         dramaR,
+        movieR1,
     },
 });
