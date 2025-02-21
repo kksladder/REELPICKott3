@@ -1,4 +1,3 @@
-// store/modules/watchingHistorySlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const HISTORY_MAX_SIZE = 20; // 최대 저장할 시청 기록 수
