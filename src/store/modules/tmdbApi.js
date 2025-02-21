@@ -30,16 +30,46 @@ const CATEGORY_CONFIG = {
             "primary_release_date.lte": "2025-12-31",
         },
     },
-    drama: {
+    dramaKR: {
         type: "tv",
         endpoint: "discover/tv",
         params: {
             with_genres: GENRES.DRAMA,
             sort_by: "popularity.desc",
-            "vote_average.gte": 5.0,
-            "vote_count.gte": 20,
+            "vote_average.gte": 7.0,
+            "vote_count.gte": 50,
             with_original_language: "ko",
             origin_country: "KR",
+            "first_air_date.gte": "2000-01-01",
+            without_genres: GENRES.ANIMATION, // 애니메이션 제외
+        },
+    },
+    dramaUS: {
+        type: "tv",
+        endpoint: "discover/tv",
+        params: {
+            with_genres: GENRES.DRAMA,
+            sort_by: "popularity.desc",
+            "vote_average.gte": 7.0,
+            "vote_count.gte": 100,
+            with_original_language: "en",
+            origin_country: "US",
+            "first_air_date.gte": "2000-01-01",
+            without_genres: GENRES.ANIMATION,
+        },
+    },
+    dramaGB: {
+        type: "tv",
+        endpoint: "discover/tv",
+        params: {
+            with_genres: GENRES.DRAMA,
+            sort_by: "popularity.desc",
+            "vote_average.gte": 7.0,
+            "vote_count.gte": 50,
+            with_original_language: "en",
+            origin_country: "GB",
+            "first_air_date.gte": "2000-01-01",
+            without_genres: GENRES.ANIMATION,
         },
     },
     japanAnimation: {
@@ -54,18 +84,6 @@ const CATEGORY_CONFIG = {
             sort_by: "popularity.desc", // 인기도순 정렬
             "primary_release_date.gte": "1980-01-01",
             "primary_release_date.lte": "2025-12-31",
-        },
-    },
-    kids: {
-        type: "tv",
-        endpoint: "discover/tv",
-        params: {
-            with_genres: `${GENRES.KIDS},${GENRES.FAMILY}`,
-            "vote_average.gte": 5.0,
-            "vote_count.gte": 10,
-            with_original_language: "ko",
-            origin_country: "KR",
-            sort_by: "first_air_date.desc",
         },
     },
 };
