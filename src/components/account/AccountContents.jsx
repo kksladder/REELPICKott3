@@ -6,6 +6,7 @@ import HeartNull from "./HeartNull";
 import MembershipNull from "./MembershipNull";
 import { useSelector } from "react-redux";
 import Membershipstate from "./Membershipstate";
+import WatchingContent from "./WatchingContent";
 
 export const H1 = styled.h1`
     font-size: 40px;
@@ -59,7 +60,7 @@ const AccountContents = () => {
             <H1>MY</H1>
             <Content ref={aRef}>
                 <h3>최근 시청중인 컨텐츠</h3>
-                <Null />
+                <WatchingContent />
             </Content>
             <Content ref={bRef}>
                 <h3>찜한 컨텐츠</h3>
