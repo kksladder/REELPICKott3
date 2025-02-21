@@ -1,78 +1,98 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getContent, getFilteredContent } from "./getThunk2";
+import { getContent, getFilteredContent, searchContent } from "../modules/aniSlice.js";
 
 const initialState = {
-    data: [],
-    currentPage: 1,
-    totalPages: 1,
+    animeList: [],
     loading: false,
     error: null,
-    activeFilters: {
-        sortBy: "popularity.desc",
-        genres: [],
-        country: null,
-        ratings: null,
-        year: null,
-    },
+    currentPage: 1,
+    totalPages: 0,
+    hasMore: true,
+    searchResults: [],
+    searchTerm: "",
 };
+
 const aniSlice = createSlice({
     name: "ani",
     initialState,
     reducers: {
-        setPage: (state, action) => {
-            state.currentPage = action.payload;
-        },
-        clearData: (state) => {
-            state.data = [];
+        clearAnimeList: (state) => {
+            state.animeList = [];
             state.currentPage = 1;
-            state.totalPages = 1;
+            state.hasMore = true;
+        },
+        setSearchTerm: (state, action) => {
+            state.searchTerm = action.payload;
+            if (!action.payload) {
+                state.searchResults = [];
+            }
         },
     },
     extraReducers: (builder) => {
         builder
+            // getContent (기본 인기 애니메이션)
             .addCase(getContent.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
             .addCase(getContent.fulfilled, (state, action) => {
-                if (action.payload.currentPage === 1) {
-                    state.data = action.payload.data;
-                } else {
-                    const newData = action.payload.data.filter(
-                        (newItem) => !state.data.some((existingItem) => existingItem.id === newItem.id)
-                    );
-                    state.data = [...state.data, ...newData];
-                }
-                state.currentPage = action.payload.currentPage;
-                state.totalPages = action.payload.totalPages;
                 state.loading = false;
+                if (state.currentPage === 1) {
+                    state.animeList = action.payload.data;
+                } else {
+                    state.animeList = [...state.animeList, ...action.payload.data];
+                }
+                state.currentPage = action.payload.currentPage + 1;
+                state.totalPages = action.payload.totalPages;
+                state.hasMore = state.currentPage <= Math.min(state.totalPages, 50);
             })
             .addCase(getContent.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
+            // getFilteredContent (필터링된 애니메이션)
             .addCase(getFilteredContent.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
             .addCase(getFilteredContent.fulfilled, (state, action) => {
-                if (action.payload.currentPage === 1) {
-                    state.data = action.payload.data;
-                } else {
-                    const newData = action.payload.data.filter(
-                        (newItem) => !state.data.some((existingItem) => existingItem.id === newItem.id)
-                    );
-                    state.data = [...state.data, ...newData];
-                }
-                state.currentPage = action.payload.currentPage;
-                state.totalPages = action.payload.totalPages;
                 state.loading = false;
+                if (state.currentPage === 1) {
+                    state.animeList = action.payload.data;
+                } else {
+                    state.animeList = [...state.animeList, ...action.payload.data];
+                }
+                state.currentPage = action.payload.currentPage + 1;
+                state.totalPages = action.payload.totalPages;
+                state.hasMore = state.currentPage <= Math.min(state.totalPages, 50);
             })
             .addCase(getFilteredContent.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
+            })
+            // searchContent (애니메이션 검색)
+            .addCase(searchContent.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(searchContent.fulfilled, (state, action) => {
+                state.loading = false;
+                state.searchResults = action.payload.data;
+                if (state.currentPage === 1) {
+                    state.animeList = action.payload.data;
+                } else {
+                    state.animeList = [...state.animeList, ...action.payload.data];
+                }
+                state.currentPage = action.payload.currentPage + 1;
+                state.totalPages = action.payload.totalPages;
+                state.hasMore = state.currentPage <= Math.min(state.totalPages, 50);
+            })
+            .addCase(searchContent.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     },
 });
-export const aniActions = aniSlice.actions;
+
+export const { clearAnimeList, setSearchTerm } = aniSlice.actions;
 export default aniSlice.reducer;
