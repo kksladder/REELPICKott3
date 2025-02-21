@@ -1,5 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { getMovieRecommendations, searchMovies, searchMultiContent, processMovieData, tmdbApi } from "./tmdbApi"; // 기존 API 함수 임포트
 
 // 데이터 처리 함수
