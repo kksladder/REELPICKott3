@@ -30,6 +30,7 @@ import NoticeContents from "./components/account/NoticeContents";
 import MyPageLayout from "./common/myPageLayout/MyPageLayout";
 import AnimePage from "./pages/ani";
 import DramaPage from "./pages/drama";
+import DirectorPage2 from "./pages/bong";
 
 function App() {
     return (
@@ -59,6 +60,7 @@ function App() {
                         <Route path="/landing" element={<Landing />} />
                         <Route path="/pwfind" element={<PWFind />} />
                         <Route path="/test" element={<TestPage />} />
+                        <Route path="/bong" element={<DirectorPage2 />} />
                         <Route path="/director" element={<DirectorPage />} />
 
                         {/* 조심 */}

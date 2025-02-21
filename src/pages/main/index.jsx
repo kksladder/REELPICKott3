@@ -12,6 +12,7 @@ import {
 import AccordionComponent from "../../components/accordion/Accordion";
 import { useNavigate } from "react-router-dom";
 import Landing from "../../components/landing/Landing";
+import FooterComponent from "../../common/footer";
 
 const MainPage = () => {
     const videoId = "eblQHvJTHcc"; // 영상 ID
@@ -94,6 +95,7 @@ const MainPage = () => {
                 <button onClick={handleSignUpClick}>ReelPick 시작하기</button>
             </BottomMainTitleWrapper>
             <AccordionComponent />
+            <FooterComponent />
         </>
     );
 };
