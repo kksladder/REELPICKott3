@@ -1,4 +1,3 @@
-// pages/Director/style.js
 import styled, { keyframes } from "styled-components";
 
 const spin = keyframes`
@@ -7,7 +6,7 @@ const spin = keyframes`
 `;
 
 export const DirectorPageContainer = styled.div`
-    max-width: 100%x;
+    max-width: 100%;
     margin: 0 auto;
     padding: 64px;
     margin-top: 200px;
@@ -28,31 +27,33 @@ export const PageTitle = styled.h1`
 
 export const DirectorGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
+    width: 100%;
 
     @media (max-width: 1200px) {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     }
 
     @media (max-width: 768px) {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: 16px;
     }
 
     @media (max-width: 480px) {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 12px;
     }
 `;
 
 export const DirectorCard = styled.div`
+    position: relative;
+    aspect-ratio: 2/3;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     transition: all 0.3s ease;
-    height: 100%;
 
     &:hover {
         transform: translateY(-5px);
@@ -62,10 +63,9 @@ export const DirectorCard = styled.div`
 
 export const ProfileImage = styled.img`
     width: 100%;
-    aspect-ratio: 2/3;
+    height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 8px 8px 0 0;
     transition: transform 0.3s ease;
 
     ${DirectorCard}:hover & {
