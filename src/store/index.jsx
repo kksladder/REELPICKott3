@@ -6,6 +6,7 @@ import similarR from "./modules/similarSlice";
 import dramaR from "./modules/dramaSlice";
 import movieR1 from "./modules/movieSlice2";
 import directorR from "./modules/directorSlice";
+import watchingHistoryReducer from "./modules/watchingHistorySlice";
 
 export const store = configureStore({
     reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
         dramaR,
         movieR1,
         directorR,
+        watchingHistory: watchingHistoryReducer,
     },
 });

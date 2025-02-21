@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
 import { getContentByCategory } from "../../store/modules/tmdbApi";
+import { addToHistory } from "../../store/modules/watchingHistorySlice";
 import {
     MoviePageContainer,
     MovieGrid,
@@ -12,8 +13,11 @@ import {
     LoadingSpinner,
     ScrollTopButton,
 } from "./style";
+import { useDispatch } from "react-redux";
 
 const MoviePage = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -125,6 +129,17 @@ const MoviePage = () => {
         return <div>오류가 발생했습니다: {error}</div>;
     }
 
+    const handleMovieClick = (movie, event) => {
+        event.preventDefault();
+        console.log("Adding movie to history:", movie);
+        dispatch(
+            addToHistory({
+                ...movie,
+                type: "movie", // 컨텐츠 타입 구분
+            })
+        );
+        navigate(`/movie/${movie.id}`);
+    };
     return (
         <MoviePageContainer>
             <PageHeader>
@@ -134,7 +149,7 @@ const MoviePage = () => {
             <MovieGrid>
                 {movies.map((movie, index) => (
                     <MovieCard key={`${movie.id}-${index}`} id={`movie-${index}`}>
-                        <Link to={`/movie/${movie.id}`}>
+                        <Link to={`/movie/${movie.id}`} onClick={(e) => handleMovieClick(movie, e)}>
                             <PosterImage src={movie.poster || "/image/profileNo.png"} loading="lazy" />
                         </Link>
                     </MovieCard>

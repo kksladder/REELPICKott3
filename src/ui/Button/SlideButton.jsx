@@ -1,12 +1,13 @@
-import { div } from 'three/tsl';
+import { div } from "three/tsl";
 
-export const SquareNextBtn = () => {
+export const SquareNextBtn = (props) => {
     return (
         <div
             style={{
-                backdropFilter: 'blur(15px)',
-                cursor: 'pointer',
+                backdropFilter: "blur(15px)",
+                cursor: "pointer",
             }}
+            onClick={props.onClick}
         >
             <svg width="28" height="72" viewBox="0 0 28 72" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_bdi_2058_5697)">
@@ -137,12 +138,13 @@ export const SquareNextBtn = () => {
         </div>
     );
 };
-export const SquarePreveBtn = () => {
+export const SquarePreveBtn = (props) => {
     return (
         <div
             style={{
-                backdropFilter: 'blur(15px)',
+                backdropFilter: "blur(15px)",
             }}
+            onClick={props.onClick}
         >
             <svg width="28" height="72" viewBox="0 0 28 72" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_bdi_2058_5701)">
