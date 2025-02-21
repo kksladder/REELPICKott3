@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ProfileImage from "../../ui/icon/ProfileImage";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/modules/authSlice";
-import { IoIosArrowUp } from "react-icons/io";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 const MenuArea = styled.div`
     margin-top: 87px;
@@ -95,6 +95,7 @@ const SubMenuLink = styled(Link)`
         color: white;
     }
 `;
+
 const SubMenuLink2 = styled.div`
     padding: 8px 0;
     cursor: pointer;
@@ -102,14 +103,22 @@ const SubMenuLink2 = styled.div`
         color: white;
     }
 `;
+
+export const RotateIcon = styled(MdKeyboardArrowDown)`
+    transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+    transition: transform 0.3s ease-in-out;
+`;
+
 const Account = () => {
-    const dispatch = useDispatch(); // dispatch 훅을 사용하여 Redux 액션을 보냅니다.
+    const dispatch = useDispatch();
+    const [myMenuOpen, setMyMenuOpen] = useState(false);
+    const [accountMenuOpen, setAccountMenuOpen] = useState(false);
     const navigate = useNavigate();
     const { authed, user } = useSelector((state) => state.authR);
+
     const handleLoginClick = () => {
         if (authed) {
             dispatch(authActions.logout()); // 로그아웃 상태로 변경
-
             navigate("/"); // 로그인 페이지로 이동
         } else {
             navigate("/login"); // 로그인 페이지로 이동
@@ -120,17 +129,30 @@ const Account = () => {
     const [isAccountMenuVisible, setAccountMenuVisible] = useState(false);
 
     // "MY" 메뉴에 마우스를 올렸을 때만 보이게
-    const handleMyMouseEnter = () => setMyMenuVisible(true);
-    const handleMyMouseLeave = () => setMyMenuVisible(false);
+    const handleMyMouseEnter = () => {
+        setMyMenuVisible(true);
+        setMyMenuOpen(true); // "MY" 메뉴 열기 (아이콘 회전)
+    };
+    const handleMyMouseLeave = () => {
+        setMyMenuVisible(false);
+        setMyMenuOpen(false); // "MY" 메뉴 닫기 (아이콘 원래 상태로 돌아감)
+    };
 
     // "계정" 메뉴에 마우스를 올렸을 때만 보이게
-    const handleAccountMouseEnter = () => setAccountMenuVisible(true);
-    const handleAccountMouseLeave = () => setAccountMenuVisible(false);
+    const handleAccountMouseEnter = () => {
+        setAccountMenuVisible(true);
+        setAccountMenuOpen(true); // "계정" 메뉴 열기 (아이콘 회전)
+    };
+    const handleAccountMouseLeave = () => {
+        setAccountMenuVisible(false);
+        setAccountMenuOpen(false); // "계정" 메뉴 닫기 (아이콘 원래 상태로 돌아감)
+    };
 
     const handleClick = (x) => {
         dispatch(authActions.gotoTarget(x));
         navigate("/mypage/accountcontents");
     };
+
     const handleClick2 = (x) => {
         dispatch(authActions.gotoTarget(x));
         navigate("/mypage/profile");
@@ -147,14 +169,14 @@ const Account = () => {
                     <p>{user && user.id_email}</p>
                 </div>
                 <ul>
+                    {/* My 메뉴 */}
                     <MenuItem onMouseEnter={handleMyMouseEnter} onMouseLeave={handleMyMouseLeave}>
                         <MenuLink to="/mypage/accountcontents">
-                            {" "}
                             <div>
                                 <img src="/icon/my.png" alt="계정" />
                                 My
                             </div>
-                            <IoIosArrowUp />
+                            <RotateIcon isOpen={myMenuOpen} />
                         </MenuLink>
                         <SubMenu show={isMyMenuVisible}>
                             <SubMenuItem>
@@ -172,12 +194,11 @@ const Account = () => {
                     {/* 계정 메뉴 */}
                     <MenuItem onMouseEnter={handleAccountMouseEnter} onMouseLeave={handleAccountMouseLeave}>
                         <MenuLink to="/mypage/profile">
-                            {" "}
                             <div>
                                 <img src="/icon/profile.png" alt="계정" />
                                 계정
                             </div>
-                            <IoIosArrowUp />
+                            <RotateIcon isOpen={accountMenuOpen} />
                         </MenuLink>
                         <SubMenu show={isAccountMenuVisible}>
                             <SubMenuItem>
