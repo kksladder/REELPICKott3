@@ -78,7 +78,7 @@ export const LoadingSpinner = styled.div`
     height: 40px;
     margin: 30px auto;
     border: 4px solid #f3f3f3;
-    border-top: 4px solid #3498db;
+    border-top: 4px solid #f59c04;
     border-radius: 50%;
     animation: ${spin} 1s linear infinite;
 `;
@@ -114,21 +114,37 @@ export const ScrollTopButton = styled.button`
         right: 20px;
     }
 `;
-
-export const CountrySelect = styled.select`
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
+export const DirectorName = styled.h3`
     font-size: 16px;
-    background-color: white;
-    cursor: pointer;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: white;
+`;
 
-    &:hover {
-        border-color: #aaa;
+export const KnownForTitle = styled.p`
+    font-size: 14px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:not(:last-child) {
+        margin-bottom: 4px;
     }
+`;
+export const DirectorCardOverlay = styled.div`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+    color: white;
+    opacity: 1;
+    transition: opacity 0.3s ease;
 
-    &:focus {
-        outline: none;
-        border-color: var(--primary-40);
+    ${DirectorCard}:hover & {
+        opacity: 1;
     }
 `;

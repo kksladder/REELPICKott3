@@ -223,12 +223,12 @@ const ViewingHistory = () => {
 
     // 예시 데이터
     const [historyItems, setHistoryItems] = useState([
-        { id: 1, date: "2025-01-12", text: "CH.신서유기 레전드 장면들" },
-        { id: 2, date: "2025-01-12", text: "CH.신서유기 레전드 장면들" },
-        { id: 3, date: "2025-01-12", text: "CH.신서유기 레전드 장면들" },
-        { id: 4, date: "2025-01-12", text: "CH.신서유기 레전드 장면들" },
-        { id: 5, date: "2025-01-12", text: "CH.신서유기 레전드 장면들" },
-        { id: 6, date: "2025-01-12", text: "CH.신서유기 레전드 장면들" },
+        { id: 1, date: "2025-01-12", text: "기생충" },
+        { id: 2, date: "2025-02-17", text: "신서유기 레전드 장면들" },
+        { id: 3, date: "2025-03-29", text: "브레이킹 배드 시즌5 12화" },
+        { id: 4, date: "2025-06-12", text: "사랑의 이해 5화" },
+        { id: 5, date: "2025-08-12", text: "나는 오늘 어제의 너와 만난다" },
+        { id: 6, date: "2025-10-12", text: "나의 아저씨 12화" },
     ]);
 
     const toggleOpen = () => setIsOpen(!isOpen);

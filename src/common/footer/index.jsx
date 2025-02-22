@@ -73,7 +73,7 @@ const FooterComponent = () => {
                     <InfoColumn>
                         상호명 (주)릴픽
                         <br />
-                        대표이사 홍길동
+                        대표이사 정희수
                     </InfoColumn>
                     <InfoColumn>
                         사업자등록번호 106-86-43373
