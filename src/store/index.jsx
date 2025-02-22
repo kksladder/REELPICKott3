@@ -3,9 +3,10 @@ import authR from "./modules/authSlice";
 import movieR from "./modules/movieSlice";
 import searchR from "./modules/searchSlice";
 import similarR from "./modules/similarSlice";
+import directorR from "./modules/directorSlice";
+
 import dramaR from "./modules/dramaSlice";
 import movieR1 from "./modules/movieSlice2";
-import directorR from "./modules/directorSlice";
 import watchingHistoryR from "./modules/watchingHistorySlice";
 
 export const store = configureStore({

@@ -45,30 +45,6 @@ const ServePage = () => {
         const firstScriptTag = document.getElementsByTagName("script")[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // API 준비되면 플레이어 초기화
-        window.onYouTubeIframeAPIReady = () => {
-            if (currentMovie?.trailer?.key) {
-                const player = new window.YT.Player("youtube-player", {
-                    events: {
-                        onReady: (event) => {
-                            playerRef.current = event.target;
-                            if (isMuted) {
-                                event.target.mute();
-                            }
-                        },
-                        onStateChange: (event) => {
-                            // 동영상 상태 변경 시 재생/정지 상태 업데이트
-                            if (event.data === window.YT.PlayerState.PLAYING) {
-                                setIsPlaying(true);
-                            } else if (event.data === window.YT.PlayerState.PAUSED) {
-                                setIsPlaying(false);
-                            }
-                        },
-                    },
-                });
-            }
-        };
-
         // 컴포넌트 언마운트 시 정리
         return () => {
             window.onYouTubeIframeAPIReady = null;
@@ -216,7 +192,7 @@ const ServePage = () => {
                             }}
                             onError={(e) => {
                                 e.target.onerror = null;
-                                e.target.src = "/images/test.jpg"; // 기본 대체 이미지
+                                e.target.src = "/images/profileNo.jpg"; // 기본 대체 이미지
                             }}
                         />
                     )}
@@ -281,8 +257,8 @@ const ServePage = () => {
                 <div className="pd_sec">
                     <div className="director">
                         {director && (
-                            // <Link to={`/director/${director.id}`}>
-                            <Link to={"/director"}>
+                            <Link to={`/directer/${director.id}`}>
+                                {/* <Link to={"/director"}> */}
                                 <div className="pd_img">
                                     <img
                                         src={
