@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getDirectorDetails } from "./getThunk";
+import { getActorDetails, getDirectorDetails } from "./getThunk";
 import { getDirectorsByCountry } from "./getThunk3";
 
 const initialState = {
     directorInfo: null,
+    actorInfo: null,
     works: [],
     loading: false,
     error: null,
@@ -29,6 +30,19 @@ const directorSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(getActorDetails.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getActorDetails.fulfilled, (state, action) => {
+                state.actorInfo = action.payload.actorInfo;
+                state.works = action.payload.actorInfo.works;
+            })
+            .addCase(getActorDetails.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
             // getDirectorDetails 처리
             .addCase(getDirectorDetails.pending, (state) => {
                 state.loading = true;

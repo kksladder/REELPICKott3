@@ -7,7 +7,8 @@ const initialState = {
     loading: false,
     error: null,
     hasMore: true,
-    currentPage: 1
+    currentPage: 1,
+
 };
 
 const movieSlice = createSlice({

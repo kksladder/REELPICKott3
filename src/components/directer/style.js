@@ -71,8 +71,8 @@ export const MovListWrap = styled.section`
                 margin-bottom: 24px;
             }
         }
-        .mov-age{
-            margin-right:24px ;
+        .mov-date{
+            margin-right:50px ;
             font-size: var(--font-header-Medium);
         }
         .step-line {
@@ -86,10 +86,11 @@ export const MovListWrap = styled.section`
             .mov-poster {
                 
                 margin-right: 94px;
-                img {
-                    width: 190px;
-                    height: 260px;
-                }
+
+                    img {
+                        width: 190px;
+                        height: 260px;
+                    }
             }
             .mov-info-wrap {
                 width: fit-content;

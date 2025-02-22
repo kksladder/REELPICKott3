@@ -8,9 +8,47 @@ const options = {
 };
 
 // 감독 상세 정보 가져오기
+// export const getDirectorDetails = createAsyncThunk("director/getDirectorDetails", async (directorId) => {
+//     try {
+//         // 감독 상세 정보 가져오기
+//         const directorResponse = await axios.get(`https://api.themoviedb.org/3/person/${directorId}`, {
+//             params: {
+//                 ...options,
+//                 append_to_response: "movie_credits,tv_credits",
+//             },
+//         });
+
+//         // 작품 목록 정리 (영화와 TV 시리즈)
+//         const movies =
+//             directorResponse.data.movie_credits?.crew
+//                 .filter((credit) => credit.job === "Director")
+//                 .sort((a, b) => new Date(b.release_date) - new Date(a.release_date)) || [];
+
+//         const tvShows =
+//             directorResponse.data.tv_credits?.crew
+//                 .filter((credit) => credit.job === "Director")
+//                 .sort((a, b) => new Date(b.first_air_date) - new Date(a.first_air_date)) || [];
+
+
+
+//         // 감독 정보와 작품 목록 합치기
+//         return {
+//             directorInfo: {
+//                 ...directorResponse.data,
+//                 works: [...movies, ...tvShows].sort(
+//                     (a, b) =>
+//                         new Date(b.release_date || b.first_air_date) - new Date(a.release_date || a.first_air_date)
+//                 ),
+//             },
+//         };
+//     } catch (error) {
+//         console.error("API Error:", error);
+//         throw error;
+//     }
+// });
+
 export const getDirectorDetails = createAsyncThunk("director/getDirectorDetails", async (directorId) => {
     try {
-        // 감독 상세 정보 가져오기
         const directorResponse = await axios.get(`https://api.themoviedb.org/3/person/${directorId}`, {
             params: {
                 ...options,
@@ -18,24 +56,47 @@ export const getDirectorDetails = createAsyncThunk("director/getDirectorDetails"
             },
         });
 
-        // 작품 목록 정리 (영화와 TV 시리즈)
-        const movies =
-            directorResponse.data.movie_credits?.crew
-                .filter((credit) => credit.job === "Director")
-                .sort((a, b) => new Date(b.release_date) - new Date(a.release_date)) || [];
+        const { data } = directorResponse;
 
-        const tvShows =
-            directorResponse.data.tv_credits?.crew
-                .filter((credit) => credit.job === "Director")
-                .sort((a, b) => new Date(b.first_air_date) - new Date(a.first_air_date)) || [];
+        const works = [
+            ...data.movie_credits.crew.filter((credit) => credit.job === "Director"),
+            ...data.tv_credits.crew.filter((credit) => credit.job === "Director"),
+        ];
 
-        // 감독 정보와 작품 목록 합치기
         return {
             directorInfo: {
-                ...directorResponse.data,
+                ...data,
+                works,
+            },
+        };
+    } catch (error) {
+        console.error("API Error:", error);
+        throw error;
+    }
+});
+
+/// 배우 상세 정보 가져오기
+export const getActorDetails = createAsyncThunk("actor/getActorDetails", async (actorId) => {
+    try {
+        const actorResponse = await axios.get(`https://api.themoviedb.org/3/person/${actorId}`, {
+            params: {
+                ...options,
+                append_to_response: "movie_credits,tv_credits",
+            },
+        });
+
+        // 출연작 목록 정리 (영화와 TV 시리즈)
+        const movies = actorResponse.data.movie_credits?.cast || [];
+        const tvShows = actorResponse.data.tv_credits?.cast || [];
+
+        // 모든 작품을 날짜순으로 정렬
+        return {
+            actorInfo: {
+                ...actorResponse.data,
                 works: [...movies, ...tvShows].sort(
                     (a, b) =>
-                        new Date(b.release_date || b.first_air_date) - new Date(a.release_date || a.first_air_date)
+                        new Date(b.release_date || b.first_air_date) -
+                        new Date(a.release_date || a.first_air_date)
                 ),
             },
         };
@@ -140,9 +201,10 @@ export const getMovieDetails = createAsyncThunk("movie/getMovieDetails", async (
         const response = await axios.get(url, {
             params: {
                 ...options,
-                append_to_response: "credits,similar,belongs_to_collection,videos",
+                append_to_response: "credits,similar,belongs_to_collection,videos,content_ratings,release_dates",
             },
         });
+        let certification;
 
         // 비디오 정보 찾기 (한국어 트레일러 우선, 없으면 영어 트레일러)
         const videos = response.data.videos?.results || [];
@@ -152,24 +214,23 @@ export const getMovieDetails = createAsyncThunk("movie/getMovieDetails", async (
             videos[0];
 
         if (mediaType === "tv") {
-            const seasonNumber = params.season || 1;
-            const seasonResponse = await axios.get(
-                `https://api.themoviedb.org/3/tv/${originalId}/season/${seasonNumber}`,
-                { params: options }
-            );
+            // TV 시리즈의 경우
+            const contentRatings = await axios.get(`https://api.themoviedb.org/3/tv/${originalId}/content_ratings`, {
+                params: options,
+            });
 
-            return {
-                ...response.data,
-                title: response.data.name,
-                release_date: response.data.first_air_date,
-                runtime: response.data.episode_run_time?.[0],
-                media_type: "tv",
-                episodes: seasonResponse.data.episodes || [],
-                director: response.data.credits.crew.find((person) => person.job === "Director"),
-                cast: response.data.credits.cast,
-                seriesMovies: [],
-                trailer,
-            };
+            const ratings = contentRatings.data.results || [];
+            const krRating = ratings.find(r => r.iso_3166_1 === "KR");
+            certification = krRating?.rating || "NR";
+        } else {
+            // 영화의 경우
+            const releaseDates = await axios.get(`https://api.themoviedb.org/3/movie/${originalId}/release_dates`, {
+                params: options,
+            });
+
+            const releases = releaseDates.data.results || [];
+            const krRelease = releases.find(r => r.iso_3166_1 === "KR");
+            certification = krRelease?.release_dates[0]?.certification || "NR";
         }
 
         return {
@@ -179,13 +240,14 @@ export const getMovieDetails = createAsyncThunk("movie/getMovieDetails", async (
             cast: response.data.credits.cast,
             seriesMovies: response.data.belongs_to_collection
                 ? (
-                      await axios.get(
-                          `https://api.themoviedb.org/3/collection/${response.data.belongs_to_collection.id}`,
-                          { params: options }
-                      )
-                  ).data.parts.sort((a, b) => new Date(a.release_date) - new Date(b.release_date))
+                    await axios.get(
+                        `https://api.themoviedb.org/3/collection/${response.data.belongs_to_collection.id}`,
+                        { params: options }
+                    )
+                ).data.parts.sort((a, b) => new Date(a.release_date) - new Date(b.release_date))
                 : [],
             trailer,
+            certification,
         };
     } catch (error) {
         console.error("API Error:", error);
