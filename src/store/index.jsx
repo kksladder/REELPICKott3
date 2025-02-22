@@ -8,6 +8,7 @@ import directorR from "./modules/directorSlice";
 import dramaR from "./modules/dramaSlice";
 import movieR1 from "./modules/movieSlice2";
 import watchingHistoryR from "./modules/watchingHistorySlice";
+
 export const store = configureStore({
     reducer: {
         authR,
@@ -16,7 +17,7 @@ export const store = configureStore({
         similarR,
         dramaR,
         movieR1,
-        watchingHistoryR,
         directorR,
+        watchingHistoryR,
     },
 });

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
 import { getDirectorsByCountry } from "../../store/modules/getThunk3";
-import { setSelectedCountry } from "../../store/modules/directorSlice";
 import {
     DirectorPageContainer,
     DirectorGrid,
@@ -13,7 +12,9 @@ import {
     PageTitle,
     LoadingSpinner,
     ScrollTopButton,
-    CountrySelect,
+    DirectorCardOverlay,
+    DirectorName,
+    KnownForTitle,
 } from "./style";
 
 const DirectorPage2 = () => {
@@ -21,11 +22,6 @@ const DirectorPage2 = () => {
     const { filteredDirectors, loading, error, selectedCountry, hasMore } = useSelector((state) => state.directorR);
     const [currentPage, setCurrentPage] = useState(1);
     const [showScrollButton, setShowScrollButton] = useState(false);
-
-    const handleCountryChange = (e) => {
-        dispatch(setSelectedCountry(e.target.value));
-        setCurrentPage(1);
-    };
 
     // 초기 데이터 로드
     useEffect(() => {
@@ -82,12 +78,16 @@ const DirectorPage2 = () => {
     return (
         <DirectorPageContainer>
             <PageHeader>
-                <PageTitle>감독</PageTitle>
+                <PageTitle>릴픽 추천 영화 감독들</PageTitle>
             </PageHeader>
 
             <DirectorGrid>
                 {filteredDirectors.map((director, index) => (
-                    <DirectorCard key={`${director.id}-${index}`} id={`director-${index}`}>
+                    <DirectorCard
+                        key={`${director.id}-${index}`}
+                        id={`director-${index}`}
+                        hasCannesAward={director.hasCannesAward}
+                    >
                         <Link to={`/director/${director.id}`}>
                             <ProfileImage
                                 src={
@@ -98,6 +98,12 @@ const DirectorPage2 = () => {
                                 loading="lazy"
                                 alt={director.name}
                             />
+                            <DirectorCardOverlay>
+                                <DirectorName>{director.name}</DirectorName>
+                                {director.known_for?.slice(0, 2).map((work) => (
+                                    <KnownForTitle key={work.id}>{work.title}</KnownForTitle>
+                                ))}
+                            </DirectorCardOverlay>
                         </Link>
                     </DirectorCard>
                 ))}
