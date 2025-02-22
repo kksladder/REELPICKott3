@@ -8,7 +8,16 @@ const MovList = ({ works, isDirector, className }) => {
     if (!works || works.length === 0) return null;
 
     const renderWorksByType = (mediaType, title) => {
-        const filteredWorks = works.filter((work) => work.media_type === mediaType);
+        // 감독/배우에 따른 작품 필터링
+        const filteredWorks = works.filter((work) => {
+            if (isDirector) {
+                // 감독인 경우 Director로 job이 지정된 작품만
+                return work.media_type === mediaType && work.job === "Director";
+            }
+            // 배우인 경우 모든 출연작
+            return work.media_type === mediaType;
+        });
+
         if (filteredWorks.length === 0) return null;
 
         return (
@@ -43,11 +52,20 @@ const MovList = ({ works, isDirector, className }) => {
                                     <div className="mov_title">{work.title || work.name}</div>
                                     <div className="mov_tag">
                                         <div className="mov-age">{work.adult ? "19" : "All"}</div>
-                                        <div className="mov-time">{work.runtime || work.episode_run_time?.[0]}분</div>
+                                        <div className="mov-birt">
+                                            {new Date(work.release_date || work.first_air_date).getFullYear()}
+                                        </div>
+                                        {work.genres && (
+                                            <div className="mov-cate">
+                                                {work.genres.map((genre) => genre.name).join(", ")}
+                                            </div>
+                                        )}
+                                        {work.runtime && <div className="mov-time">{work.runtime}분</div>}
                                     </div>
                                 </div>
-                                <div className="info-desc">{work.overview}</div>
-                                <div className="info-role">{isDirector ? "감독" : work.character}</div>
+                                <div className="info-desc">
+                                    {work.overview || (isDirector ? "감독으로 참여" : `${work.character}역으로 출연`)}
+                                </div>
                             </div>
                         </div>
                     </div>

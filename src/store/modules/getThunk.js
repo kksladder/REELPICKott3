@@ -58,10 +58,18 @@ export const getDirectorDetails = createAsyncThunk("director/getDirectorDetails"
 
         const { data } = directorResponse;
 
-        const works = [
-            ...data.movie_credits.crew.filter((credit) => credit.job === "Director"),
-            ...data.tv_credits.crew.filter((credit) => credit.job === "Director"),
-        ];
+        // 영화와 TV 작품 모두에 media_type 추가
+        const movieWorks = data.movie_credits.crew
+            .filter(credit => credit.job === "Director")
+            .map(work => ({ ...work, media_type: "movie" }));
+
+        const tvWorks = data.tv_credits.crew
+            .filter(credit => credit.job === "Director")
+            .map(work => ({ ...work, media_type: "tv" }));
+
+        const works = [...movieWorks, ...tvWorks].sort((a, b) =>
+            new Date(b.release_date || b.first_air_date) - new Date(a.release_date || a.first_air_date)
+        );
 
         return {
             directorInfo: {
@@ -85,19 +93,21 @@ export const getActorDetails = createAsyncThunk("actor/getActorDetails", async (
             },
         });
 
-        // 출연작 목록 정리 (영화와 TV 시리즈)
-        const movies = actorResponse.data.movie_credits?.cast || [];
-        const tvShows = actorResponse.data.tv_credits?.cast || [];
+        // media_type 추가하여 작품 목록 정리
+        const movieWorks = (actorResponse.data.movie_credits?.cast || [])
+            .map(work => ({ ...work, media_type: "movie" }));
 
-        // 모든 작품을 날짜순으로 정렬
+        const tvWorks = (actorResponse.data.tv_credits?.cast || [])
+            .map(work => ({ ...work, media_type: "tv" }));
+
+        const works = [...movieWorks, ...tvWorks].sort((a, b) =>
+            new Date(b.release_date || b.first_air_date) - new Date(a.release_date || a.first_air_date)
+        );
+
         return {
             actorInfo: {
                 ...actorResponse.data,
-                works: [...movies, ...tvShows].sort(
-                    (a, b) =>
-                        new Date(b.release_date || b.first_air_date) -
-                        new Date(a.release_date || a.first_air_date)
-                ),
+                works,
             },
         };
     } catch (error) {
