@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
 import { tmdbApi } from "../../store/modules/tmdbApi";
 import {
@@ -12,6 +12,8 @@ import {
     LoadingSpinner,
     ScrollTopButton,
 } from "./style";
+import { useDispatch } from "react-redux";
+import { addToHistory } from "../../store/modules/watchingHistorySlice";
 
 const AniPage = () => {
     const [animeList, setAnimeList] = useState([]);
@@ -20,6 +22,22 @@ const AniPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isEnd, setIsEnd] = useState(false);
     const [showScrollButton, setShowScrollButton] = useState(false);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleAnimeClick = (anime, event) => {
+        event.preventDefault();
+        dispatch(
+            addToHistory({
+                ...anime,
+                type: "animation", // 애니메이션 타입 명시
+            })
+        );
+
+        // 상세 페이지로 이동 (ID와 함께 미디어 타입 전달)
+        navigate(`/serve/${anime.id}?type=animation`);
+    };
 
     // 최대 1000개의 포스터를 위해 최대 50페이지까지 로드
     const MAX_PAGES = 50;
@@ -140,7 +158,7 @@ const AniPage = () => {
             <MovieGrid>
                 {animeList.map((anime, index) => (
                     <MovieCard key={`${anime.id}-${index}`} id={`anime-${index}`}>
-                        <Link to={`/serve/${anime.id}/animation`}>
+                        <Link to={`/serve/${anime.id}?type=animation`} onClick={(e) => handleAnimeClick(anime, e)}>
                             <div className="relative">
                                 <PosterImage src={anime.poster || "/images/no-poster.png"} loading="lazy" />
                             </div>
