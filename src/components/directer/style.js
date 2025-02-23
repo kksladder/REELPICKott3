@@ -1,20 +1,21 @@
 import styled from "styled-components";
 
 export const DirecMovItemWrap = styled.section`
-    .detail-sec {
+     .detail-sec {
         width: 100%;
-        /* position: absolute; */
-        /* background: url("/images/direc.png") no-repeat right; */
+        min-height: 700px;
+        position: relative;
+        overflow: hidden;
+
         .info-left {
+            position: relative;
+            z-index: 2;
             width: fit-content;
-            height: 100%;
-            /* top: 0;
-            left: 0;
-            z-index: 0; */
             .left_detail {
                 .left_name {
                     font-size: var(--font-body-Super);
                     margin-top: 215px;
+                    color: #fff;
                 }
                 .left_birt,
                 .left_natinal {
@@ -25,41 +26,57 @@ export const DirecMovItemWrap = styled.section`
                     margin: 19px 0 15px 0;
                 }
             }
-            .desc_tit {
-                font-size: var(--font-content-XXsmall);
-                font-weight: var(--font-weight-Regular);
-                margin: 35px 0 22px 0;
-            }
-            .desc_txt {
-                font-size: var(--font-content-XXsmall);
-                line-height: 30px;
-            }
-            .desc_add {
-                font-size: var(--font-content-XXsmall);
-                margin-top: 3px;
+            .desc {
+                .desc_tit {
+                    font-size: var(--font-content-XXsmall);
+                    font-weight: var(--font-weight-Regular);
+                    margin: 35px 0 22px 0;
+                }
+                .desc_txt {
+                    font-size: var(--font-content-XXsmall);
+                    line-height: 30px;
+                }
             }
         }
+
         .info-right {
-            img {
-                width: auto;
-                height: 700px;
+            .background-wrapper {
                 position: absolute;
                 top: 0;
                 right: 0;
-                z-index: -1;
+                width: 60%;
+                height: 100%;
+                z-index: 1;
+
+                img {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 800px;
+                    height: 700px;
+                    object-fit: cover;
+                }
+
+                .gradient-overlay {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    z-index: 1;
+                    background: linear-gradient(351.7deg, rgba(20.2, 20, 20, 0.18) -8.27%, #141414 301.66%),
+                        linear-gradient(270.4deg, rgba(0, 0, 0, 0.11) 49.94%, rgba(14.8, 9, 9, 1.97) 77.78%, #141414 93.53%),
+                        linear-gradient(to bottom, rgba(20, 20, 20, 0) 60%, #141414 100%);
+                }
             }
         }
-    }
-
-    .dir-list {
-        margin-top: 80px;
     }
 `;
 export const MovListWrap = styled.section`
     display: flex;
     .mov-wrap {
         display: flex;
-
+        margin-top: 20px;
         .style-step {
             width: fit-content;
             display: flex;
@@ -69,18 +86,25 @@ export const MovListWrap = styled.section`
             margin-right: 24px;
             .step-icon {
                 margin-bottom: 24px;
+                transition: opacity 0.3s ease;
             }
+            .step-line {
+            width: 1px;
+                height: 283px;
+                margin-top: 20px;
+                background-color: #666666; // 비활성화 상태의 색상
+                transition: background-color 0.3s ease;
+
+                &.active {
+                    background-color: var(--primary-40); // 활성화 상태의 색상
+                }
+        }
         }
         .mov-date{
             margin-right:50px ;
             font-size: var(--font-header-Medium);
         }
-        .step-line {
-            width: 1px;
-            height: 283px;
-            background-color: var(--primary-40);
-            /* background-color: var(--secondary-200);  활성화 안됐을 때 색상*/
-        }
+        
         .list-wrap {
             display: flex;
             .mov-poster {
@@ -101,7 +125,7 @@ export const MovListWrap = styled.section`
                     width: 100%;
                     margin-bottom: 22px;
                     .mov_title {
-                        font-size: var(--font-content-Xlarge);
+                        font-size: var(--font-content-Medium);
                         width: fit-content;
                         margin-right: 34px;
                     }

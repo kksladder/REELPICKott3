@@ -18,18 +18,19 @@ const DirecMovItem = ({ personInfo, isDirector, className }) => {
                             <div className="left_name">{personInfo.name}</div>
                             <div className="left_birt">{personInfo.birthday}</div>
                             <div className="left_natinal">{personInfo.place_of_birth}</div>
-                            <div className="left_role">{isDirector ? "감독" : "배우"}</div>
+                            {/* <div className="left_role">{isDirector ? "감독" : "배우"}</div> */}
                         </div>
                         <div className="desc">
                             <div className="desc_tit">{personInfo.name} 특징</div>
-                            <div className="desc_txt">{personInfo.biography}</div>
-                            <div className="desc_add">더보기</div>
+                            {/* <div className="desc_txt">{personInfo.biography}</div> */}
                         </div>
                     </div>
                     <div className="info-right">
-                        <div className="info-img">
+                        <div className="background-wrapper">
+                            <div className="gradient-overlay"></div>
                             <img src={imageUrl} alt={personInfo.name} />
                         </div>
+                        {/* <div className="info-img"></div> */}
                     </div>
                 </Inner>
             </div>

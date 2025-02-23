@@ -1,11 +1,65 @@
 // components/directer/MovList.jsx
 import { Inner } from "../../pages/serve/style";
 import { MovListWrap } from "./style";
-import { GlassUnderCircleBtn } from "../../ui/icon/GlassCircle";
+import { GlassUnderCircleBtn, GlassUnderOffCircleBtn } from "../../ui/icon/GlassCircle";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const MovList = ({ works, isDirector, className }) => {
     if (!works || works.length === 0) return null;
+    const [activeItems, setActiveItems] = useState({});
+    const [passedItems, setPassedItems] = useState(new Set());
+
+    useEffect(() => {
+        let lastScrollY = window.scrollY;
+
+        const handleScroll = () => {
+            const items = document.querySelectorAll(".mov-wrap");
+            const midpoint = window.innerHeight / 2;
+            const currentScrollY = window.scrollY;
+            const isScrollingDown = currentScrollY > lastScrollY;
+
+            items.forEach((item) => {
+                const rect = item.getBoundingClientRect();
+                const workId = item.dataset.workId;
+                const isAtMidpoint = rect.top <= midpoint && rect.bottom >= midpoint;
+
+                setActiveItems((prev) => ({
+                    ...prev,
+                    [workId]: isAtMidpoint,
+                }));
+
+                // 스크롤 방향에 따른 처리
+                if (isScrollingDown) {
+                    // 아래로 스크롤할 때
+                    if (rect.top < midpoint) {
+                        setPassedItems((prev) => new Set([...prev, workId]));
+                    }
+                } else {
+                    // 위로 스크롤할 때
+                    if (rect.bottom > midpoint) {
+                        setPassedItems((prev) => {
+                            const newSet = new Set([...prev]);
+                            newSet.delete(workId);
+                            return newSet;
+                        });
+                    }
+                }
+            });
+
+            lastScrollY = currentScrollY;
+        };
+
+        // 초기 상태 설정
+        handleScroll();
+
+        // 스크롤 이벤트 리스너 추가
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [works]);
 
     const renderWorksByType = (mediaType, title) => {
         // 감독/배우에 따른 작품 필터링
@@ -22,14 +76,20 @@ const MovList = ({ works, isDirector, className }) => {
 
         return (
             <div className="works-category" key={mediaType}>
-                <h3 className="category-title">{title}</h3>
+                {/* <h3 className="category-title">{title}</h3> */}
                 {filteredWorks.map((work) => (
-                    <div key={work.id} className="mov-wrap">
+                    <div key={work.id} className="mov-wrap" data-work-id={work.id}>
                         <div className="style-step">
-                            <div className="step-icon">
+                            {activeItems[work.id] || passedItems.has(work.id.toString()) ? (
                                 <GlassUnderCircleBtn />
-                            </div>
-                            <div className="step-line"></div>
+                            ) : (
+                                <GlassUnderOffCircleBtn />
+                            )}
+                            <div
+                                className={`step-line ${
+                                    activeItems[work.id] || passedItems.has(work.id.toString()) ? "active" : ""
+                                }`}
+                            ></div>
                         </div>
                         <div className="mov-date">
                             {new Date(work.release_date || work.first_air_date).getFullYear()}
