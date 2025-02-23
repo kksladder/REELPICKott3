@@ -126,7 +126,7 @@ const DramaPage = () => {
                 type: "tv", // 컨텐츠 타입 구분
             })
         );
-        navigate(`/serve/${drama.id}?type=${drama.media_type}`);
+        navigate(`/serve/${drama.id}?type=tv`);
     };
 
     const scrollToTop = () => {
@@ -150,7 +150,7 @@ const DramaPage = () => {
                 {dramas.map((drama, index) => (
                     <MovieCard key={`${drama.id}-${index}`} id={`drama-${index}`}>
                         <Link
-                            to={`/serve/${drama.id}?type=${drama.media_type}`}
+                            to={`/serve/${drama.id}?type=tv`}
                             onClick={(e) => handleDramaClick(drama, e)}
                         >
                             <PosterImage src={drama.poster || "/images/no-poster.png"} loading="lazy" />
