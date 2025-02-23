@@ -105,7 +105,7 @@ const SubMenuLink2 = styled.div`
 `;
 
 export const RotateIcon = styled(MdKeyboardArrowDown)`
-    transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+    transform: ${(props) => (props.isOpen ? "rotate(0deg)" : "rotate(180deg)")};
     transition: transform 0.3s ease-in-out;
 `;
 
