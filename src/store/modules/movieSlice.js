@@ -32,7 +32,7 @@ const movieSlice = createSlice({
                             existingItem => existingItem.id === newItem.id
                         )
                     );
-                    state.movieData = […state.movieData, …newItems];
+                    state.movieData = [state.movieData, newItems];
                 }
 
                 state.hasMore = action.payload.hasMore;

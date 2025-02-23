@@ -37,18 +37,81 @@ const ServePage = () => {
         }
     }, [dispatch, movieId, mediaType, selectedSeason]);
 
+
     // YouTube API 초기화와 컨트롤 관련 코드
     useEffect(() => {
-        // YouTube IFrame API 로드
-        const tag = document.createElement("script");
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName("script")[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        // YouTube API 스크립트 로드 함수
+        const loadYouTubeAPI = () => {
+            return new Promise((resolve, reject) => {
+                if (window.YT && window.YT.Player) {
+                    resolve();
+                    return;
+                }
 
-        // 컴포넌트 언마운트 시 정리
+                const tag = document.createElement("script");
+                tag.src = "https://www.youtube.com/iframe_api";
+                tag.async = true;
+                tag.onload = () => {
+                    window.onYouTubeIframeAPIReady = () => {
+                        resolve();
+                    };
+                };
+                tag.onerror = reject;
+
+                const firstScriptTag = document.getElementsByTagName("script")[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            });
+        };
+        
+
+        // 플레이어 초기화 함수
+        const initializePlayer = () => {
+            if (currentMovie?.trailer?.key && !playerRef.current) {
+                playerRef.current = new window.YT.Player("youtube-player", {
+                    videoId: currentMovie.trailer.key,
+                    playerVars: {
+                        autoplay: 1,
+                        controls: 0,
+                        mute: 1,
+                        playsinline: 1,
+                        rel: 0,
+                        showinfo: 0,
+                        loop: 1,
+                        playlist: currentMovie.trailer.key,
+                    },
+                    events: {
+                        onReady: (event) => {
+                            event.target.playVideo();
+                            setIsPlaying(true);
+                        },
+                        onStateChange: (event) => {
+                            if (event.data === window.YT.PlayerState.PAUSED) {
+                                // 일부 브라우저에서 추가 UI 숨기기 시도
+                                event.target.pauseVideo();
+                            }
+                            setIsPlaying(event.data === window.YT.PlayerState.PLAYING);
+                        },
+                    },
+                });
+            }
+        };
+
+        // 전체 초기화 로직
+        const setupPlayer = async () => {
+            try {
+                await loadYouTubeAPI();
+                initializePlayer();
+            } catch (error) {
+                console.error("YouTube API 로드 실패:", error);
+            }
+        };
+
+        setupPlayer();
+
+        // 정리 함수
         return () => {
-            window.onYouTubeIframeAPIReady = null;
             if (playerRef.current) {
+                playerRef.current.destroy();
                 playerRef.current = null;
             }
         };
@@ -57,57 +120,54 @@ const ServePage = () => {
     // 비디오 URL 생성 함수 수정
     const getVideoUrl = () => {
         if (!currentMovie?.trailer?.key) return null;
-        return `https://www.youtube.com/embed/${currentMovie.trailer.key}?enablejsapi=1&autoplay=1&mute=${
-            isMuted ? 1 : 0
-        }&controls=0&showinfo=0&rel=0&loop=1&playlist=${currentMovie.trailer.key}&origin=${window.location.origin}`;
+        return `https://www.youtube.com/embed/${currentMovie.trailer.key}?enablejsapi=1&autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${currentMovie.trailer.key}&origin=${window.location.origin}`;
     };
 
     // 재생/정지 핸들러 수정
     const handlePlayPause = () => {
-        if (playerRef.current) {
+        const player = playerRef.current;
+        if (player && typeof player.getPlayerState === "function") {
             try {
-                if (isPlaying) {
-                    playerRef.current.pauseVideo();
+                const state = player.getPlayerState();
+                if (state === window.YT.PlayerState.PLAYING) {
+                    player.pauseVideo();
+                    setIsPlaying(false);
                 } else {
-                    playerRef.current.playVideo();
+                    player.playVideo();
+                    setIsPlaying(true);
                 }
-                setIsPlaying(!isPlaying);
             } catch (error) {
                 console.error("Failed to control video:", error);
             }
         }
     };
-    const handleReStart = () => {
-        if (playerRef.current) {
-            try {
-                // 현재 URL 가져오기
-                const currentUrl = getVideoUrl();
-                // iframe의 src 속성을 새로운 URL로 업데이트
-                const iframe = document.getElementById("youtube-player");
-                if (iframe) {
-                    const timestamp = new Date().getTime();
-                    iframe.src = `${currentUrl}&timestamp=${timestamp}`;
-                }
-                // 플레이어 상태 초기화
-                setIsPlaying(true);
-            } catch (error) {
-                console.error("Failed to restart video:", error);
-            }
-        }
-    };
 
-    // 음소거 핸들러 수정
     const handleMuteToggle = () => {
-        if (playerRef.current) {
+        const player = playerRef.current;
+        if (player && typeof player.isMuted === "function") {
             try {
                 if (isMuted) {
-                    playerRef.current.unMute();
+                    player.unMute();
+                    player.setVolume(100);
                 } else {
-                    playerRef.current.mute();
+                    player.mute();
                 }
                 setIsMuted(!isMuted);
             } catch (error) {
                 console.error("Failed to toggle mute:", error);
+            }
+        }
+    };
+
+    const handleReStart = () => {
+        const player = playerRef.current;
+        if (player && typeof player.seekTo === "function") {
+            try {
+                player.seekTo(0);
+                player.playVideo();
+                setIsPlaying(true);
+            } catch (error) {
+                console.error("Failed to restart video:", error);
             }
         }
     };
@@ -174,7 +234,9 @@ const ServePage = () => {
                                 width: "100%",
                                 height: "100%",
                                 border: "none",
+                                pointer: "none",
                             }}
+                            allow="autoplay; encrpted-media"
                         />
                     ) : (
                         <img
