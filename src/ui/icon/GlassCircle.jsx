@@ -151,7 +151,7 @@ export const GlassUnderCircleBtn = () => {
                             backdropFilter: "blur(1px)",
                             clipPath: "url(#bgblur_0_895_1454_clip_path)",
                             height: "100%",
-                            width: "100%"
+                            width: "100%",
                         }}
                     />
                 </foreignObject>
@@ -224,12 +224,7 @@ export const GlassUnderCircleBtn = () => {
                         <feBlend mode="normal" in2="shape" result="effect2_innerShadow_895_1454" />
                     </filter>
                     <clipPath id="bgblur_0_895_1454_clip_path">
-                        <rect
-                            width="20"
-                            height="20"
-                            rx="10"
-                            transform="matrix(1.19249e-08 -1 -1 -1.19249e-08 24 24)"
-                        />
+                        <rect width="20" height="20" rx="10" transform="matrix(1.19249e-08 -1 -1 -1.19249e-08 24 24)" />
                     </clipPath>
                     <filter
                         id="filter1_d_895_1454"
@@ -296,7 +291,7 @@ export const GlassUnderOffCircleBtn = () => {
                             backdropFilter: "blur(1px)",
                             clipPath: "url(#bgblur_0_895_1002_clip_path)",
                             height: "100%",
-                            width: "100%"
+                            width: "100%",
                         }}
                     />
                 </foreignObject>
@@ -366,12 +361,7 @@ export const GlassUnderOffCircleBtn = () => {
                         <feBlend mode="normal" in2="shape" result="effect2_innerShadow_895_1002" />
                     </filter>
                     <clipPath id="bgblur_0_895_1002_clip_path">
-                        <rect
-                            width="20"
-                            height="20"
-                            rx="10"
-                            transform="matrix(1.19249e-08 -1 -1 -1.19249e-08 24 24)"
-                        />
+                        <rect width="20" height="20" rx="10" transform="matrix(1.19249e-08 -1 -1 -1.19249e-08 24 24)" />
                     </clipPath>
                     <filter
                         id="filter1_d_895_1002"
@@ -427,3 +417,161 @@ export const GlassUnderOffCircleBtn = () => {
         </div>
     );
 };
+
+
+import React from "react";
+
+export const GlassTopBtn = () => {
+    return (
+        <div>
+            <svg width="116" height="116" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <foreignObject x="0.790625" y="0.794531" width="114.888" height="114.888">
+                    <div
+                        xmlns="http://www.w3.org/1999/xhtml"
+                        style={{
+                            backdropFilter: "blur(4.1px)",
+                            clipPath: "url(#bgblur_0_2112_4720_clip_path)",
+                            height: "100%",
+                            width: "100%",
+                        }}
+                    ></div>
+                </foreignObject>
+                <g filter="url(#filter0_di_2112_4720)" data-figma-bg-blur-radius="8.20625">
+                    <rect
+                        width="82.0625"
+                        height="82.0625"
+                        rx="20.5156"
+                        transform="matrix(-1 -1.19249e-08 -1.19249e-08 1 99.2656 17.207)"
+                        fill="url(#paint0_linear_2112_4720)"
+                        shapeRendering="crispEdges"
+                    />
+                    <rect
+                        x="-0.512891"
+                        y="0.512891"
+                        width="81.0367"
+                        height="81.0367"
+                        rx="20.0027"
+                        transform="matrix(-1 -1.19249e-08 -1.19249e-08 1 98.2398 17.207)"
+                        stroke="url(#paint1_linear_2112_4720)"
+                        strokeOpacity="0.7"
+                        strokeWidth="1.02578"
+                        shapeRendering="crispEdges"
+                    />
+                </g>
+                <g filter="url(#filter1_d_2112_4720)">
+                    <path
+                        d="M70.5391 54.1346L61.131 44.7265C59.5287 43.1242 56.9307 43.1242 55.3283 44.7265L45.9203 54.1346"
+                        stroke="#F59C04"
+                        strokeWidth="6.15469"
+                        strokeLinecap="round"
+                    />
+                    <path
+                        d="M58.2305 45.9285L58.2305 74.6504"
+                        stroke="#F59C04"
+                        strokeWidth="6.15469"
+                        strokeLinecap="round"
+                    />
+                </g>
+                <defs>
+                    <filter
+                        id="filter0_di_2112_4720"
+                        x="0.790625"
+                        y="0.794531"
+                        width="114.888"
+                        height="114.888"
+                        filterUnits="userSpaceOnUse"
+                        colorInterpolationFilters="sRGB"
+                    >
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                        <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"
+                        />
+                        <feOffset />
+                        <feGaussianBlur stdDeviation="8.20625" />
+                        <feComposite in2="hardAlpha" operator="out" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.694118 0 0 0 0 0.231373 0 0 0 0.1 0" />
+                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2112_4720" />
+                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2112_4720" result="shape" />
+                        <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"
+                        />
+                        <feOffset />
+                        <feGaussianBlur stdDeviation="6.15469" />
+                        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+                        <feColorMatrix
+                            type="matrix"
+                            values="0 0 0 0 1 0 0 0 0 0.769412 0 0 0 0 0.231373 0 0 0 0.38 0"
+                        />
+                        <feBlend mode="normal" in2="shape" result="effect2_innerShadow_2112_4720" />
+                    </filter>
+                    <clipPath id="bgblur_0_2112_4720_clip_path">
+                        <rect
+                            x="-0.790625"
+                            y="-0.794531"
+                            width="82.0625"
+                            height="82.0625"
+                            rx="20.5156"
+                            transform="matrix(-1 -1.19249e-08 -1.19249e-08 1 99.2656 17.207)"
+                        />
+                    </clipPath>
+                    <filter
+                        id="filter1_d_2112_4720"
+                        x="34.6375"
+                        y="32.241"
+                        width="47.1859"
+                        height="53.6928"
+                        filterUnits="userSpaceOnUse"
+                        colorInterpolationFilters="sRGB"
+                    >
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                        <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"
+                        />
+                        <feOffset />
+                        <feGaussianBlur stdDeviation="4.10313" />
+                        <feComposite in2="hardAlpha" operator="out" />
+                        <feColorMatrix
+                            type="matrix"
+                            values="0 0 0 0 0.231373 0 0 0 0 0.407843 0 0 0 0 1 0 0 0 0.35 0"
+                        />
+                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2112_4720" />
+                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2112_4720" result="shape" />
+                    </filter>
+                    <linearGradient
+                        id="paint0_linear_2112_4720"
+                        x1="-26.6703"
+                        y1="-32.825"
+                        x2="125.145"
+                        y2="102.578"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop stopColor="#A67E34" stopOpacity="0.26" />
+                        <stop offset="0.505208" stopColor="#FFC558" stopOpacity="0.12" />
+                        <stop offset="1" stopColor="#FFD382" stopOpacity="0.04" />
+                    </linearGradient>
+                    <linearGradient
+                        id="paint1_linear_2112_4720"
+                        x1="2.05156"
+                        y1="12.3094"
+                        x2="73.8562"
+                        y2="73.8562"
+                        gradientUnits="userSpaceOnUse"
+                    >
+                        <stop stopColor="white" stopOpacity="0.15" />
+                        <stop offset="1" stopColor="white" stopOpacity="0.44" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+    );
+};
+
