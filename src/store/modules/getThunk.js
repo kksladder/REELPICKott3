@@ -160,12 +160,12 @@ export const getMovie = createAsyncThunk("movie/getMovie", async ({ page = 1 }, 
 
 // 상세 정보 가져오기
 export const getMovieDetails = createAsyncThunk(
-    "movie/getMovieDetails",
+    "movie/getMovieDetails", 
     async ({ id, mediaType }, { rejectWithValue }) => {
         try {
             // id에서 숫자 부분 추출
             const originalId = id.split('_')[1] || id;
-
+            
             let response;
             if (mediaType === 'tv') {
                 response = await axios.get(`https://api.themoviedb.org/3/tv/${originalId}`, {

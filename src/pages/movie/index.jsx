@@ -12,8 +12,10 @@ import {
     PageTitle,
     LoadingSpinner,
     ScrollTopButton,
+    TopIcon,
 } from "./style";
 import { useDispatch } from "react-redux";
+import { GlassTopBtn } from "../../ui/icon/GlassCircle";
 
 const MoviePage = () => {
     const navigate = useNavigate();
@@ -23,8 +25,9 @@ const MoviePage = () => {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [isEnd, setIsEnd] = useState(false);
-    const [showScrollButton, setShowScrollButton] = useState(false);
+    // const [showScrollButton, setShowScrollButton] = useState(false);
 
+    const [showTopIcon, setShowTopIcon] = useState(false);
     // 최대 1000개의 포스터를 위해 최대 50페이지까지 로드
     const MAX_PAGES = 50;
 
@@ -118,12 +121,23 @@ const MoviePage = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
-    };
+    // const scrollToTop = () => {
+    //     window.scrollTo({
+    //         top: 0,
+    //         behavior: "smooth",
+    //     });
+    // };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.pageYOffset > 200) {
+                setShowTopIcon(true);
+            } else {
+                setShowTopIcon(false);
+            }
+        };
+        window.addEventListener("scroll", handleScroll);
+    }, []);
 
     if (error) {
         return <div>오류가 발생했습니다: {error}</div>;
@@ -167,9 +181,17 @@ const MoviePage = () => {
                 </div>
             )}
 
-            <ScrollTopButton onClick={scrollToTop} visible={showScrollButton}>
+            <TopIcon>
+                {showTopIcon && (
+                    <div className="top-icon" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                        <GlassTopBtn />
+                    </div>
+                )}
+            </TopIcon>
+            {/* <ScrollTopButton onClick={scrollToTop} visible={showScrollButton}>
                 <FaArrowUp size={30} />
-            </ScrollTopButton>
+                <GlassTopBtn/>
+            </ScrollTopButton> */}
         </MoviePageContainer>
     );
 };
