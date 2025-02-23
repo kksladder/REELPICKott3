@@ -11,32 +11,37 @@ import EpisodeList from "../../components/sub/episode/EpisodeList";
 import SimilarList from "../../components/sub/similar/SimilarList";
 
 const ServePage = () => {
-    const { movieId } = useParams();
+    const { id } = useParams();
     const dispatch = useDispatch();
-    const { currentMovie, movieData } = useSelector((state) => state.movieR);
+    const location = useLocation();
+
+    const queryParams = new URLSearchParams(location.search);
+    const mediaType = queryParams.get("type") || "movie";
+
+    const { currentMovie } = useSelector((state) => state.movieR);
     const [expanded, setExpanded] = useState(false);
     const [selectedSeason, setSelectedSeason] = useState(1);
-    const location = useLocation();
-    const mediaType = new URLSearchParams(location.search).get("type") || "movie";
+    // const mediaType = new URLSearchParams(location.search).get("type") || "movie";
     const [isPlaying, setIsPlaying] = useState(true);
     const [isMuted, setIsMuted] = useState(true);
     const playerRef = useRef(null);
 
+    const movieId = id?.split("_")[1] || id;
+
     useEffect(() => {
-        if (movieId && movieData) {
-            const currentItem = movieData.find((item) => item.id.toString() === movieId);
-            const type = currentItem?.media_type || mediaType;
+        if (id) {
+            // const currentItem = movieData.find((item) => item.id.toString() === movieId);
+            // const type = currentItem?.media_type || mediaType;
 
             dispatch(
                 getMovieDetails({
-                    id: movieId,
-                    mediaType: type,
+                    id,
+                    mediaType,
                     season: selectedSeason,
                 })
             );
         }
-    }, [dispatch, movieId, mediaType, selectedSeason]);
-
+    }, [dispatch, id, mediaType, selectedSeason]);
 
     // YouTube API 초기화와 컨트롤 관련 코드
     useEffect(() => {
@@ -62,7 +67,6 @@ const ServePage = () => {
                 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
             });
         };
-        
 
         // 플레이어 초기화 함수
         const initializePlayer = () => {
@@ -378,7 +382,7 @@ const ServePage = () => {
 
                 <SimilarCont>
                     <div className="con-title">비슷한 컨텐츠</div>
-                    <SimilarList movieId={movieId} mediaType={currentMovie?.media_type} />
+                    <SimilarList movieId={movieId} mediaType={currentMovie?.media_type || mediaType} />
                 </SimilarCont>
             </Inner>
         </MoveDetailWrap>

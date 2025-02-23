@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
 import { getContentByCategory } from "../../store/modules/tmdbApi";
 import {
@@ -12,6 +12,8 @@ import {
     LoadingSpinner,
     ScrollTopButton,
 } from "./style";
+import { useDispatch } from "react-redux";
+import { addToHistory } from "../../store/modules/watchingHistorySlice";
 
 const DramaPage = () => {
     const [dramas, setDramas] = useState([]);
@@ -20,6 +22,8 @@ const DramaPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isEnd, setIsEnd] = useState(false);
     const [showScrollButton, setShowScrollButton] = useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // 최대 1000개의 포스터를 위해 최대 50페이지까지 로드
     const MAX_PAGES = 50;
@@ -113,6 +117,17 @@ const DramaPage = () => {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+    const handleDramaClick = (drama, event) => {
+        event.preventDefault();
+        console.log("Adding drama to history:", drama);
+        dispatch(
+            addToHistory({
+                ...drama,
+                type: "tv", // 컨텐츠 타입 구분
+            })
+        );
+        navigate(`/serve/${drama.id}?type=${drama.media_type}`);
+    };
 
     const scrollToTop = () => {
         window.scrollTo({
@@ -134,7 +149,10 @@ const DramaPage = () => {
             <MovieGrid>
                 {dramas.map((drama, index) => (
                     <MovieCard key={`${drama.id}-${index}`} id={`drama-${index}`}>
-                        <Link to={`/drama/${drama.id}`}>
+                        <Link
+                            to={`/serve/${drama.id}?type=${drama.media_type}`}
+                            onClick={(e) => handleDramaClick(drama, e)}
+                        >
                             <PosterImage src={drama.poster || "/images/no-poster.png"} loading="lazy" />
                         </Link>
                     </MovieCard>

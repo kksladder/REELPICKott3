@@ -159,9 +159,9 @@ export const getMovie = createAsyncThunk("movie/getMovie", async ({ page = 1 }, 
 });
 
 // 상세 정보 가져오기
-export const getMovieDetails = createAsyncThunk("movie/getMovieDetails", async (params) => {
-    const originalId = params.id.split("_")[1] || params.id;
-    const { mediaType } = params;
+export const getMovieDetails = createAsyncThunk("movie/getMovieDetails", async ({ id, mediaType }) => {
+    const originalId = id.split("_")[1] || id;
+    // const { mediaType } = params;
 
     try {
         let url =

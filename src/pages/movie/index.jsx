@@ -135,10 +135,10 @@ const MoviePage = () => {
         dispatch(
             addToHistory({
                 ...movie,
-                type: "movie", // 컨텐츠 타입 구분
+                type: movie.media_type || "movie", // 컨텐츠 타입 구분
             })
         );
-        navigate(`/movie/${movie.id}`);
+        navigate(`/serve/${movie.id}?type=${movie.media_type || "movie"} `);
     };
     return (
         <MoviePageContainer>
@@ -149,7 +149,10 @@ const MoviePage = () => {
             <MovieGrid>
                 {movies.map((movie, index) => (
                     <MovieCard key={`${movie.id}-${index}`} id={`movie-${index}`}>
-                        <Link to={`/movie/${movie.id}`} onClick={(e) => handleMovieClick(movie, e)}>
+                        <Link
+                            to={`/serve/${movie.id}?type=${movie.media_type}`}
+                            onClick={(e) => handleMovieClick(movie, e)}
+                        >
                             <PosterImage src={movie.poster || "/image/profileNo.png"} loading="lazy" />
                         </Link>
                     </MovieCard>

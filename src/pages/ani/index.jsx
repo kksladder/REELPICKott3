@@ -140,7 +140,7 @@ const AniPage = () => {
             <MovieGrid>
                 {animeList.map((anime, index) => (
                     <MovieCard key={`${anime.id}-${index}`} id={`anime-${index}`}>
-                        <Link to={`/ani/${anime.id}`}>
+                        <Link to={`/serve/${anime.id}/animation`}>
                             <div className="relative">
                                 <PosterImage src={anime.poster || "/images/no-poster.png"} loading="lazy" />
                             </div>
