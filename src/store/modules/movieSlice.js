@@ -8,7 +8,6 @@ const initialState = {
     error: null,
     hasMore: true,
     currentPage: 1,
-
 };
 
 const movieSlice = createSlice({
@@ -28,11 +27,11 @@ const movieSlice = createSlice({
                 } else {
                     // 중복 제거를 위해 id 기준으로 필터링
                     const newItems = action.payload.data.filter(
-                        newItem => !state.movieData.some(
-                            existingItem => existingItem.id === newItem.id
-                        )
+                        (newItem) => !state.movieData.some((existingItem) => existingItem.id === newItem.id)
                     );
-                    state.movieData = [state.movieData, newItems];
+
+                    state.movieData = [...state.movieData, ...newItems];
+
                 }
 
                 state.hasMore = action.payload.hasMore;
