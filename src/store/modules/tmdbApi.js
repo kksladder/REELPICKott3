@@ -244,8 +244,8 @@ export const searchMovies = async (query, language = "ko-KR", page = 1) => {
     if (!query.trim()) return { data: [], totalPages: 0, currentPage: page };
 
     try {
-        // 원본 쿼리로 먼저 검색
-        let response = await tmdbApi.get("/search/movie", {
+        // 영화 검색
+        let movieResponse = await tmdbApi.get("/search/movie", {
             params: {
                 query,
                 language,
@@ -254,14 +254,22 @@ export const searchMovies = async (query, language = "ko-KR", page = 1) => {
             },
         });
 
-        let results = response.data.results;
+        // TV 프로그램 검색
+        let tvResponse = await tmdbApi.get("/search/tv", {
+            params: {
+                query,
+                language,
+                page,
+                include_adult: false,
+            },
+        });
 
-        // 결과가 없으면 수정된 쿼리로 다시 검색
-        if (results.length === 0) {
+        // 한글 검색어 최적화
+        if (movieResponse.data.results.length === 0 && tvResponse.data.results.length === 0) {
             const modifiedQuery = addSpaceToKorean(query);
 
             if (modifiedQuery !== query) {
-                response = await tmdbApi.get("/search/movie", {
+                movieResponse = await tmdbApi.get("/search/movie", {
                     params: {
                         query: modifiedQuery,
                         language,
@@ -269,18 +277,45 @@ export const searchMovies = async (query, language = "ko-KR", page = 1) => {
                         include_adult: false,
                     },
                 });
-                results = response.data.results;
+
+                tvResponse = await tmdbApi.get("/search/tv", {
+                    params: {
+                        query: modifiedQuery,
+                        language,
+                        page,
+                        include_adult: false,
+                    },
+                });
             }
         }
 
+        // 영화와 TV 프로그램 결과 합치기
+        const combinedResults = [
+            ...movieResponse.data.results.map(item => ({
+                ...processMovieData(item),
+                media_type: 'movie'
+            })),
+            ...tvResponse.data.results.map(item => ({
+                ...processMovieData({
+                    ...item,
+                    title: item.name,
+                    release_date: item.first_air_date
+                }),
+                media_type: 'tv'
+            }))
+        ];
+
+        // 유사성 기준으로 정렬 (선택사항)
+        const sortedResults = combinedResults.sort((a, b) => b.popularity - a.popularity);
+
         return {
-            data: results.map(processMovieData),
-            totalPages: response.data.total_pages,
-            currentPage: response.data.page,
+            data: sortedResults,
+            totalPages: Math.max(movieResponse.data.total_pages, tvResponse.data.total_pages),
+            currentPage: page,
         };
     } catch (error) {
-        console.error("Error searching movies:", error);
-        throw new Error("영화 검색에 실패했습니다.");
+        console.error("Error searching content:", error);
+        throw new Error("콘텐츠 검색에 실패했습니다.");
     }
 };
 
