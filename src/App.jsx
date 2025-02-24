@@ -49,7 +49,7 @@ function App() {
                         <Route path="/search" element={<SearchPage />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signUp" element={<SignUpPage />} />
-                        <Route path="/serve/:movieId" element={<ServePage />} />
+                        <Route path="/serve/:id/" element={<ServePage />} />
                         <Route path="/membership" element={<Membership />} />
                         <Route path="/reelpick" element={<Reelpick />} />
                         <Route path="/basket" element={<Basket />} />
@@ -61,7 +61,7 @@ function App() {
                         <Route path="/pwfind" element={<PWFind />} />
                         <Route path="/test" element={<TestPage />} />
                         <Route path="/bong" element={<DirectorPage2 />} />
-                        <Route path="/director" element={<DirectorPage />} />
+                        <Route path="/directer/:id" element={<DirectorPage />} />
 
                         {/* 조심 */}
                         <Route path="/mypage" element={<MyPageLayout />}>

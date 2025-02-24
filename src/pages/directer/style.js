@@ -8,4 +8,11 @@ export const DirectorWrap = styled.section`
     .mov-list {
         margin-top: 80px;
     }
+    .top-icon{
+        position: fixed;
+        right: 50px;
+        bottom: 50px;
+        z-index: 1;
+        cursor: pointer;
+    }
 `;

@@ -29,7 +29,9 @@ const movieSlice = createSlice({
                     const newItems = action.payload.data.filter(
                         (newItem) => !state.movieData.some((existingItem) => existingItem.id === newItem.id)
                     );
+
                     state.movieData = [...state.movieData, ...newItems];
+
                 }
 
                 state.hasMore = action.payload.hasMore;
