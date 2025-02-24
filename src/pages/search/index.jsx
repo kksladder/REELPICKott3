@@ -353,6 +353,18 @@ const SearchPage = () => {
         localStorage.removeItem(RECENT_SEARCHES_KEY);
     };
 
+    const handleThumbnailClick = (thumbnail, e) => {
+        e.preventDefault();
+        dispatch(
+            addToHistory({
+                id: thumbnail.id,
+                title: thumbnail.title,
+                type: thumbnail.mediaType,
+            })
+        );
+        navigate(`/serve/${thumbnail.id}?type=${thumbnail.mediaType}`);
+    };
+
     // 기본 이미지 경로 설정 (영화 포스터 이미지가 없을 경우 사용)
     const defaultImageUrl = "/images/profileNo.png";
 
@@ -360,27 +372,39 @@ const SearchPage = () => {
     const thumbnails = [
         {
             id: 1,
+            title: "Casino",
             imageUrl: "/images/casino.jpg",
+            mediaType: "movie",
         },
         {
             id: 2,
+            title: "Breaking Bad",
             imageUrl: "/images/breakinbad.jpg",
+            mediaType: "tv",
         },
         {
             id: 3,
+            title: "Ozark",
             imageUrl: "/images/ozak.jpg",
+            mediaType: "tv",
         },
         {
             id: 4,
+            title: "Crime City",
             imageUrl: "/images/crimecity.jpg",
+            mediaType: "movie",
         },
         {
             id: 5,
+            title: "Slow Horses",
             imageUrl: "/images/slowhorses.jpg",
+            mediaType: "tv",
         },
         {
             id: 6,
+            title: "Parasite",
             imageUrl: "/images/parasite.jpg",
+            mediaType: "movie",
         },
     ];
 
@@ -568,7 +592,10 @@ const SearchPage = () => {
                             <MoviesGrid>
                                 {thumbnails.map((thumbnail) => (
                                     <MovieCard key={thumbnail.id}>
-                                        <Link to>
+                                        <Link
+                                            to={`/serve/${thumbnail.id}?type=${thumbnail.mediaType}`}
+                                            onClick={(e) => handleThumbnailClick(thumbnail, e)}
+                                        >
                                             <img src={thumbnail.imageUrl} alt="" loading="lazy" />
                                         </Link>
                                     </MovieCard>
@@ -578,19 +605,6 @@ const SearchPage = () => {
                     </div>
                 </>
             )}
-
-            {/* {(!showResults || (showResults && movieResult.length === 0 && similarMovies.length === 0)) && (
-                <ThumbnailsSection>
-                    <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
-                    <MoviesGrid>
-                        {thumbnails.map((thumbnail) => (
-                            <MovieCard key={thumbnail.id}>
-                                <img src={thumbnail.imageUrl} alt="" loading="lazy" />
-                            </MovieCard>
-                        ))}
-                    </MoviesGrid>
-                </ThumbnailsSection>
-            )} */}
         </SearchContainer>
     );
 };

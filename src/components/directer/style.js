@@ -64,8 +64,8 @@ export const DirecMovItemWrap = styled.section`
                     right: 0;
                     bottom: 0;
                     z-index: 1;
-                    background: linear-gradient(351.7deg, rgba(20.2, 20, 20, 0.18) -8.27%, #141414 301.66%),
-                        linear-gradient(270.4deg, rgba(0, 0, 0, 0.11) 49.94%, rgba(14.8, 9, 9, 1.97) 77.78%, #141414 93.53%),
+                    background: linear-gradient(351.7deg, rgba(20.2, 20, 20, 0.18) 70.27%, #141414 301.66%),
+                        linear-gradient(270.4deg, rgba(0, 0, 0, 0.11) 49.94%, rgba(14.8, 9, 9, 1.97) 68.78%, #141414 93.53%),
                         linear-gradient(to bottom, rgba(20, 20, 20, 0) 60%, #141414 100%);
                 }
             }

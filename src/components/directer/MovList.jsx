@@ -10,6 +10,13 @@ const MovList = ({ works, isDirector, className }) => {
     const [activeItems, setActiveItems] = useState({});
     const [passedItems, setPassedItems] = useState(new Set());
 
+    const extractYear = (work) => {
+        const date = work.release_date || work.first_air_date;
+        if (!date) return 0;
+
+        const year = new Date(date).getFullYear();
+        return isNaN(year) ? 0 : year;
+    };
     useEffect(() => {
         let lastScrollY = window.scrollY;
 
@@ -62,18 +69,23 @@ const MovList = ({ works, isDirector, className }) => {
     }, [works]);
 
     const renderWorksByType = (mediaType, title) => {
-        // 감독/배우에 따른 작품 필터링
-        const filteredWorks = works.filter((work) => {
-            if (isDirector) {
-                // 감독인 경우 Director로 job이 지정된 작품만
-                return work.media_type === mediaType && work.job === "Director";
-            }
-            // 배우인 경우 모든 출연작
-            return work.media_type === mediaType;
-        });
+        // 감독/배우에 따른 작품 필터링 및 중복 제거, 정렬
+        const filteredWorks = Array.from(
+            new Map(
+                works
+                    .filter((work) => {
+                        if (isDirector) {
+                            // 감독인 경우 Director로 job이 지정된 작품만
+                            return work.media_type === mediaType && work.job === "Director";
+                        }
+                        // 배우인 경우 모든 출연작
+                        return work.media_type === mediaType;
+                    })
+                    .map((work) => [work.id, work])
+            ).values()
+        ).sort((a, b) => extractYear(b) - extractYear(a));
 
         if (filteredWorks.length === 0) return null;
-
         return (
             <div className="works-category" key={mediaType}>
                 {/* <h3 className="category-title">{title}</h3> */}
@@ -92,7 +104,7 @@ const MovList = ({ works, isDirector, className }) => {
                             ></div>
                         </div>
                         <div className="mov-date">
-                            {new Date(work.release_date || work.first_air_date).getFullYear()}
+                            {new Date(work.release_date || work.first_air_date || Date.now()).getFullYear()}
                         </div>
                         <div className="list-wrap">
                             <div className="mov-poster">
@@ -101,7 +113,7 @@ const MovList = ({ works, isDirector, className }) => {
                                         src={
                                             work.poster_path
                                                 ? `https://image.tmdb.org/t/p/w500${work.poster_path}`
-                                                : "/images/posterNo.png"
+                                                : "/images/profileNo.png"
                                         }
                                         alt={work.title || work.name}
                                     />
