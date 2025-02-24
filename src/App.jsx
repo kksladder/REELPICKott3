@@ -60,8 +60,8 @@ function App() {
                         <Route path="/landing" element={<Landing />} />
                         <Route path="/pwfind" element={<PWFind />} />
                         <Route path="/test" element={<TestPage />} />
-                        <Route path="/bong" element={<DirectorPage2 />} />
-                        <Route path="/directer/:id" element={<DirectorPage />} />
+                        <Route path="/director" element={<DirectorPage2 />} />
+                        {/* <Route path="/directer/:id" element={<DirectorPage />} /> */}
 
                         {/* 조심 */}
                         <Route path="/mypage" element={<MyPageLayout />}>
