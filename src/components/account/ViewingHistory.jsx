@@ -1,7 +1,8 @@
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaTrashAlt, FaCheck, FaTimes, FaChevronDown } from "react-icons/fa";
-
+import { useDispatch } from "react-redux";
+import { removeFromHistory } from "../../store/modules/watchingHistorySlice";
 // Styled Components
 const Container = styled.div`
     max-width: 70.1875rem;
@@ -215,22 +216,20 @@ const FaChevronUp = styled(FaChevronDown)`
 `;
 
 const ViewingHistory = () => {
+    const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
     const [selectedItems, setSelectedItems] = useState([]);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
     const [isMultiDelete, setIsMultiDelete] = useState(false);
 
+    console.log(localStorage.getItem("watchingHistory"));
     // 예시 데이터
-    const [historyItems, setHistoryItems] = useState([
-        { id: 1, date: "2025-01-12", text: "기생충" },
-        { id: 2, date: "2025-02-17", text: "신서유기 레전드 장면들" },
-        { id: 3, date: "2025-03-29", text: "브레이킹 배드 시즌5 12화" },
-        { id: 4, date: "2025-06-12", text: "사랑의 이해 5화" },
-        { id: 5, date: "2025-08-12", text: "나는 오늘 어제의 너와 만난다" },
-        { id: 6, date: "2025-10-12", text: "나의 아저씨 12화" },
-    ]);
-
+    const [historyItems, setHistoryItems] = useState([]);
+    useEffect(() => {
+        const savedHistory = JSON.parse(localStorage.getItem("watchingHistory") || "[]");
+        setHistoryItems(savedHistory);
+    }, []);
     const toggleOpen = () => setIsOpen(!isOpen);
 
     const toggleSelectItem = (id) => {
@@ -243,6 +242,8 @@ const ViewingHistory = () => {
 
     const showDeleteConfirmation = (id, e) => {
         if (e) e.stopPropagation();
+        console.log("Deleting item with id:", id); // 확인용 로그
+        dispatch(removeFromHistory(id)); // 삭제 액션 호출
         setItemToDelete(id);
         setIsMultiDelete(false);
         setShowDeletePopup(true);
@@ -255,21 +256,22 @@ const ViewingHistory = () => {
 
     const handleDeleteConfirm = () => {
         if (isMultiDelete) {
-            setHistoryItems(historyItems.filter((item) => !selectedItems.includes(item.id)));
-            setSelectedItems([]);
+            const remainingItems = historyItems.filter((item) => !selectedItems.includes(item.id));
+            setHistoryItems(remainingItems); // historyItems 상태 업데이트
+            localStorage.setItem("watchingHistory", JSON.stringify(remainingItems)); // 로컬 스토리지 업데이트
+            setSelectedItems([]); // 선택된 항목 초기화
         } else if (itemToDelete !== null) {
-            setHistoryItems(historyItems.filter((item) => item.id !== itemToDelete));
+            const remainingItems = historyItems.filter((item) => item.id !== itemToDelete);
+            setHistoryItems(remainingItems); // historyItems 상태 업데이트
+            localStorage.setItem("watchingHistory", JSON.stringify(remainingItems)); // 로컬 스토리지 업데이트
         }
         setShowDeletePopup(false);
         setItemToDelete(null);
     };
-    const H1 = styled.h1`
-        font-size: 40px;
-        font-weight: 700;
-        margin-top: 50px;
-        margin-bottom: 30px;
-    `;
+
+    // 삭제 취소 처리 함수
     const handleDeleteCancel = () => {
+        // 모달 창 닫기
         setShowDeletePopup(false);
         setItemToDelete(null);
         setIsMultiDelete(false);
@@ -304,21 +306,30 @@ const ViewingHistory = () => {
                     )}
 
                     <ItemList>
-                        {historyItems.map((item) => (
-                            <Item
-                                key={item.id}
-                                selected={selectedItems.includes(item.id)}
-                                onClick={() => toggleSelectItem(item.id)}
-                            >
-                                <ItemContent>
-                                    <ItemDate>{item.date}</ItemDate>
-                                    <ItemText>{item.text}</ItemText>
-                                </ItemContent>
-                                <DeleteButton onClick={(e) => showDeleteConfirmation(item.id, e)}>
-                                    <FaTrashAlt size={16} />
-                                </DeleteButton>
-                            </Item>
-                        ))}
+                        {historyItems.map((item) => {
+                            // 날짜를 'YYYY-MM-DD' 형식으로 변환
+                            const date = new Date(item.watchedAt);
+                            const year = date.getFullYear();
+                            const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 1을 더해줘야 합니다.
+                            const day = String(date.getDate()).padStart(2, "0");
+                            const formattedDate = `${year}-${month}-${day}`; // "YYYY-MM-DD" 형식으로 날짜 포맷
+
+                            return (
+                                <Item
+                                    key={item.id}
+                                    selected={selectedItems.includes(item.id)}
+                                    onClick={() => toggleSelectItem(item.id)}
+                                >
+                                    <ItemContent>
+                                        <ItemDate>{formattedDate}</ItemDate> {/* 날짜 출력 */}
+                                        <ItemText>{item.title}</ItemText>
+                                    </ItemContent>
+                                    <DeleteButton onClick={(e) => showDeleteConfirmation(item.id, e)}>
+                                        <FaTrashAlt size={16} />
+                                    </DeleteButton>
+                                </Item>
+                            );
+                        })}
                     </ItemList>
 
                     {historyItems.length === 0 && <EmptyMessage>시청 기록이 없습니다</EmptyMessage>}

@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { addToFavorites, removeFromFavorites } from "../../store/modules/favoritesSlice";
 
 const ButtonInner = styled.button`
     display: flex;
@@ -904,12 +906,31 @@ export const SpeakerOnS = () => {
 };
 
 //하트 버튼
-export const HeartToggle = () => {
-    const [isHeartOn, setIsHeartOn] = useState(false);
+export const HeartToggle = ({ item }) => {
+    const dispatch = useDispatch();
+    const { favoriteItems } = useSelector((state) => state.favoritesR);
+    const isItemInFavorites = favoriteItems.some((favItem) => favItem.id === item.id);
+    const [isHeartOn, setIsHeartOn] = useState(isItemInFavorites);
 
+    // Heart 클릭 시 찜 목록에 추가 또는 삭제
     const handleHeartClick = () => {
         setIsHeartOn(!isHeartOn);
+
+        if (isHeartOn) {
+            // 아이템이 찜 목록에 있다면 삭제
+            dispatch(removeFromFavorites(item));
+            console.log("찜 해제: " + `${item.title}`);
+        } else {
+            // 아이템이 찜 목록에 없다면 추가
+            dispatch(addToFavorites(item));
+            console.log("찜 추가: " + `${item.title}`);
+        }
     };
+
+    // 아이템이 찜 목록에 추가되거나 삭제될 때마다 isHeartOn 업데이트
+    useEffect(() => {
+        setIsHeartOn(isItemInFavorites);
+    }, [favoriteItems, isItemInFavorites]);
 
     return (
         <div
@@ -1143,7 +1164,7 @@ export const StopSquareMd = () => {
                     <div
                         style={{
                             backdropFilter: "blur(2px)",
-                            WebkitBackdropFilter: "blur(2px)", 
+                            WebkitBackdropFilter: "blur(2px)",
                             clipPath: "url(#bgblur_clip)",
                             height: "100%",
                             width: "100%",
