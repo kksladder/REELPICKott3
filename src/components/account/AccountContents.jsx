@@ -1,12 +1,10 @@
-import { forwardRef, useEffect, useRef } from "react";
-import { SlArrowRight } from "react-icons/sl";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import Null from "./Null";
-import HeartNull from "./HeartNull";
 import MembershipNull from "./MembershipNull";
 import { useSelector } from "react-redux";
 import Membershipstate from "./Membershipstate";
 import WatchingContent from "./WatchingContent";
+import Heart from "./Heart";
 
 export const H1 = styled.h1`
     font-size: 40px;
@@ -64,7 +62,7 @@ const AccountContents = () => {
             </Content>
             <Content ref={bRef}>
                 <h3>찜한 컨텐츠</h3>
-                <HeartNull />
+                <Heart />
             </Content>
             <Content ref={cRef}>
                 <h3>현재 이용중인 멤버십</h3>

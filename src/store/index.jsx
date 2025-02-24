@@ -4,10 +4,10 @@ import movieR from "./modules/movieSlice";
 import searchR from "./modules/searchSlice";
 import similarR from "./modules/similarSlice";
 import directorR from "./modules/directorSlice";
-
 import dramaR from "./modules/dramaSlice";
 import movieR1 from "./modules/movieSlice2";
 import watchingHistoryR from "./modules/watchingHistorySlice";
+import favoritesR from "./modules/favoritesSlice";
 
 export const store = configureStore({
     reducer: {
@@ -19,5 +19,6 @@ export const store = configureStore({
         movieR1,
         directorR,
         watchingHistoryR,
+        favoritesR,
     },
 });

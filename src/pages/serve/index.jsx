@@ -266,7 +266,7 @@ const ServePage = () => {
                         <div className="item_left">
                             <div className="playGroup">
                                 <div onClick={handlePlayPause}>{isPlaying ? <StopSquareLg /> : <PlySquareLg />}</div>
-                                <HeartToggle />
+                                <HeartToggle item={currentMovie} />
                             </div>
                             <div className="tag">
                                 <div className="tag_age">19</div>

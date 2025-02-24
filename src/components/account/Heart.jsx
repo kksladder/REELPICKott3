@@ -1,31 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Slider from "react-slick";
-import { loadHistory, removeFromHistory, clearHistory } from "../../store/modules/watchingHistorySlice";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { SquareNextBtn, SquarePreveBtn } from "../../ui/Button/SlideButton";
-import styled from "styled-components";
 
-const Wrap = styled.div``;
-
-const WatchingContent = () => {
+const Heart = () => {
     const dispatch = useDispatch();
-    const watchingHistory = useSelector((state) => state.watchingHistoryR);
-    const history = watchingHistory?.history || [];
 
-    useEffect(() => {
-        dispatch(loadHistory());
-    }, [dispatch]);
-
-    const handleRemove = (id) => {
-        dispatch(removeFromHistory(id));
-    };
-
-    const handleClearAll = () => {
-        dispatch(clearHistory());
-    };
-
+    // 리덕스에서 favoriteItems 가져오기
+    const { favoriteItems } = useSelector((state) => state.favoritesR); // 스토어에서 favoriteItems 불러오기
+    console.log(` ${favoriteItems.title}`);
     // 슬라이드 설정
     const settings = {
         dots: true,
@@ -58,30 +43,32 @@ const WatchingContent = () => {
     };
 
     return (
-        <Wrap>
-            {history.length === 0 ? (
-                <div className="contents">시청중인 컨텐츠가 없습니다.</div>
+        <div>
+            {favoriteItems.length === 0 ? (
+                <div className="contents">찜한 콘텐츠가 없습니다.</div> // favoriteItems가 비어있을 때
             ) : (
                 <>
                     <div>
                         <Slider {...settings}>
-                            {history.map((item) => (
-                                <div key={`${item.id}-${item.watchedAt}`} className="slide-item">
+                            {favoriteItems.map((item) => (
+                                <div key={`${item.id}`} className="slide-item">
                                     <img
-                                        src={item.poster || "/image/profileNo.png"}
+                                        src={`https://image.tmdb.org/t/p/original${item?.poster || item?.poster_path}`}
+                                        style={{ width: "150px", height: "200px" }}
                                         alt={item.title}
-                                        style={{ width: "150px", height: "200px" }} // inline 스타일로 설정
                                     />
                                     <div>
                                         <h3 style={{ marginTop: " 20px" }}>{item.title}</h3>
-
                                         <button
                                             style={{
-                                                marginTop: " 10px",
+                                                marginTop: "10px",
                                                 background: "var(--primary-30)",
                                                 borderRadius: "3px",
                                             }}
-                                            onClick={() => handleRemove(item.id)}
+                                            onClick={() => {
+                                                // 찜 목록에서 해당 아이템을 삭제하는 로직을 추가할 수 있습니다.
+                                                dispatch(removeFromFavorites(item));
+                                            }}
                                         >
                                             삭제
                                         </button>
@@ -91,20 +78,25 @@ const WatchingContent = () => {
                         </Slider>
                         <button
                             style={{
-                                marginLeft: " 1061px",
+                                marginLeft: "1061px",
                                 marginTop: "27px",
                                 background: "var(--primary-30)",
                                 borderRadius: "3px",
                             }}
-                            onClick={handleClearAll}
+                            onClick={() => {
+                                // 모든 찜 목록을 삭제하는 로직을 추가할 수 있습니다.
+                                favoriteItems.forEach((item) => {
+                                    dispatch(removeFromFavorites(item));
+                                });
+                            }}
                         >
                             모든 기록 삭제
                         </button>
                     </div>
                 </>
             )}
-        </Wrap>
+        </div>
     );
 };
 
-export default WatchingContent;
+export default Heart;
