@@ -159,69 +159,87 @@ export const getMovie = createAsyncThunk("movie/getMovie", async ({ page = 1 }, 
 });
 
 // 상세 정보 가져오기
-export const getMovieDetails = createAsyncThunk("movie/getMovieDetails", async (params) => {
-    const originalId = params.id.split("_")[1] || params.id;
-    const { mediaType } = params;
+export const getMovieDetails = createAsyncThunk(
+    "movie/getMovieDetails", 
+    async ({ id, mediaType }, { rejectWithValue }) => {
+        try {
+            // id에서 숫자 부분 추출
+            const originalId = id.split('_')[1] || id;
+            
+            let response;
+            if (mediaType === 'tv') {
+                response = await axios.get(`https://api.themoviedb.org/3/tv/${originalId}`, {
+                    params: {
+                        ...options,
+                        append_to_response: "credits,similar,videos,content_ratings,release_dates",
+                        language: "ko-KR"
+                    },
+                });
+            } else if (mediaType === 'movie') {
+                response = await axios.get(`https://api.themoviedb.org/3/movie/${originalId}`, {
+                    params: {
+                        ...options,
+                        append_to_response: "credits,similar,belongs_to_collection,videos,release_dates",
+                        language: "ko-KR"
+                    },
+                });
+            } else if (mediaType === 'animation') {
+                // 애니메이션의 경우 영화로 처리
+                response = await axios.get(`https://api.themoviedb.org/3/movie/${originalId}`, {
+                    params: {
+                        ...options,
+                        append_to_response: "credits,similar,videos,release_dates",
+                        language: "ko-KR"
+                    },
+                });
+            } else {
+                throw new Error("Invalid media type");
+            }
 
-    try {
-        let url =
-            mediaType === "tv"
-                ? `https://api.themoviedb.org/3/tv/${originalId}`
-                : `https://api.themoviedb.org/3/movie/${originalId}`;
+            const { data } = response;
 
-        const response = await axios.get(url, {
-            params: {
-                ...options,
-                append_to_response: "credits,similar,belongs_to_collection,videos,content_ratings,release_dates",
-            },
-        });
-        let certification;
+            // 트레일러 선택 로직
+            const videos = data.videos?.results || [];
+            const trailer =
+                videos.find((video) => video.type === "Trailer" && video.site === "YouTube" && video.iso_639_1 === "ko") ||
+                videos.find((video) => video.type === "Trailer" && video.site === "YouTube") ||
+                videos[0];
 
-        // 비디오 정보 찾기 (한국어 트레일러 우선, 없으면 영어 트레일러)
-        const videos = response.data.videos?.results || [];
-        const trailer =
-            videos.find((video) => video.type === "Trailer" && video.site === "YouTube" && video.iso_639_1 === "ko") ||
-            videos.find((video) => video.type === "Trailer" && video.site === "YouTube") ||
-            videos[0];
+            // 미디어 타입에 따른 인증 정보 처리
+            let certification;
+            if (mediaType === 'tv') {
+                const contentRatings = await axios.get(`https://api.themoviedb.org/3/tv/${originalId}/content_ratings`, {
+                    params: options,
+                });
+                const ratings = contentRatings.data.results || [];
+                const krRating = ratings.find(r => r.iso_3166_1 === "KR");
+                certification = krRating?.rating || "NR";
+            } else {
+                const releaseDates = await axios.get(`https://api.themoviedb.org/3/movie/${originalId}/release_dates`, {
+                    params: options,
+                });
+                const releases = releaseDates.data.results || [];
+                const krRelease = releases.find(r => r.iso_3166_1 === "KR");
+                certification = krRelease?.release_dates[0]?.certification || "NR";
+            }
 
-        if (mediaType === "tv") {
-            // TV 시리즈의 경우
-            const contentRatings = await axios.get(`https://api.themoviedb.org/3/tv/${originalId}/content_ratings`, {
-                params: options,
-            });
-
-            const ratings = contentRatings.data.results || [];
-            const krRating = ratings.find(r => r.iso_3166_1 === "KR");
-            certification = krRating?.rating || "NR";
-        } else {
-            // 영화의 경우
-            const releaseDates = await axios.get(`https://api.themoviedb.org/3/movie/${originalId}/release_dates`, {
-                params: options,
-            });
-
-            const releases = releaseDates.data.results || [];
-            const krRelease = releases.find(r => r.iso_3166_1 === "KR");
-            certification = krRelease?.release_dates[0]?.certification || "NR";
-        }
-
-        return {
-            ...response.data,
-            media_type: mediaType,
-            director: response.data.credits.crew.find((person) => person.job === "Director"),
-            cast: response.data.credits.cast,
-            seriesMovies: response.data.belongs_to_collection
-                ? (
-                    await axios.get(
-                        `https://api.themoviedb.org/3/collection/${response.data.belongs_to_collection.id}`,
+            return {
+                ...data,
+                media_type: mediaType,
+                director: data.credits.crew.find((person) => person.job === "Director"),
+                cast: data.credits.cast,
+                seriesMovies: data.belongs_to_collection
+                    ? (await axios.get(
+                        `https://api.themoviedb.org/3/collection/${data.belongs_to_collection.id}`,
                         { params: options }
-                    )
-                ).data.parts.sort((a, b) => new Date(a.release_date) - new Date(b.release_date))
-                : [],
-            trailer,
-            certification,
-        };
-    } catch (error) {
-        console.error("API Error:", error);
-        throw error;
+                    )).data.parts.sort((a, b) => new Date(a.release_date) - new Date(b.release_date))
+                    : [],
+                trailer,
+                certification,
+            };
+        } catch (error) {
+            console.error("API Error:", error);
+            return rejectWithValue(error.message);
+        }
     }
-});
+);

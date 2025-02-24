@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
 import { tmdbApi } from "../../store/modules/tmdbApi";
 import {
@@ -11,7 +11,11 @@ import {
     PageTitle,
     LoadingSpinner,
     ScrollTopButton,
+    TopIcon,
 } from "./style";
+import { useDispatch } from "react-redux";
+import { addToHistory } from "../../store/modules/watchingHistorySlice";
+import { GlassTopBtn } from "../../ui/icon/GlassCircle";
 
 const AniPage = () => {
     const [animeList, setAnimeList] = useState([]);
@@ -19,7 +23,34 @@ const AniPage = () => {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [isEnd, setIsEnd] = useState(false);
-    const [showScrollButton, setShowScrollButton] = useState(false);
+    const [showTopIcon, setShowTopIcon] = useState(false);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleAnimeClick = (anime, event) => {
+        event.preventDefault();
+        dispatch(
+            addToHistory({
+                ...anime,
+                type: "animation", // 애니메이션 타입 명시
+            })
+        );
+
+        // 상세 페이지로 이동 (ID와 함께 미디어 타입 전달)
+        navigate(`/serve/${anime.id}?type=animation`);
+    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.pageYOffset > 200) {
+                setShowTopIcon(true);
+            } else {
+                setShowTopIcon(false);
+            }
+        };
+        window.addEventListener("scroll", handleScroll);
+    }, []);
 
     // 최대 1000개의 포스터를 위해 최대 50페이지까지 로드
     const MAX_PAGES = 50;
@@ -111,14 +142,14 @@ const AniPage = () => {
     }, [animeList, loading, isEnd]);
 
     // 스크롤 버튼 표시 관리
-    useEffect(() => {
-        const handleScroll = () => {
-            setShowScrollButton(window.pageYOffset > 300);
-        };
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //         setShowScrollButton(window.pageYOffset > 300);
+    //     };
 
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    //     window.addEventListener("scroll", handleScroll);
+    //     return () => window.removeEventListener("scroll", handleScroll);
+    // }, []);
 
     const scrollToTop = () => {
         window.scrollTo({
@@ -140,7 +171,7 @@ const AniPage = () => {
             <MovieGrid>
                 {animeList.map((anime, index) => (
                     <MovieCard key={`${anime.id}-${index}`} id={`anime-${index}`}>
-                        <Link to={`/ani/${anime.id}`}>
+                        <Link to={`/serve/${anime.id}?type=animation`} onClick={(e) => handleAnimeClick(anime, e)}>
                             <div className="relative">
                                 <PosterImage src={anime.poster || "/images/no-poster.png"} loading="lazy" />
                             </div>
@@ -157,9 +188,13 @@ const AniPage = () => {
                 </div>
             )}
 
-            <ScrollTopButton onClick={scrollToTop} visible={showScrollButton}>
-                <FaArrowUp size={30} />
-            </ScrollTopButton>
+            <TopIcon>
+                {showTopIcon && (
+                    <div className="top-icon" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                        <GlassTopBtn />
+                    </div>
+                )}
+            </TopIcon>
         </MoviePageContainer>
     );
 };

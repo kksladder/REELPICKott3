@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
 import { getContentByCategory } from "../../store/modules/tmdbApi";
 import {
@@ -10,8 +10,11 @@ import {
     PageHeader,
     PageTitle,
     LoadingSpinner,
-    ScrollTopButton,
+    TopIcon,
 } from "./style";
+import { useDispatch } from "react-redux";
+import { addToHistory } from "../../store/modules/watchingHistorySlice";
+import { GlassTopBtn } from "../../ui/icon/GlassCircle";
 
 const DramaPage = () => {
     const [dramas, setDramas] = useState([]);
@@ -20,9 +23,22 @@ const DramaPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isEnd, setIsEnd] = useState(false);
     const [showScrollButton, setShowScrollButton] = useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [showTopIcon, setShowTopIcon] = useState(false);
 
     // 최대 1000개의 포스터를 위해 최대 50페이지까지 로드
     const MAX_PAGES = 50;
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.pageYOffset > 200) {
+                setShowTopIcon(true);
+            } else {
+                setShowTopIcon(false);
+            }
+        };
+        window.addEventListener("scroll", handleScroll);
+    }, []);
 
     const fetchDramas = async (page) => {
         try {
@@ -113,13 +129,24 @@ const DramaPage = () => {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
-
-    const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
+    const handleDramaClick = (drama, event) => {
+        event.preventDefault();
+        console.log("Adding drama to history:", drama);
+        dispatch(
+            addToHistory({
+                ...drama,
+                type: "tv", // 컨텐츠 타입 구분
+            })
+        );
+        navigate(`/serve/${drama.id}?type=tv`);
     };
+
+    // const scrollToTop = () => {
+    //     window.scrollTo({
+    //         top: 0,
+    //         behavior: "smooth",
+    //     });
+    // };
 
     if (error) {
         return <div>오류가 발생했습니다: {error}</div>;
@@ -134,7 +161,7 @@ const DramaPage = () => {
             <MovieGrid>
                 {dramas.map((drama, index) => (
                     <MovieCard key={`${drama.id}-${index}`} id={`drama-${index}`}>
-                        <Link to={`/drama/${drama.id}`}>
+                        <Link to={`/serve/${drama.id}?type=tv`} onClick={(e) => handleDramaClick(drama, e)}>
                             <PosterImage src={drama.poster || "/images/no-poster.png"} loading="lazy" />
                         </Link>
                     </MovieCard>
@@ -149,9 +176,13 @@ const DramaPage = () => {
                 </div>
             )}
 
-            <ScrollTopButton onClick={scrollToTop} visible={showScrollButton}>
-                <FaArrowUp size={30} />
-            </ScrollTopButton>
+            <TopIcon>
+                {showTopIcon && (
+                    <div className="top-icon" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                        <GlassTopBtn />
+                    </div>
+                )}
+            </TopIcon>
         </MoviePageContainer>
     );
 };
