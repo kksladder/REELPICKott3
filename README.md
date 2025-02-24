@@ -37,6 +37,141 @@
 * 특정 배우/감독 작품 모아보기 기능
 * 개인화된 맞춤형 영화관 경험 제공
 
+### 3. 폴더 구조 📂
+```bash
+REELPICK
+┣ public
+┃ ┣ fonts
+┃ ┃ ┣ Pretendard-Black.woff
+┃ ┃ ┣ Pretendard-Bold.woff
+┃ ┃ ┣ Pretendard-ExtraBold.woff
+┃ ┃ ┣ Pretendard-ExtraLight.woff
+┃ ┃ ┣ Pretendard-Light.woff
+┃ ┃ ┣ Pretendard-Medium.woff
+┃ ┃ ┣ Pretendard-Regular.woff
+┃ ┃ ┣ Pretendard-SemiBold.woff
+┃ ┃ ┗ Pretendard-Thin.woff
+┃ ┣ images
+┃ ┃ ┣ directors
+┃ ┃ ┃ ┣ director1.jpg
+┃ ┃ ┃ ┣ director2.jpg
+┃ ┃ ┃ ┗ director3.jpg
+┃ ┃ ┣ icons
+┃ ┃ ┃ ┣ arrow_down.svg
+┃ ┃ ┃ ┗ search.svg
+┃ ┃ ┣ img_actors
+┃ ┃ ┃ ┣ actor1.jpg
+┃ ┃ ┃ ┣ actor2.jpg
+┃ ┃ ┃ ┗ actor3.jpg
+┃ ┃ ┣ img_landing
+┃ ┃ ┃ ┣ landing1.jpg
+┃ ┃ ┃ ┣ landing2.jpg
+┃ ┃ ┃ ┗ landing3.jpg
+┃ ┃ ┣ img_login
+┃ ┃ ┃ ┣ kakao_login.png
+┃ ┃ ┃ ┗ naver_login.png
+┃ ┃ ┣ img_logo
+┃ ┃ ┃ ┣ reelpick_logo.png
+┃ ┃ ┃ ┗ reelpick_logo_small.png
+┃ ┃ ┣ img_main
+┃ ┃ ┃ ┣ main_banner1.jpg
+┃ ┃ ┃ ┣ main_banner2.jpg
+┃ ┃ ┃ ┗ main_banner3.jpg
+┃ ┃ ┣ img_membership
+┃ ┃ ┃ ┣ basic.png
+┃ ┃ ┃ ┣ premium.png
+┃ ┃ ┃ ┗ standard.png
+┃ ┃ ┗ img_movies
+┃ ┃   ┣ movie1.jpg
+┃ ┃   ┣ movie2.jpg
+┃ ┃   ┗ movie3.jpg
+┃ ┣ favicon.ico
+┃ ┗ index.html
+┣ src
+┃ ┣ components
+┃ ┃ ┣ common
+┃ ┃ ┃ ┣ Button
+┃ ┃ ┃ ┃ ┣ Button.jsx
+┃ ┃ ┃ ┃ ┗ Button.css
+┃ ┃ ┃ ┗ Input
+┃ ┃ ┃   ┣ Input.jsx
+┃ ┃ ┃   ┗ Input.css
+┃ ┃ ┣ DirectorComponents
+┃ ┃ ┃ ┣ DirectorBanner.jsx
+┃ ┃ ┃ ┣ DirectorContent.jsx
+┃ ┃ ┃ ┗ DirectorTitle.jsx
+┃ ┃ ┣ LandingComponents
+┃ ┃ ┃ ┣ LandingBanner.jsx
+┃ ┃ ┃ ┣ LandingContent.jsx
+┃ ┃ ┃ ┗ LandingTitle.jsx
+┃ ┃ ┣ MainComponents
+┃ ┃ ┃ ┣ MainBanner.jsx
+┃ ┃ ┃ ┣ MainContent.jsx
+┃ ┃ ┃ ┗ MainTitle.jsx
+┃ ┃ ┣ MembershipComponents
+┃ ┃ ┃ ┣ MembershipCard.jsx
+┃ ┃ ┃ ┗ MembershipList.jsx
+┃ ┃ ┣ MovieComponents
+┃ ┃ ┃ ┣ MovieCard.jsx
+┃ ┃ ┃ ┣ MovieDetail.jsx
+┃ ┃ ┃ ┗ MovieList.jsx
+┃ ┃ ┣ MyPageComponents
+┃ ┃ ┃ ┣ MyPageContent.jsx
+┃ ┃ ┃ ┣ MyPageSidebar.jsx
+┃ ┃ ┃ ┗ WishList.jsx
+┃ ┃ ┗ layout
+┃ ┃   ┣ Footer.jsx
+┃ ┃   ┣ Header.jsx
+┃ ┃   ┣ Layout.jsx
+┃ ┃   ┗ Navbar.jsx
+┃ ┣ hooks
+┃ ┃ ┣ useAuth.js
+┃ ┃ ┗ useMovies.js
+┃ ┣ pages
+┃ ┃ ┣ DirectorPage
+┃ ┃ ┃ ┣ DirectorPage.jsx
+┃ ┃ ┃ ┗ DirectorPage.css
+┃ ┃ ┣ LandingPage
+┃ ┃ ┃ ┣ LandingPage.jsx
+┃ ┃ ┃ ┗ LandingPage.css
+┃ ┃ ┣ LoginPage
+┃ ┃ ┃ ┣ LoginPage.jsx
+┃ ┃ ┃ ┗ LoginPage.css
+┃ ┃ ┣ MainPage
+┃ ┃ ┃ ┣ MainPage.jsx
+┃ ┃ ┃ ┗ MainPage.css
+┃ ┃ ┣ MembershipPage
+┃ ┃ ┃ ┣ MembershipPage.jsx
+┃ ┃ ┃ ┗ MembershipPage.css
+┃ ┃ ┣ MovieDetailPage
+┃ ┃ ┃ ┣ MovieDetailPage.jsx
+┃ ┃ ┃ ┗ MovieDetailPage.css
+┃ ┃ ┣ MyPage
+┃ ┃ ┃ ┣ MyPage.jsx
+┃ ┃ ┃ ┗ MyPage.css
+┃ ┃ ┗ SearchPage
+┃ ┃   ┣ SearchPage.jsx
+┃ ┃   ┗ SearchPage.css
+┃ ┣ services
+┃ ┃ ┣ api.js
+┃ ┃ ┗ auth.js
+┃ ┣ styles
+┃ ┃ ┣ common.css
+┃ ┃ ┣ reset.css
+┃ ┃ ┗ variables.css
+┃ ┣ utils
+┃ ┃ ┣ constants.js
+┃ ┃ ┗ helpers.js
+┃ ┣ App.css
+┃ ┣ App.js
+┃ ┣ index.css
+┃ ┗ index.js
+┣ .env
+┣ .gitignore
+┣ package-lock.json
+┣ package.json
+┗ README.md
+
 ## 시연 영상 📱
 * 랜딩페이지
 * 회원가입 
