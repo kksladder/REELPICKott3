@@ -72,9 +72,7 @@ const Table = styled.div`
 const TableHeader = styled.div`
     display: grid;
     height: 74px;
-
-    grid-template-columns: 86px 559px 63px 27px auto;
-
+    grid-template-columns: 93px 690px 73px 17px auto;
     font-size: var(--font-header-Small);
     color: var(--secondary-50);
     border-bottom: 1px solid var(--secondary-400);
@@ -93,7 +91,7 @@ const TableRow = styled.div`
     display: grid;
     height: 73px;
     width: 100%;
-    grid-template-columns: 86px 538px 23px 45px auto;
+    grid-template-columns: 86px 681px 23px 45px auto;
     font-size: var(--font-header-Small);
     color: var(--secondary-50);
     border-bottom: 1px solid var(--secondary-400);
@@ -211,7 +209,7 @@ const Pagination = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 40px;
+    margin-top: 380px;
     gap: 8px;
 `;
 
@@ -279,27 +277,6 @@ const AccountCS = () => {
             views: "343,239",
             isNotice: true,
         },
-        {
-            id: 2,
-            title: "[공지] 업데이트 안내",
-            date: "2025.01.27",
-            views: "343,231",
-            isNotice: true,
-        },
-        {
-            id: 3,
-            title: "[공지] 서비스 점검 안내",
-            date: "2025.01.27",
-            views: "343,230",
-            isNotice: true,
-        },
-        {
-            id: 4,
-            title: "2월 휴무 프로그램 안내",
-            date: "2025.01.27",
-            views: "343,230",
-            isNotice: false,
-        },
     ];
 
     const filteredFAQs = activeCategory === "전체" ? faqItems : faqItems.filter((item) => item.type === activeCategory);
@@ -348,11 +325,11 @@ const AccountCS = () => {
                         </Table>
                         <Pagination>
                             <PageButton>1</PageButton>
-                            <PageButton>2</PageButton>
+                            {/*  <PageButton>2</PageButton>
                             <PageButton>3</PageButton>
                             <PageButton>4</PageButton>
                             <PageButton>5</PageButton>
-                            <PageButton>6</PageButton>
+                            <PageButton>6</PageButton> */}
                         </Pagination>
                     </TableContainer>
                 )}
