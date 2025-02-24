@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { getDirectorDetails, getActorDetails } from "../../store/modules/getThunk";
 import DirecMovItem from "../../components/directer/DirecMovItem";
 import MovList from "../../components/directer/MovList";
-import { DirectorWrap } from "./style";
+import { DirectorWrap, TopIcon } from "./style";
 import { GlassTopBtn } from "../../ui/icon/GlassCircle";
 
 const DirectorPage = () => {
@@ -45,11 +45,13 @@ const DirectorPage = () => {
         <DirectorWrap>
             <DirecMovItem personInfo={personInfo} isDirector={isDirector} />
             <MovList works={personInfo.works} isDirector={isDirector} />
-            {showTopIcon && (
-                <div className="top-icon" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-                    <GlassTopBtn />
-                </div>
-            )}
+            <TopIcon>
+                {showTopIcon && (
+                    <div className="top-icon" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                        <GlassTopBtn />
+                    </div>
+                )}
+            </TopIcon>
         </DirectorWrap>
     );
 };

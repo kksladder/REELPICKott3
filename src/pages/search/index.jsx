@@ -45,6 +45,9 @@ import {
     RecommendationsSection,
     RecommendationsHeader,
 } from "./style";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router";
+import { addToHistory } from "../../store/modules/watchingHistorySlice";
 
 // 로컬스토리지 키
 const RECENT_SEARCHES_KEY = "recentSearches";
@@ -61,6 +64,8 @@ const SearchPage = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const searchContainerRef = useRef(null);
     const searchInputRef = useRef(null);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     //** 무비 담기
     const [movies, setMovies] = useState([]);
@@ -272,6 +277,19 @@ const SearchPage = () => {
         }
     };
 
+    // 드라마 클릭 시 상세페이지로 연결
+    const handleContentClick = (content, event) => {
+        event.preventDefault();
+        console.log("Adding drama to history:", content);
+        dispatch(
+            addToHistory({
+                ...content,
+                type: content.media_type || "movie",
+            })
+        );
+        navigate(`/serve/${content.id}?type=${content.media_type}`);
+    };
+
     // 검색 실행 함수 (Enter 키 누를 때 또는 검색 버튼 클릭 시)
     const executeSearch = () => {
         if (searchQuery.trim()) {
@@ -335,6 +353,18 @@ const SearchPage = () => {
         localStorage.removeItem(RECENT_SEARCHES_KEY);
     };
 
+    const handleThumbnailClick = (thumbnail, e) => {
+        e.preventDefault();
+        dispatch(
+            addToHistory({
+                id: thumbnail.id,
+                title: thumbnail.title,
+                type: thumbnail.mediaType,
+            })
+        );
+        navigate(`/serve/${thumbnail.id}?type=${thumbnail.mediaType}`);
+    };
+
     // 기본 이미지 경로 설정 (영화 포스터 이미지가 없을 경우 사용)
     const defaultImageUrl = "/images/profileNo.png";
 
@@ -342,27 +372,39 @@ const SearchPage = () => {
     const thumbnails = [
         {
             id: 1,
+            title: "Casino",
             imageUrl: "/images/casino.jpg",
+            mediaType: "movie",
         },
         {
             id: 2,
+            title: "Breaking Bad",
             imageUrl: "/images/breakinbad.jpg",
+            mediaType: "tv",
         },
         {
             id: 3,
+            title: "Ozark",
             imageUrl: "/images/ozak.jpg",
+            mediaType: "tv",
         },
         {
             id: 4,
+            title: "Crime City",
             imageUrl: "/images/crimecity.jpg",
+            mediaType: "movie",
         },
         {
             id: 5,
+            title: "Slow Horses",
             imageUrl: "/images/slowhorses.jpg",
+            mediaType: "tv",
         },
         {
             id: 6,
+            title: "Parasite",
             imageUrl: "/images/parasite.jpg",
+            mediaType: "movie",
         },
     ];
 
@@ -452,17 +494,25 @@ const SearchPage = () => {
                             <SearchResultsCount>검색 결과: {movieResult.length}개</SearchResultsCount>
                         </SearchResultsHeader>
                         <MoviesGrid>
-                            {movieResult.map((movie) => (
-                                <MovieCard key={movie.id} $isKorean={movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null}>
-                                    <img
-                                        src={movie.poster_path || defaultImageUrl}
-                                        alt={movie.title}
-                                        loading="lazy"
-                                        onError={(e) => {
-                                            e.target.onerror = null;
-                                            e.target.src = defaultImageUrl;
-                                        }}
-                                    />
+                            {movieResult.map((content) => (
+                                <MovieCard
+                                    key={content.id}
+                                    $isKorean={content.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null}
+                                >
+                                    <Link
+                                        to={`/serve/${content.id}?type=${content.media_type}`}
+                                        onClick={(e) => handleContentClick(content, e)}
+                                    >
+                                        <img
+                                            src={content.poster_path || defaultImageUrl}
+                                            alt={content.title}
+                                            loading="lazy"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = defaultImageUrl;
+                                            }}
+                                        />
+                                    </Link>
                                 </MovieCard>
                             ))}
                         </MoviesGrid>
@@ -473,20 +523,25 @@ const SearchPage = () => {
                         <RecommendationsSection>
                             <RecommendationsHeader>이런 영화는 어떠세요?</RecommendationsHeader>
                             <MoviesGrid>
-                                {similarMovies.map((movie) => (
+                                {similarMovies.map((content) => (
                                     <MovieCard
-                                        key={movie.id}
-                                        $isKorean={movie.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null}
+                                        key={content.id}
+                                        $isKorean={content.title.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/) !== null}
                                     >
-                                        <img
-                                            src={movie.poster_path || defaultImageUrl}
-                                            alt={movie.title}
-                                            loading="lazy"
-                                            onError={(e) => {
-                                                e.target.onerror = null;
-                                                e.target.src = defaultImageUrl;
-                                            }}
-                                        />
+                                        <Link
+                                            to={`/serve/${content.id}?type=${content.media_type}`}
+                                            onClick={(e) => handleContentClick(content, e)}
+                                        >
+                                            <img
+                                                src={content.poster_path || defaultImageUrl}
+                                                alt={content.title}
+                                                loading="lazy"
+                                                onError={(e) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src = defaultImageUrl;
+                                                }}
+                                            />
+                                        </Link>
                                     </MovieCard>
                                 ))}
                             </MoviesGrid>
@@ -537,7 +592,12 @@ const SearchPage = () => {
                             <MoviesGrid>
                                 {thumbnails.map((thumbnail) => (
                                     <MovieCard key={thumbnail.id}>
-                                        <img src={thumbnail.imageUrl} alt="" loading="lazy" />
+                                        <Link
+                                            to={`/serve/${thumbnail.id}?type=${thumbnail.mediaType}`}
+                                            onClick={(e) => handleThumbnailClick(thumbnail, e)}
+                                        >
+                                            <img src={thumbnail.imageUrl} alt="" loading="lazy" />
+                                        </Link>
                                     </MovieCard>
                                 ))}
                             </MoviesGrid>
@@ -545,19 +605,6 @@ const SearchPage = () => {
                     </div>
                 </>
             )}
-
-            {/* {(!showResults || (showResults && movieResult.length === 0 && similarMovies.length === 0)) && (
-                <ThumbnailsSection>
-                    <ThumbnailsHeader>더 다양한 검색어가 필요하시다면!</ThumbnailsHeader>
-                    <MoviesGrid>
-                        {thumbnails.map((thumbnail) => (
-                            <MovieCard key={thumbnail.id}>
-                                <img src={thumbnail.imageUrl} alt="" loading="lazy" />
-                            </MovieCard>
-                        ))}
-                    </MoviesGrid>
-                </ThumbnailsSection>
-            )} */}
         </SearchContainer>
     );
 };
