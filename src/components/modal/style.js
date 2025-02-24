@@ -6,7 +6,7 @@ export const ModalWrapper = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #1f1f1f;
     display: flex;
     justify-content: center;
     align-items: center;
