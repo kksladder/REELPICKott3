@@ -9,20 +9,25 @@ export const DirectorPageContainer = styled.div`
     max-width: 100%;
     margin: 0 auto;
     padding: 64px;
-    margin-top: 200px;
+    margin-top: 30px;
 `;
-
 export const PageHeader = styled.div`
-    margin-bottom: 24px;
+    margin-bottom: 100px;
+    width: 100%;
+    position: relative;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
 `;
 
 export const PageTitle = styled.h1`
+position: absolute;
     font-size: 30px;
     font-weight: 700;
-    margin: 0;
+    /* width: fit-content; */
+    padding: 15px 20px;
+    border: 1px solid var(--primary-40);
+    border-radius: 50px;
 `;
 
 export const DirectorGrid = styled.div`
@@ -148,3 +153,19 @@ export const DirectorCardOverlay = styled.div`
         opacity: 1;
     }
 `;
+export const TopIcon = styled.button`
+.mov-item {
+        width: 100%;
+        height: auto;
+    }
+    .mov-list {
+        margin-top: 80px;
+    }
+    .top-icon{
+        position: fixed;
+        right: 50px;
+        bottom: 50px;
+        z-index: 1;
+        cursor: pointer;
+    }
+`

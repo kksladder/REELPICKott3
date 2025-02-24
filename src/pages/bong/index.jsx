@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { FaArrowUp } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+// import { FaArrowUp } from "react-icons/fa";
 import { getDirectorsByCountry } from "../../store/modules/getThunk3";
 import {
     DirectorPageContainer,
@@ -11,17 +11,20 @@ import {
     PageHeader,
     PageTitle,
     LoadingSpinner,
-    ScrollTopButton,
+    // ScrollTopButton,
     DirectorCardOverlay,
     DirectorName,
     KnownForTitle,
+    TopIcon,
 } from "./style";
+import { GlassTopBtn } from "../../ui/icon/GlassCircle";
 
 const DirectorPage2 = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { filteredDirectors, loading, error, selectedCountry, hasMore } = useSelector((state) => state.directorR);
     const [currentPage, setCurrentPage] = useState(1);
-    const [showScrollButton, setShowScrollButton] = useState(false);
+    const [showTopIcon, setShowTopIcon] = useState(false);
 
     // 초기 데이터 로드
     useEffect(() => {
@@ -57,18 +60,23 @@ const DirectorPage2 = () => {
     // 스크롤 버튼
     useEffect(() => {
         const handleScroll = () => {
-            setShowScrollButton(window.pageYOffset > 300);
+            if (window.pageYOffset > 200) {
+                setShowTopIcon(true);
+            } else {
+                setShowTopIcon(false);
+            }
         };
-
         window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
+    const handleDramaClick = (director, event) => {
+        event.preventDefault();
+        console.log("Adding drama to history:", director);
+        dispatch({
+            ...director,
+            type: "directer", // 컨텐츠 타입 구분
         });
+        navigate(`/directer/${director.id}`);
     };
 
     if (error) {
@@ -82,25 +90,28 @@ const DirectorPage2 = () => {
             </PageHeader>
 
             <DirectorGrid>
-                {filteredDirectors.map((director, index) => (
+                {filteredDirectors.map((directer, index) => (
                     <DirectorCard
-                        key={`${director.id}-${index}`}
+                        key={`${directer.id}-${index}`}
                         id={`director-${index}`}
-                        hasCannesAward={director.hasCannesAward}
+                        hasCannesAward={directer.hasCannesAward}
                     >
-                        <Link to={`/director/${director.id}`}>
+                        <Link
+                            to={`/directer/${directer.id}type=directer`}
+                            onClick={(e) => handleDramaClick(directer, e)}
+                        >
                             <ProfileImage
                                 src={
-                                    director.profile_path
-                                        ? `https://image.tmdb.org/t/p/w500${director.profile_path}`
+                                    directer.profile_path
+                                        ? `https://image.tmdb.org/t/p/w500${directer.profile_path}`
                                         : "/image/profileNo.png"
                                 }
                                 loading="lazy"
-                                alt={director.name}
+                                alt={directer.name}
                             />
                             <DirectorCardOverlay>
-                                <DirectorName>{director.name}</DirectorName>
-                                {director.known_for?.slice(0, 2).map((work) => (
+                                <DirectorName>{directer.name}</DirectorName>
+                                {directer.known_for?.slice(0, 2).map((work) => (
                                     <KnownForTitle key={work.id}>{work.title}</KnownForTitle>
                                 ))}
                             </DirectorCardOverlay>
@@ -117,9 +128,13 @@ const DirectorPage2 = () => {
                 </div>
             )}
 
-            <ScrollTopButton onClick={scrollToTop} visible={showScrollButton ? true : undefined}>
-                <FaArrowUp size={30} />
-            </ScrollTopButton>
+            <TopIcon>
+                {showTopIcon && (
+                    <div className="top-icon" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+                        <GlassTopBtn />
+                    </div>
+                )}
+            </TopIcon>
         </DirectorPageContainer>
     );
 };
