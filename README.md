@@ -1,8 +1,13 @@
 # REELPICK (릴픽) - OTT Content Curation Platform
 
 ## 프로젝트 소개 🎬
+<<<<<<< HEAD
 
 릴픽(REELPICK)은 사용자가 직접 자신의 취향을 큐레이팅할 수 있는 OTT 플랫폼입니다. 프로젝트명 'REELPICK'은 영화 촬영 시 사용되는 필름 릴(REEL)에서 착안하여,
+=======
+릴픽은 사용자가 직접 보고싶은 영화 또는 영상을 선택하여 자신만의 취향대로 선택해서 볼수 있는 OTT 플랫폼입니다. 
+프로젝트명 'REELPICK'은 영화 촬영 시 사용되는 필름 릴(REEL)에서 착안하여, 
+>>>>>>> b49f4cc55579e203897b7f7dbe88beb7d194d5f7
 사용자가 선택(PICK)한 콘텐츠를 중심으로 서비스를 제공한다는 의미를 담고 있습니다.
 
 ## 개발 기간 ⏰
@@ -181,6 +186,7 @@ REELPICK
 ┣ package-lock.json
 ┣ package.json
 ┗ README.md
+```
 
 ## 시연 영상 📱
 * 랜딩페이지
