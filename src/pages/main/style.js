@@ -74,7 +74,7 @@ export const CenteredImageWrapper = styled.div`
         z-index: -8; // 이미지가 오버레이 위에 오지 않도록 z-index를 2로 설정
     }
 `;
-export const VideoFrame2 = styled.iframe`
+/* export const VideoFrame2 = styled.iframe`
     position: absolute;
     top: 114px;
     left: 1%;
@@ -97,7 +97,7 @@ export const VideoFrame1 = styled.iframe`
     width: 23%;
     height: 27.2%;
     pointer-events: none;
-`;
+`; */
 
 export const DeviceImageWrapper = styled.div`
     width: 100%;
@@ -105,26 +105,63 @@ export const DeviceImageWrapper = styled.div`
     height: 100vh;
     justify-content: center;
     position: relative;
-    .iphone {
-        width: 553.651px;
+    .iPhone_device {
+        width: 600px;
         height: 398.272px;
         position: absolute;
-        bottom: 29%;
-        /* top: 4%; */
-        left: 5%;
-        z-index: 2;
+        z-index: 10;
+        bottom: 3%;
+        left: 4%;
+        iframe {
+            position: absolute;
+            width: 74%;
+            bottom: 116px;
+            height: 60%;
+            right: 91px;
+            z-index: -1;
+        }
+        .iphone {
+            width: 100%;
+        }
     }
-    .desktop {
-        width: 962.667px;
-        height: 722px;
+    .desktop_device {
+        width: 850px;
+        height: 600px;
         position: absolute;
+        right: 33%;
+
+        bottom: 3%;
+        .desktop {
+            position: absolute;
+            bottom: 1%;
+        }
+        iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            top: -19%;
+            left: 16%;
+        }
     }
-    .ipad {
-        position: absolute;
+    .iPadPro_device {
         width: 508.749px;
         height: 389.133px;
-        right: 7%;
-        bottom: 36.4%;
+        position: absolute;
+        bottom: 14%;
+        right: 4%;
+        .ipad {
+            width: 100%;
+            height: 100%;
+        }
+        iframe {
+            position: absolute;
+            width: 94%;
+            bottom: 15px;
+            height: 95%;
+            right: 17px;
+            z-index: 1;
+        }
     }
 `;
 

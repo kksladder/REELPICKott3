@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 
 export const Wrapper = styled.div``;
@@ -189,6 +190,7 @@ const HeaderRight = styled.div`
     }
 `;
 const AccountMembership = () => {
+    const navigate = useNavigate();
     const [selectedMembership, setSelectedMembership] = useState("");
     const [checkedMemberships, setCheckedMemberships] = useState({
         AD_standard: false,
@@ -261,6 +263,7 @@ const AccountMembership = () => {
             // 선택된 멤버십 정보를 localStorage에 저장
             localStorage.setItem("selectedMembership", JSON.stringify(membershipInfo));
             alert(`선택한 멤버십: ${selectedMembership}으로 변경되었습니다.`);
+            navigate("/mypage/membershipmanagement");
         } else {
             alert("먼저 멤버십을 선택하세요.");
         }
