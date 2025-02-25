@@ -2,9 +2,6 @@ import {
     BottomMainTitleWrapper,
     CenteredImageWrapper,
     DeviceImageWrapper,
-    VideoFrame1,
-    VideoFrame2,
-    VideoFrame3,
     HeaderWrapper,
     MainTitle,
     LandingBackground,
@@ -53,37 +50,43 @@ const MainPage = () => {
             </CenteredImageWrapper>
 
             <DeviceImageWrapper>
-                <img src="./images/iPhone_deviec.png" alt="iPhone_device" width={1120} className="iphone" />
-                <VideoFrame1
-                    src={`https://www.youtube.com/embed/${videoId}?${opts}`}
-                    title="[검은 수녀들 DARK NUNS] 런칭 예고편"
-                    frameBorder="0"
-                    allow="autoplay; encrypted-media;"
-                    allowFullScreen
-                    style={{ pointerEvents: "none" }}
-                />
+                <div className="iPhone_device">
+                    <iframe
+                        src={`https://www.youtube.com/embed/${videoId}?${opts}`}
+                        title="위키드"
+                        frameBorder="0"
+                        allow="autoplay; encrypted-media;"
+                        allowFullScreen
+                        style={{ pointerEvents: "none" }}
+                    />
+                    <img src="./images/iPhone_deviec.png" alt="iPhone_device" width={1120} className="iphone" />
+                </div>
 
-                <img src="./images/desktop_device.png" alt="desktop_device" width={1120} className="desktop" />
-                <VideoFrame2
-                    src="https://www.youtube.com/embed/fYhSVx-ys-Q?autoplay=1&mute=1&showinfo=0&modestbranding=1&controls=0&rel=0&playlist=fYhSVx-ys-Q&loop=1"
-                    title="[미키 17] 2차 예고편"
-                    frameBorder="0"
-                    allow="autoplay; encrypted-media;"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                    style={{ pointerEvents: "none" }}
-                />
+                <div className="desktop_device">
+                    <iframe
+                        src="https://www.youtube.com/embed/fYhSVx-ys-Q?autoplay=1&mute=1&showinfo=0&modestbranding=1&controls=0&rel=0&playlist=fYhSVx-ys-Q&loop=1"
+                        title="[미키 17] 2차 예고편"
+                        frameBorder="0"
+                        allow="autoplay; encrypted-media;"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                        style={{ pointerEvents: "none" }}
+                    />
+                    <img src="./images/desktop_device.png" alt="desktop_device" width={1120} className="desktop" />
+                </div>
 
-                <img src="./images/iPadPro_device.png" alt="iPadPro_device" width={1120} className="ipad" />
-                <VideoFrame3
-                    src="https://www.youtube.com/embed/rmk6xIZanic?autoplay=1&mute=1&showinfo=0&controls=0&modestbranding=1&rel=0&playlist=rmk6xIZanic&loop=1"
-                    title="[검은 수녀들 DARK NUNS] 런칭 예고편"
-                    frameBorder="0"
-                    allow="autoplay; encrypted-media;"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                    style={{ pointerEvents: "none" }}
-                />
+                <div className="iPadPro_device">
+                    <img src="./images/iPadPro_device.png" alt="iPadPro_device" width={1120} className="ipad" />
+                    <iframe
+                        src="https://www.youtube.com/embed/rmk6xIZanic?autoplay=1&mute=1&showinfo=0&controls=0&modestbranding=1&rel=0&playlist=rmk6xIZanic&loop=1"
+                        title="[검은 수녀들 DARK NUNS] 런칭 예고편"
+                        frameBorder="0"
+                        allow="autoplay; encrypted-media;"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                        style={{ pointerEvents: "none" }}
+                    />
+                </div>
             </DeviceImageWrapper>
 
             <BottomMainTitleWrapper>
