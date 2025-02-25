@@ -33,8 +33,8 @@ const WatchingContent = () => {
         speed: 500,
         slidesToShow: 5,
         slidesToScroll: 1,
-        prevArrow: <SquarePreveBtn />, // 커스텀 prevArrow 설정
-        nextArrow: <SquareNextBtn />, // 기본 next 버튼
+        /*       prevArrow: <SquarePreveBtn />, */ // 커스텀 prevArrow 설정
+        /*   nextArrow: <SquareNextBtn />, */ // 기본 next 버튼
         responsive: [
             {
                 breakpoint: 1024, // 화면이 1024px 이하일 때
