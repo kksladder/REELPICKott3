@@ -172,8 +172,7 @@ REELPICK
 ┣ package-lock.json
 ┣ package.json
 ┗ README.md
-
-# 프로젝트명
+```
 
 ## 시연 영상 📱
 * 랜딩페이지
