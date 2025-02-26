@@ -1,16 +1,18 @@
-import { Outlet } from 'react-router-dom';
-import Header from './header';
+import { Outlet } from "react-router-dom";
+import Header from "./header";
+import styled from "styled-components";
+export const Wrap = styled.div``;
 
 const Layout = () => {
     return (
-        <div className="wrap">
+        <Wrap className="wrap">
             <Header />
             <main className="main">
                 {/* 라우터 페이지들어오기  */}
                 <Outlet />
             </main>
             {/*      <Footer /> */}
-        </div>
+        </Wrap>
     );
 };
 

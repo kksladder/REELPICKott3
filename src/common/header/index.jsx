@@ -11,7 +11,8 @@ const Header = () => {
             <div className="header_inner">
                 <h1>
                     <Link to="/">
-                        <img src="/images/logo.svg" alt="logo" />
+                        <img src="/images/logo.svg" alt="logo" className="logo_desktop" />
+                        <img src="/images/logo_m.png" alt="logo" className="logo_m" />
                     </Link>
                 </h1>
                 {/*  */}
