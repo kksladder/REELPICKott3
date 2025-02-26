@@ -41,6 +41,11 @@ export const MainTitle = styled.div`
         white-space: nowrap;
         margin-bottom: 20px;
         position: relative;
+
+        @media (max-width: 768px) {
+            font-size: 31px;
+            line-height: 1.5;
+        }
     }
 `;
 
@@ -50,7 +55,10 @@ export const CenteredImageWrapper = styled.div`
     justify-content: center;
     align-items: center;
     height: 100vh;
-
+    @media (max-width: 768px) {
+        margin-top: 20px;
+        height: 400px;
+    }
     // 이미지 위에 검은색 반투명 오버레이를 추가
     &::before {
         content: ""; // 가상 요소의 내용은 빈 문자열
@@ -68,10 +76,26 @@ export const CenteredImageWrapper = styled.div`
         font-size: var(--font-body-XXlarge);
         font-weight: var(--font-weight-SemiBold);
         z-index: 1;
+
+        @media (max-width: 768px) {
+            font-size: 22px;
+        }
     }
     img {
         position: relative; // 이미지가 오버레이 위에 렌더링되도록 하기 위해
         z-index: -8; // 이미지가 오버레이 위에 오지 않도록 z-index를 2로 설정
+    }
+    .desktop_image {
+        display: block;
+        @media (max-width: 768px) {
+            display: none;
+        }
+    }
+    .mobile_image {
+        display: none;
+        @media (max-width: 768px) {
+            display: block;
+        }
     }
 `;
 /* export const VideoFrame2 = styled.iframe`
@@ -105,6 +129,11 @@ export const DeviceImageWrapper = styled.div`
     height: 100vh;
     justify-content: center;
     position: relative;
+
+    @media (max-width: 768px) {
+        height: 600px;
+    }
+
     .iPhone_device {
         width: 600px;
         height: 398.272px;
@@ -112,6 +141,9 @@ export const DeviceImageWrapper = styled.div`
         z-index: 10;
         bottom: 3%;
         left: 4%;
+        @media (max-width: 768px) {
+            width: 100%;
+        }
         iframe {
             position: absolute;
             width: 74%;
@@ -119,6 +151,12 @@ export const DeviceImageWrapper = styled.div`
             height: 60%;
             right: 91px;
             z-index: -1;
+            @media (max-width: 768px) {
+                bottom: 54%;
+                width: 75%;
+                height: auto;
+                right: 14%;
+            }
         }
         .iphone {
             width: 100%;
@@ -131,6 +169,9 @@ export const DeviceImageWrapper = styled.div`
         right: 33%;
 
         bottom: 3%;
+        @media (max-width: 768px) {
+            display: none;
+        }
         .desktop {
             position: absolute;
             bottom: 1%;
@@ -150,6 +191,9 @@ export const DeviceImageWrapper = styled.div`
         position: absolute;
         bottom: 14%;
         right: 4%;
+        @media (max-width: 768px) {
+            display: none;
+        }
         .ipad {
             width: 100%;
             height: 100%;
@@ -174,7 +218,9 @@ export const BottomMainTitleWrapper = styled.div`
     justify-content: center;
     text-align: center;
     @media (max-width: 768px) {
-        padding: 2rem;
+        width: 91.66%;
+        margin-left: auto;
+        margin-right: auto;
     }
     p {
         color: var(--white);
@@ -183,6 +229,7 @@ export const BottomMainTitleWrapper = styled.div`
         margin-bottom: 88px;
         @media (max-width: 768px) {
             font-size: 17px;
+            margin-bottom: 20px;
         }
     }
     ul {
@@ -212,6 +259,7 @@ export const BottomMainTitleWrapper = styled.div`
         @media (max-width: 768px) {
             margin-bottom: 150px;
             width: 291px;
+            height: 49px;
             padding: 0px;
             font-size: 16px;
         }

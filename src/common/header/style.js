@@ -16,9 +16,12 @@ export const HeaderWrap = styled.header`
     margin: 0 70px;
     width: calc(100% - 140px);
     height: 70px;
-    max-width: 1920px;
-    min-width: 390px;
 
+    @media (max-width: 768px) {
+        margin: 0 16px;
+        max-width: none;
+        min-width: 361px;
+    }
     .header_inner {
         display: flex;
         width: 100%;
@@ -29,7 +32,30 @@ export const HeaderWrap = styled.header`
             margin: 0;
             padding: 0;
             height: 100%;
-            line-height: 82px;
+
+            @media (max-width: 768px) {
+                width: 200px;
+            }
+            a {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                .logo_desktop {
+                    display: block;
+
+                    @media (max-width: 768px) {
+                        display: none;
+                    }
+                }
+                .logo_m {
+                    display: none;
+
+                    @media (max-width: 768px) {
+                        display: block;
+                    }
+                }
+            }
         }
     }
 `;
@@ -44,6 +70,9 @@ export const TopMenu = styled.div`
     width: 87%;
     height: 70px;
 
+    @media (max-width: 768px) {
+        width: calc(100% - 200px);
+    }
     div {
         width: 100%;
         height: 100%;
@@ -71,7 +100,9 @@ export const TopMenu = styled.div`
 
     .b1 {
         background-color: var(--primary-40);
-
+        @media (max-width: 768px) {
+            display: none;
+        }
         &:hover {
             background-color: var(--primary-50);
         }

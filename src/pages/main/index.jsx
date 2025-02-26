@@ -45,7 +45,8 @@ const MainPage = () => {
             </HeaderWrapper>
 
             <CenteredImageWrapper>
-                <img src="./images/G12.png" alt="main-1" width={1120} />
+                <img src="./images/G12.png" alt="main-1" width={1120} className="desktop_image " />
+                <img src="./images/main_m.png" alt="main-2" className="mobile_image " />
                 <p>릴픽과 함께 취향저격 컨텐츠를 담아보세요 </p>
             </CenteredImageWrapper>
 

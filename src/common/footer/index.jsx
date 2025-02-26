@@ -2,10 +2,13 @@ import styled from "styled-components";
 
 const Footer = styled.footer`
     width: 100%;
-    height: 285px;
+    height: auto;
     background-color: #424242;
     padding: 60px 80px;
     color: #ffffff;
+    @media (max-width: 768px) {
+        padding: 60px 20px;
+    }
 `;
 
 const FooterContent = styled.div`
@@ -24,6 +27,10 @@ const CompanyInfoContainer = styled.div`
     font-size: 14px;
     line-height: 1.5;
     margin-bottom: 15px;
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 0px;
+    }
 `;
 
 const InfoColumn = styled.div``;
@@ -33,17 +40,22 @@ const EmailContainer = styled.div`
     a {
         color: #ffffff;
         text-decoration: none;
+        line-height: 1.2;
     }
 `;
 
 const BottomContainer = styled.div`
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media (max-width: 768px) {
+        position: static;
+        flex-direction: column;
+        gap: 10px;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-top: 10px;
+    }
 `;
 
 const Copyright = styled.div`
@@ -83,12 +95,13 @@ const FooterComponent = () => {
                 </CompanyInfoContainer>
                 <EmailContainer>
                     <a href="mailto:support_kr@reelpick.com">support_kr@reelpick.com</a>
-                    {", "}
+                    <br />
                     <a href="mailto:biz_@reelpick.com">biz_@reelpick.com</a>
                     {" (비즈니스 문의)"}
                 </EmailContainer>
                 <BottomContainer>
                     <Copyright>© REELPICK CORPORATION. All rights reserved.</Copyright>
+
                     <SocialLinks>
                         <FaYoutube />
 

@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-import { TopMenu } from './style';
-import { useSelector, useDispatch } from 'react-redux';
-import { authActions } from '../../store/modules/authSlice'; // 로그아웃 액션을 추가합니다.
+import { useNavigate } from "react-router-dom";
+import { TopMenu } from "./style";
+import { useSelector, useDispatch } from "react-redux";
+import { authActions } from "../../store/modules/authSlice"; // 로그아웃 액션을 추가합니다.
 
 const NavBarMain = () => {
     const navigate = useNavigate(); // navigate 훅을 사용하여 라우팅
@@ -13,14 +13,14 @@ const NavBarMain = () => {
         if (authed) {
             dispatch(authActions.logout()); // 로그아웃 상태로 변경
 
-            navigate('/'); // 로그인 페이지로 이동
+            navigate("/"); // 로그인 페이지로 이동
         } else {
-            navigate('/login'); // 로그인 페이지로 이동
+            navigate("/login"); // 로그인 페이지로 이동
         }
     };
 
     const handleSignUpClick = () => {
-        navigate('/signUp'); // 회원가입 페이지로 이동
+        navigate("/signUp"); // 회원가입 페이지로 이동
     };
 
     return (
@@ -35,7 +35,10 @@ const NavBarMain = () => {
                 {authed ? (
                     <button onClick={handleLoginClick}>로그아웃</button> // 로그인 상태에서 로그아웃
                 ) : (
-                    <button onClick={handleLoginClick}>로그인</button> // 로그인하지 않았을 때 로그인
+                    <button onClick={handleLoginClick} className="login">
+                        {" "}
+                        로그인
+                    </button> // 로그인하지 않았을 때 로그인
                 )}
             </div>
         </TopMenu>

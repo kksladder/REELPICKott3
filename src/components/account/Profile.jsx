@@ -29,10 +29,12 @@ import ProfileModal from "./ProfileModal";
 import ProfileEdit from "./ProfileEdit";
 import ViewingHistory from "./ViewingHistory";
 import { authActions } from "../../store/modules/authSlice";
+import { useNavigate } from "react-router";
 
 const Profile = () => {
     const { user } = useSelector((state) => state.authR);
     const [selectedImage, setSelectedImage] = useState(user?.profileImage || "/images/default_profile2.png");
+    const navigate = useNavigate();
     const [newUsername, setNewUsername] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isImageModalOpen, setIsImageModalOpen] = useState(false);
@@ -186,6 +188,12 @@ const Profile = () => {
         }
     }, [dispatch]);
 
+    const deleteID = () => {
+        alert("회원 탈퇴 하시겠습니까?");
+        localStorage.removeItem("user_" + user.id_email);
+        localStorage.setItem("authed", false);
+        navigate("/");
+    };
     return (
         <>
             <H1>계정</H1>
@@ -335,6 +343,22 @@ const Profile = () => {
 
                 <MainTitle>회원정보 수정</MainTitle>
                 <ProfileEdit />
+                <div style={{ marginTop: "16px", display: "flex", width: "100%", justifyContent: "flex-end" }}>
+                    <button
+                        style={{
+                            padding: "8px 15px",
+                            backgroundColor: "#ed8936",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "4px",
+                            fontSize: "12px",
+                            cursor: "pointer",
+                        }}
+                        onClick={deleteID}
+                    >
+                        회원탈퇴
+                    </button>
+                </div>
                 <MainTitle>시청기록 관리</MainTitle>
                 <ViewingHistory />
             </Container>
