@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Wrap = styled.div`
     display: flex;
@@ -7,6 +7,9 @@ export const Wrap = styled.div`
     height: 100vh;
     .error {
         color: red;
+    }
+    @media (max-width: 768px) {
+        display: block;
     }
 `;
 export const FormContainer = styled.div`
@@ -18,6 +21,12 @@ export const FormContainer = styled.div`
         background: #000;
         box-shadow: 0px 4px 30.4px 0px rgba(255, 255, 255, 0.24);
         padding: 59px 174px 83px 182px;
+        @media (max-width: 768px) {
+            width: 96%;
+            background: none;
+            box-shadow: none;
+            padding: 0;
+        }
         form {
             display: flex;
             flex-direction: column;
@@ -26,9 +35,13 @@ export const FormContainer = styled.div`
             label.checkbox {
                 color: white;
                 font-size: 15px;
+                line-height: 1.2;
                 span {
                     color: #f59c04;
                 }
+            }
+            @media (max-width: 768px) {
+                margin: 0 16px;
             }
         }
     }

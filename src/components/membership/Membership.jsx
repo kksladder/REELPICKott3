@@ -12,6 +12,12 @@ export const Wrap = styled.div`
     justify-content: center;
     align-items: center;
     height: 100vh;
+
+    @media (max-width: 768px) {
+        align-items: normal;
+        height: auto;
+        margin-bottom: 10px;
+    }
 `;
 
 export const FormContainer = styled.div`
@@ -34,11 +40,17 @@ export const FormContainer = styled.div`
             background: var(--primary-50, #dd8c04);
             color: white;
         }
+        @media (max-width: 768px) {
+            width: 80%;
+        }
     }
 
     div {
         display: flex;
         gap: 48px;
+        @media (max-width: 768px) {
+            flex-direction: column;
+        }
     }
     .bb {
         background: linear-gradient(
