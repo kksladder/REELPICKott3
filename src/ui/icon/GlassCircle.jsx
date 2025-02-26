@@ -77,13 +77,7 @@ export const GlassRightCircleBtn = () => {
                         <feBlend mode="normal" in2="shape" result="effect2_innerShadow_805_4963" />
                     </filter>
                     <clipPath id="bgblur_0_805_4963_clip_path">
-                        <rect
-                            transform="translate(0 0)"
-                            width="20"
-                            height="20"
-                            rx="10"
-                            transform="matrix(1.19249e-08 -1 -1 -1.19249e-08 24 24)"
-                        />
+                        <rect width="20" height="20" rx="10" transform="matrix(1.19249e-08 -1 -1 -1.19249e-08 24 24)" />
                     </clipPath>
                     <filter
                         id="filter1_d_805_4963"
@@ -418,7 +412,6 @@ export const GlassUnderOffCircleBtn = () => {
     );
 };
 
-
 import React from "react";
 
 export const GlassTopBtn = () => {
@@ -574,4 +567,3 @@ export const GlassTopBtn = () => {
         </div>
     );
 };
-

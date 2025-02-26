@@ -1,15 +1,21 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Wrap = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    @media (max-width: 768px) {
+        justify-content: normal;
+        align-items: normal;
+    }
 `;
 
 export const FormContainer = styled.div`
     flex: 1;
-
+    @media (max-width: 768px) {
+        flex: none;
+    }
     .formInner {
         width: 808px;
         height: 837px;
@@ -17,6 +23,21 @@ export const FormContainer = styled.div`
         background: #000;
         box-shadow: 0px 4px 30.4px 0px rgba(255, 255, 255, 0.24);
         padding: 206px 118px 160px 163px;
+        @media (max-width: 768px) {
+            width: 81%;
+            margin: 20px 16px;
+            padding: 0;
+            height: auto;
+            background: none;
+            box-shadow: none;
+        }
+    }
+    form {
+        .mobile_loginBtn {
+            @media (max-width: 768px) {
+                border: 1px solid red;
+            }
+        }
     }
 `;
 
@@ -28,6 +49,9 @@ export const WelcomeText = styled.div`
     font-weight: 700;
     line-height: 45px;
     margin-bottom: 33px;
+    @media (max-width: 768px) {
+        font-size: 26px;
+    }
 `;
 
 export const InputField = styled.input`

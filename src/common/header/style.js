@@ -20,7 +20,7 @@ export const HeaderWrap = styled.header`
     @media (max-width: 768px) {
         margin: 0 16px;
         max-width: none;
-        min-width: 361px;
+        min-width: 343px;
     }
     .header_inner {
         display: flex;

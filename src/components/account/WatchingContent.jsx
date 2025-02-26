@@ -51,7 +51,7 @@ const WatchingContent = () => {
             {
                 breakpoint: 480, // 화면이 480px 이하일 때
                 settings: {
-                    slidesToShow: 1, // 1개 슬라이드 표시
+                    slidesToShow: 2, // 1개 슬라이드 표시
                 },
             },
         ],

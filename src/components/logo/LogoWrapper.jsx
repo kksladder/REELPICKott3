@@ -1,7 +1,7 @@
-import Logo from './Logo';
-import LogoSpell from './LogoSpell';
+import Logo from "./Logo";
+import LogoSpell from "./LogoSpell";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 const LogoWrap = styled.div`
     display: flex;
     flex: 1;
@@ -9,6 +9,9 @@ const LogoWrap = styled.div`
     align-items: center;
     gap: 59px;
     margin-bottom: 30px;
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
 
 const LogoWrapper = () => {
